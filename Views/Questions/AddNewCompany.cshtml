@@ -1,0 +1,63 @@
+﻿@*using Syncfusion.EJ2*@
+
+
+@{
+    Layout = "_LayoutMain";
+}
+
+<style>
+    label {
+        color: rebeccapurple;
+        font-weight: 400;
+    }
+</style>
+
+
+<div class="container mt-3">
+    <div class="col-md-12" style="display:flex;justify-content:center;align-content:center;width:90%;">
+
+        <form action="/Company/AddNewCompany" method="post" style="width:40%;">
+            <input type="hidden" name="billercode" value="@ViewBag.billercode" />
+
+            @*<div class="form-group">
+                <label>Name search ref#</label>
+                <input type="text" class="form-control" name="Brief" required value="@ViewBag">
+            </div>*@
+
+            <div class="form-group">
+                <label>Reserved name</label>
+                <input type="text" class="form-control" name="Brief" required value="@ViewBag.Name" readonly>
+            </div>
+
+            <div class="form-group">
+                <label>Select Bussiness Type</label>
+                <input type="text" class="form-control" name="Brief" required value="@ViewBag.SearchFor" readonly>
+            </div>
+
+            <div class="form-group">
+                <label>Ojective</label>
+                <input type="text" class="form-control" name="Brief" required value="@ViewBag.Objective" readonly>
+            </div>
+
+            <div class="form-group fa-pull-right">
+                <button type="submit" class="btn btn-primary">
+                    Continue
+                </button>
+            </div>
+
+        </form>
+
+
+    </div>
+
+</div>
+<div class="container">
+    <div class="col-md-12" style="display:flex;justify-content:center;align-content:center;width:90%;">
+
+        <div class="col-md-6" style="width:30%;">
+
+        </div>
+
+    </div>
+</div>
+

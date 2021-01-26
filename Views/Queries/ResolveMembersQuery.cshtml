@@ -1,0 +1,101 @@
+﻿@*@model BillerClientConsole.Models.CompanyApplicationForRewiew*@
+@{Layout = "../Shared/_LayoutMain";
+    ViewBag.Title="Resolve Members Query";
+}
+
+
+    @*<input type="hidden" name="billercode" value="@ViewBag.billercode" />*@
+
+    
+    <input type="hidden" name="members" id="members" />
+    <input type="hidden" name="companyMembers" id="companyMembers" />
+    <div id="step-3" class="tab-pane" role="tabpanel" aria-labelledby="step-3">
+        <input type="hidden" name="billercode" value="@ViewBag.billercode" />
+
+        <div class="card">
+            <div class="card-header">
+                <label class="mt-3">Members</label>
+                <span style="flex: 1 1 auto"></span>
+            </div>
+            <div class="card-body">
+                <div class="form-group">
+                    <form action="" id="membersForm" method="post" style="width:100%;">
+
+                        @{ var DropDownList = new Syncfusion.EJ2.DropDowns.DropDownList() { DataSource = ViewBag.sex, Query = "new ej.data.Query()", AllowFiltering = true, Fields = new Syncfusion.EJ2.DropDowns.DropDownListFieldSettings() { Value = "Country", Text = "Country" } }; }
+
+                        <div class="card-body">
+
+                            <div class="form-group">
+                                <ejs-grid id="Grid-members" allowResizing="true" allowPaging="true" toolbar="@(new List<string>() { "Add","Edit" , "Delete" })">
+                                    <e-grid-editSettings allowAdding="true" allowDeleting="true" allowEditing="true" mode="Dialog"></e-grid-editSettings>
+                                    <e-data-manager url="/Queries/MemberUrlDataSource" updateUrl="/Company/MemberCellEditUpdate" insertUrl="/Company/MemberCellEditInsert" removeUrl="/Company/CellEditDelete" adaptor="UrlAdaptor"></e-data-manager>
+                                    <e-grid-columns>
+                                        <e-grid-column field="nationalId" headerText="National ID" isPrimaryKey="true" validationRules="@(new { required=true})"></e-grid-column>
+                                        <e-grid-column field="nationality" headerText="Nationality" validationRules="@(new { required=true})"></e-grid-column>
+                                        <e-grid-column field="surname" headerText="Surname" validationRules="@(new { required=true})"></e-grid-column>
+                                        <e-grid-column field="firstName" headerText="Firstname" validationRules="@(new { required=true})"></e-grid-column>
+                                        <e-grid-column field="gender" headerText="Gender" width="150" editType="dropdownedit" edit="new {@params = DropDownList }"></e-grid-column>
+                                        @*<e-grid-column field="gender" headerText="Gender" validationRules="@(new { required=true})" editType="dropdownedit" edit=new {@params = DropDownList }></e-grid-column>*@
+                                        <e-grid-column field="phyicalAddress" headerText="Physical address" validationRules="@(new { required=true})"></e-grid-column>
+                                        <e-grid-column field="isAMember" headerText="Member" width=125px editType="booleanedit" displayAsCheckBox="true" textAlign="Center" type="boolean"></e-grid-column>
+                                        <e-grid-column field="isADirector" headerText="Director" width=125px editType="booleanedit" displayAsCheckBox="true" textAlign="Center" type="boolean"></e-grid-column>
+                                        <e-grid-column field="isABeneficiaryShareholder" headerText="Beneficiary Shareholder" width=125px editType="booleanedit" displayAsCheckBox="true" textAlign="Center" type="boolean"></e-grid-column>
+                                        <e-grid-column field="isCompanySecretary" headerText="Secretary" width=125px editType="booleanedit" displayAsCheckBox="true" textAlign="Center" type="boolean"></e-grid-column>
+                                        <e-grid-column field="ordinaryShares" headerText="Ordinary shares" validationRules="@(new { required=true})" editType="NumericTextBox"></e-grid-column>
+                                        <e-grid-column field="preferenceShares" headerText="Preference shares" validationRules="@(new { required=true})" editType="NumericTextBox"></e-grid-column>
+                                        <e-grid-column field="totalShares" headerText="Total shares" validationRules="@(new { required=true})" editType="NumericTextBox"></e-grid-column>
+                                    </e-grid-columns>
+                                </ejs-grid>
+                            </div>
+
+                            <div class="form-group mt-5">
+                                <ejs-grid id="Grid-entities" toolbar="@(new List<string>() { "Add","Edit" , "Delete" })">
+                                    <e-grid-editSettings allowAdding="true" allowDeleting="true" allowEditing="true" mode="Dialog"></e-grid-editSettings>
+                                    <e-data-manager url="/Queries/EntityUrlDataSource" updateUrl="/Company/EntityCellEditUpdate" insertUrl="/Queries/EntityCellEditInsert" removeUrl="/Company/CellEditDelete" adaptor="UrlAdaptor"></e-data-manager>
+
+                 
+
+                                    <e-grid-columns>
+                                        <e-grid-column field="firstName" headerText="Entity name" validationRules="@(new { required=true})"></e-grid-column>
+                                        <e-grid-column field="entityNumber" headerText="Entity number" validationRules="@(new { required=true})"></e-grid-column>
+                                        <e-grid-column field="nationality" headerText="Country of origin" validationRules="@(new { required=true})"></e-grid-column>
+                                        <e-grid-column field="ordinaryShares" headerText="Ordinary shares" validationRules="@(new { required=true})"></e-grid-column>
+                                        <e-grid-column field="preferenceShares" headerText="Preference shares" validationRules="@(new { required=true})"></e-grid-column>
+                                        <e-grid-column field="totalShares" headerText="Total shares" validationRules="@(new { required=true})"></e-grid-column>
+                                    </e-grid-columns>
+                                </ejs-grid>
+                            </div>
+                            
+         
+                        </div>
+                        <div class="form-group">
+                            <button type="button" id="submitEntityMembers" onclick="submitMembers()" class="btn btn-primary btn-sm" @*style="display:none"*@>
+                                Update
+                            </button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+        <input type="hidden" name="members" id="members" />
+        <input type="hidden" name="companyMembers" id="companyMembers" />
+
+       
+    </div>
+
+<script type="text/javascript">
+    function submitMembers() {
+        $.ajax({
+            type: "POST",
+            url: '/Company/AddCompanyMemberss',
+            success: function (data) {
+                window.location = '/Home/Dashboard';
+            },
+            error: function (err) {
+                alert("Error");
+            },
+            completed: function () {
+            }
+        });
+    }
+</script>

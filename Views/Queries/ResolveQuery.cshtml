@@ -1,0 +1,89 @@
+﻿@model BillerClientConsole.Models.RegisteredOffice
+
+@{
+    ViewData["Title"] = "ResolveQuery";
+    Layout = "../Shared/_LayoutMain";
+
+}
+
+@*<h1>Update Office Details</h1>*@
+
+
+<div class="col-md-12 ml-1">
+    <hr />
+    <div class="card">
+        <h3 class="card-header"> Update Office Details</h3>
+        <div class="card-body">
+            <div class="row">
+                <div class="col-md-12">
+                    <form asp-action="PostResolveQuery">
+                        @*onsubmit="return ResolveQueryPost(this)"*@
+                        <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+                        <input asp-for="OfficeId" type="hidden" />
+
+                        <div class="row">
+                            <div class="col-md-6">
+                                <div class="form-group">
+                                    <label asp-for="PhysicalAddress" class="control-label"></label>
+                                    <input asp-for="PhysicalAddress" class="form-control" />
+                                    <span asp-validation-for="PhysicalAddress" class="text-danger"></span>
+                                </div>
+                            </div>
+                            <div class="col-md-6">
+                                <div class="form-group">
+                                    <label asp-for="PostalAddress" class="control-label"></label>
+                                    <input asp-for="PostalAddress" class="form-control" />
+                                    <span asp-validation-for="PostalAddress" class="text-danger"></span>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-md-6">
+                                <div class="form-group">
+                                    <label asp-for="City" class="control-label"></label>
+                                    <input asp-for="City" class="form-control" />
+                                    <span asp-validation-for="City" class="text-danger"></span>
+                                </div>
+                            </div>
+                            <div class="col-md-6">
+                                <div class="form-group">
+                                    <label asp-for="TelephoneNumber" class="control-label"></label>
+                                    <input asp-for="TelephoneNumber" class="form-control" />
+                                    <span asp-validation-for="TelephoneNumber" class="text-danger"></span>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-md-6">
+                                <div class="form-group">
+                                    <label asp-for="MobileNumber" class="control-label"></label>
+                                    <input asp-for="MobileNumber" class="form-control" />
+                                    <span asp-validation-for="MobileNumber" class="text-danger"></span>
+                                </div>
+                            </div>
+                            <div class="col-md-6">
+                                <div class="form-group">
+                                    <label asp-for="EmailAddress" class="control-label"></label>
+                                    <input asp-for="EmailAddress" class="form-control" />
+                                    <span asp-validation-for="EmailAddress" class="text-danger"></span>
+                                </div>
+                            </div>
+                        </div>
+
+
+
+
+
+
+
+                        <div class="form-group">
+                            <input type="submit" value="Update" class="btn btn-primary btn-block" />
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+

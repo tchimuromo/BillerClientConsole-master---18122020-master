@@ -1,0 +1,111 @@
+﻿<div class="container-fluid">
+    <div class="col-md-12">
+
+        <form action="/Company/AddCompanyArticles" method="post" style="width:80%;">
+            <input type="hidden" name="billercode" value="@ViewBag.billercode" />
+
+
+            <div class="form-group">
+                <label>Main object clause</label>
+                <textarea type="text" class="form-control" name="mainObject"></textarea>
+            </div>
+
+            
+
+            <div class="row"> 
+                <div class="col-md-8">
+                    <label>Other objectives</label>
+                    <div class="form-group" id="objectiveContainer">
+                    </div>
+                    <div class="input-group form-group">
+                        <input type="text" class="form-control" id="otherObjective">
+                        <div class="input-group-append">
+                            <button class="btn btn-info" type="button" onclick="addOtherObjective()">Add</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
+
+            @*<div class="form-group">
+                <label>Liability clause</label>
+                <textarea type="text" class="form-control" name="LiabilityClause"></textarea>
+            </div>
+
+            <div class="radio radio-primary form-group">
+                <input type="radio" name="tableB" id="Radios1" value="Yes">
+                <label>Table B: Model Articles for Private Companies Limited by Shares</label>
+            </div>
+
+            <div class="radio radio-primary form-group">
+                <input type="radio" name="tableC" id="Radios1" value="Yes">
+                <label>Table C: Model Articles for Private Companies Limited by Guarantee</label>
+            </div>
+
+            <div class="form-group">
+                <label>Provisions of non applicable or amended articles</label>
+                <textarea type="text" class="form-control" name="ammendedArticles"></textarea>
+            </div>*@
+
+            <div class="form-group fa-pull-right">
+                <button type="submit" class="btn btn-primary">
+                    Continue
+                </button>
+            </div>
+
+            <input type="hidden" id="objectivesss" name="otherObjectives" />
+
+        </form>
+
+
+    </div>
+
+</div>
+
+<script>
+    var objInput = document.getElementById('otherObjective');
+    var tozotumira = document.getElementById('objectivesss');
+    var objectives = ["aaaa"];
+
+    objectives.pop();
+    var container = document.getElementById('objectiveContainer');
+
+    var alphabet = ['a', 'b', 'c', 'd', 'e',
+        'f', 'g', 'h', 'i', 'j',
+        'k', 'l', 'm', 'n', 'o',
+        'p', 'q', 'r', 's', 't',
+        'u', 'v', 'w', 'x', 'y',
+        'z'];
+
+    var count = 0;
+
+    function addOtherObjective() {
+        objectives.push(objInput.value);
+        populate();
+    }
+
+    function populate() {
+        while (container.firstChild) {
+            container.removeChild(container.lastChild);
+        }
+        count = 0;
+        objectives.forEach(z => createAndAttach(z));
+        tozotumira.value = objectives;
+        objInput.value = "";
+    }
+
+    function createAndAttach(objective) {
+        var innerContainer = document.createElement('div');
+        innerContainer.classList.add('mt-3');
+        var labo = document.createElement('label');
+
+        //alert( objective);
+        labo.textContent = "(" + alphabet[count] + ")" + " " + objective;
+        innerContainer.appendChild(labo);
+
+        container.appendChild(innerContainer);
+
+
+        count++;
+    }
+</script>

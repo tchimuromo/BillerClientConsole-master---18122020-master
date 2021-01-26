@@ -1,0 +1,268 @@
+﻿@*using Syncfusion.EJ2*@
+
+
+@{
+    Layout = "_LayoutMain";
+}
+
+<style>
+    label {
+        color: rebeccapurple;
+        font-weight: 400;
+    }
+</style>
+
+
+<div class="container">
+    <div class="col-md-12" style="display:flex;justify-content:center;align-content:center;width:100%;">
+
+        <form action="/Company/PreviewApplication" method="get" style="width:100%;">
+            <input type="hidden" name="billercode" value="@ViewBag.billercode" />
+
+            <div class="card">
+                <div class="card-header">
+                    <label class="mt-3">Directors</label>
+                    <span style="flex: 1 1 auto"></span>
+                    <button class="fa-pull-right btn btn-success" type="button" data-toggle="modal" data-target="#name-search-modal">Add</button>
+                </div>
+                <div class="card-body">
+                    <div class="form-group">
+                        <table class="table table-hover">
+                            <thead>
+                                <tr>
+                                    <th scope="col">#</th>
+                                    <th scope="col">National id</th>
+                                    <th scope="col">Nationality</th>
+                                    <th scope="col">Full name</th>
+                                    <th scope="col">Gender</th>
+                                    <th scope="col">Residential address</th>
+                                </tr>
+                            </thead>
+                            <tbody id="directTable">
+                                @*<tr>
+                                    <th scope="row">1</th>
+                                    <td>Mark</td>
+                                    <td>Otto</td>
+                                    <td>mdo</td>
+                                    <td>mdo</td>
+                                    <td>mdo</td>
+                                </tr>
+                                <tr>
+                                    <th scope="row">2</th>
+                                    <td>Jacob</td>
+                                    <td>Thornton</td>
+                                    <td>fat</td>
+                                    <td>mdo</td>
+                                    <td>mdo</td>
+                                </tr>
+                                <tr>
+                                    <th scope="row">3</th>
+                                    <td colspan="2">Larry the Bird</td>
+                                    <td>twitter</td>
+                                    <td>mdo</td>
+                                    <td>mdo</td>
+                                </tr>*@
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+
+            @*<div class="card mt-5">
+                <div class="card-header">
+                    <label class="mt-3">Foreign directors</label>
+                    <span style="flex: 1 1 auto"></span>
+                    <button class="fa-pull-right btn btn-success" onclick="populateFields()" type="button" data-toggle="modal" data-target="#name-search-modal">Add</button>
+                </div>
+                <div class="card-body">
+                    <div class="form-group">
+                        <table class="table table-hover">
+                            <thead>
+                                <tr>
+                                    <th scope="col">#</th>
+                                    <th scope="col">Ntionality</th>
+                                    <th scope="col">Passport number</th>
+                                    <th scope="col">Passport expiry</th>
+                                    <th scope="col">Full name</th>
+                                    <th scope="col">Gender</th>
+                                    <th scope="col">Residential address</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <th scope="row">1</th>
+                                    <td>Mark</td>
+                                    <td>Otto</td>
+                                    <td>mdo</td>
+                                    <td>mdo</td>
+                                    <td>mdo</td>
+                                    <td>mdo</td>
+                                </tr>
+                                <tr>
+                                    <th scope="row">2</th>
+                                    <td>Jacob</td>
+                                    <td>Thornton</td>
+                                    <td>fat</td>
+                                    <td>mdo</td>
+                                    <td>mdo</td>
+                                    <td>mdo</td>
+                                </tr>
+                                <tr>
+                                    <th scope="row">3</th>
+                                    <td colspan="2">Larry the Bird</td>
+                                    <td>twitter</td>
+                                    <td>mdo</td>
+                                    <td>mdo</td>
+                                    <td>mdo</td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>*@
+
+            <div class="form-group fa-pull-right mt-5">
+                <button type="submit" class="btn btn-primary">
+                    Preview your application
+                </button>
+            </div>
+            <input type="hidden" id="directorTrans" name="directorTrans"/>
+        </form>
+    </div>
+</div>
+
+<div class="container">
+    <div class="col-md-12" style="display:flex;justify-content:center;align-content:center;width:90%;">
+
+        <div class="col-md-6" style="width:30%;">
+
+        </div>
+
+    </div>
+</div>
+
+<div class="modal fade" id="name-search-modal" tabindex="-9" role="dialog" aria-labelledby="addContactLabel" aria-hidden="true" style="color:#0C2A46">
+    <div class="modal-dialog card" role="document" style="overflow-y: initial !important">
+        <div class="modal-content">
+            <div class="card-header bg-white">
+                <h5 class="modal-title " id="addContactLabel" style="color:#0C2A46">Please enter the following</h5>
+
+            </div>
+
+            <div class="modal-body" id="text-fields" style="height: 500px;overflow-y: auto;">
+                <div class="form-group">
+                    <label>National id</label>
+                    <input type="text" class="form-control" id="natId">
+                </div>
+                <div class="form-group">
+                    <label>Nationality</label>
+                    <input type="text" class="form-control" id="nationality">
+                </div>
+                <div class="form-group">
+                    <label>Full name</label>
+                    <input type="text" class="form-control" id="fullName">
+                </div>
+                <div class="form-group">
+                    <label>Gender</label>
+                    <input type="text" class="form-control" id="gender">
+                </div>
+                <div class="form-group">
+                    <label>Residential address</label>
+                    <input type="text" class="form-control" id="resAddress">
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-white" data-dismiss="modal" style="color:#0C2A46">Cancel</button>
+                <button type="button" class="btn" style="background-color:#0C2A46;color:#fff" onclick="populate()" data-dismiss="modal" >Done</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<style>
+    #typeddl {
+        min-width: 100px;
+    }
+</style>
+
+<script>
+    var directors = [];
+    var directorCounter = 0;
+
+    var directorTable = document.getElementById('directTable');
+
+    var transporter = document.getElementById('directorTrans');
+
+    function populate() {
+        directorCounter++;
+
+        var director = [
+            document.getElementById("natId").value,
+            document.getElementById("nationality").value,
+            document.getElementById("fullName").value,
+            document.getElementById("gender").value,
+            document.getElementById("resAddress").value
+        ];
+
+        directors.push(director);
+        directors.push('|')
+
+        transporter.value = directors;
+        console.log(director);
+
+        var row = document.createElement('tr');
+
+        var rowCount = document.createElement('th');
+        rowCount.scope = 'row';
+        rowCount.textContent = directorCounter;
+        row.appendChild(rowCount);
+
+        var natId = document.createElement('td');
+        natId.textContent = document.getElementById("natId").value;
+        row.appendChild(natId);
+
+        var nationality = document.createElement('td');
+        nationality.textContent = document.getElementById("nationality").value;
+        row.appendChild(nationality);
+
+        var fullName = document.createElement('td');
+        fullName.textContent = document.getElementById("fullName").value;
+        row.appendChild(fullName);
+
+        var gender = document.createElement('td');
+        gender.textContent = document.getElementById("gender").value;
+        row.appendChild(gender);
+
+        var resAddress = document.createElement('td');
+        resAddress.textContent = document.getElementById("resAddress").value;
+        row.appendChild(resAddress);
+
+        directorTable.appendChild(row);
+
+    }
+
+    function clearForm() {
+        while (container.firstChild) {
+            container.removeChild(container.firstChild);
+        }
+    }
+
+    function createTextField(label) {
+        var innerContainer = document.createElement('div');
+        innerContainer.classList.add('form-group');
+
+        var textLabel = document.createElement('label');
+        textLabel.textContent = label;
+
+        var textYacho = document.createElement('input');
+        textYacho.classList.add('form-control');
+        textYacho.name = 'Brief';
+        textYacho.type = 'text';
+
+        innerContainer.appendChild(textLabel);
+        innerContainer.appendChild(textYacho);
+
+        container.appendChild(innerContainer);
+    }
+
+</script>

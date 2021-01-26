@@ -1,0 +1,150 @@
+﻿@{
+    Layout = "../Shared/_LayoutMain";
+}
+
+<div class="container-fluid mt-3">
+    
+        <div class="col-md-10">
+
+            @if (ViewBag.ToDisplay == "CompanyApplications")
+            {
+                <div class="table  table-mb table-hover">
+                    <table>
+                        <thead mt-5 mb-5>
+                            <tr>
+                                <th style="color: #0C2A46">Application ref</th>
+                                <th style="color: #0C2A46">Date submitted</th>
+                                <th style="color: #0C2A46">Proposed name</th>
+                                <th style="color: #0C2A46">Type of entity</th>
+                                <th style="color: #0C2A46">Payment status</th>
+                                <th style="color: #0C2A46">Allocate</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            @foreach (var application in ViewBag.Applications)
+                            {
+                                <tr>
+                                    <td>@application.companyInfo.Application_Ref</td>
+                                    <td>@application.companyInfo.Date_Of_Application</td>
+                                    <td>@application.companyInfo.Name</td>
+                                    <td>@application.companyInfo.Type</td>
+                                    <td>@application.companyInfo.Payment</td>
+                                    <td>
+                                        <select class="form-control" name="examiner" id="@application.companyInfo.Search_Ref" onchange="assignExaminer('@application.companyInfo.Search_Ref')">
+                                            <option value="" selected></option>
+                                            <option value="Examiner 1">Examiner 1 </option>
+                                        </select>
+                                    </td>
+                                </tr>
+                            }
+                        </tbody>
+                    </table>                   
+                </div>
+            }
+            else
+            {
+                <div class="table-responsive">
+                    @if (@ViewBag.Display > 0)
+                    {
+                        @if (@ViewBag.HarareCount > -1)
+                        {
+                            <label>Harare office</label>
+                            <table class="table  table-mb table-hover">
+                                <thead mt-5 mb-5>
+                                    <tr>
+                                        <th style="color: #0C2A46">Service</th>
+                                        <th style="color: #0C2A46">Number of entries</th>
+                                        <th style="color: #0C2A46">Action</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    @if (@ViewBag.HarareCount > 0)
+                                    {
+                                        <tr>
+                                            <td>Name Search</td>
+                                            <td>@ViewBag.HarareCount</td>
+                                            <td><a href="/Products/AssignTasks" style="text-decoration: underline">Assign</a></td>
+                                        </tr>
+                                    }
+                                    @if (@ViewBag.CompanyApplications > 0)
+                                    {
+                                        <tr>
+                                            <td>Private Limited Company Registration</td>
+                                            <td>@ViewBag.CompanyApplications</td>
+                                            <td><a href="/Products/AssignTasks?onDisplay=CompanyApplication" style="text-decoration: underline">Assign</a></td>
+                                        </tr>
+                                    }
+                                </tbody>
+                            </table>
+
+                        }
+
+                        @if (@ViewBag.Bulawayo > 0)
+                        {
+                            <label>Bulawayo office</label>
+                            <table class="table  table-mb table-hover">
+                                <thead mt-5 mb-5>
+                                    <tr>
+                                        <th style="color: #0C2A46">Service</th>
+                                        <th style="color: #0C2A46">Number of entries</th>
+                                        <th style="color: #0C2A46">Action</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <tr>
+                                        <td>Namesearch</td>
+                                        <td>@ViewBag.Bulawayo</td>
+                                        <td><a href="/Products/AssignTasks" style="text-decoration: underline">Assign</a></td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        }
+
+                    }
+                    else
+                    {
+                        <p>There are no unassigned tasks at the moment. Check again later.</p>
+                        <a href="/Home/Dashboard">
+                            <button class="btn btn-info">
+                                Home
+                            </button>
+                        </a>
+                    }
+
+                </div>
+            }
+        </div>
+       
+    
+</div>
+
+
+<script>
+    function assignExaminer(applicationRef){
+        var examiner = document.getElementById(applicationRef).value;
+
+        $.ajax({
+            type: "POST",
+            url: "/Products/AssignCompanyForExamination",
+            data: {
+                examiner : examiner,
+                searchRef : applicationRef
+            },
+            success: function (data) {
+                if (data.res === 'ok') {
+                    alert('Application assigned');
+                    window.location.reload();
+                }
+                
+            },
+            error: function (data) {
+                alert("error here");
+                console.log(data);
+            },
+            completed: function () {
+            }
+        });
+    }
+
+</script>
+

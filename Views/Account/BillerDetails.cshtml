@@ -1,0 +1,155 @@
+﻿@{
+    Layout = "../Shared/_LayoutMain";
+
+    var bankAccount = (BillerClientConsole.Models.mBankAccount)ViewBag.bank;
+    var address = (BillerClientConsole.Models.mAddress)ViewBag.address;
+    var billerInfo = (BillerClientConsole.Models.mBillerInfo)ViewBag.billerInfo;
+
+}
+@using BillerClientConsole.Models;
+
+
+<div class="container">
+    <form method="post" action="/Account/UpdateBillerDetails">
+
+        <div class="row">
+            @*basic info*@
+            <div class="col-md-12">
+                <h3>Basic info</h3>
+
+                <div class="row">
+
+                    <div class="col-md-4">
+                        <div class="form-group">
+                            <label><span style="color:red">*</span>Biller Code</label>
+                            <input type="text" class="form-control" value="@billerInfo.BillerCode" name="BillerCode" placeholder="Biller Code" readonly>
+                        </div>
+                    </div>
+
+                    <div class="col-md-4">
+                        <div class="form-group">
+                            <label><span style="color:red">*</span>Biller Name</label>
+                            <input type="text" class="form-control" value="@billerInfo.BillerName" name="BillerName" placeholder="Biller Name" readonly>
+                        </div>
+                    </div>
+
+                    <div class="col-md-4">
+                        <div class="form-group">
+                            <label><span style="color:red">*</span>Contact Person</label>
+                            <input type="text" class="form-control" value="@billerInfo.ContactPerson" name="ContactPerson" placeholder="Contact Person" required>
+                        </div>
+                    </div>
+
+                </div>
+
+
+                <div class="row">
+
+                    <div class="col-md-4">
+                        <div class="form-group">
+                            <label><span style="color:red">*</span>Contact Email</label>
+                            <input type="email" class="form-control" value="@billerInfo.ContactEmail" name="ContactEmail" placeholder="Contact Email" required>
+                        </div>
+                    </div>
+
+                    <div class="col-md-4">
+                        <div class="form-group">
+                            <label><span style="color:red">*</span>Contact Phone</label>
+                            <input type="text" class="form-control" value="@billerInfo.ContactPhone" name="ContactPhone" placeholder="Contact Phone" required>
+                        </div>
+                    </div>
+
+
+
+                </div>
+
+            </div>
+        </div>
+
+        <br />
+        <br />
+        <br />
+        <div class="row">
+            @*basic info*@
+            <div class="col-md-12">
+                <h3>Account details</h3>
+
+                <div class="row">
+
+                    <div class="col-md-4">
+                        <div class="form-group">
+                            <label><span style="color:red">*</span>Account Name</label>
+                            <input type="text" class="form-control" value="@bankAccount.AccountName" name="AccountName" placeholder="Account Name" required>
+                        </div>
+                    </div>
+
+                    <div class="col-md-4">
+                        <div class="form-group">
+                            <label><span style="color:red">*</span>Account Number</label>
+                            <input type="text" class="form-control" value="@bankAccount.AccountNumber" name="AccountNumber" placeholder="Account Number" required>
+                        </div>
+                    </div>
+
+                    <div class="col-md-4">
+                        <div class="form-group">
+                            <label><span style="color:red">*</span>Bank</label>
+                            <select class="form-control" name="Bank">
+                                <option value="@eBank.AGRICULTURAL_DEVELOPMENT_BANK_OF_ZIMBABWE" selected="@(bankAccount.Bank==eBank.AGRICULTURAL_DEVELOPMENT_BANK_OF_ZIMBABWE)">AGRICULTURAL_DEVELOPMENT_BANK_OF_ZIMBABWE</option>
+                                <option value="@eBank.BANCABC_ZIMBABWE" selected="@(bankAccount.Bank==eBank.BANCABC_ZIMBABWE)">BANCABC_ZIMBABWE</option>
+                                <option value="@eBank.FIRST_CAPITAL_BANK_LIMITED" selected="@(bankAccount.Bank==eBank.FIRST_CAPITAL_BANK_LIMITED)">FIRST_CAPITAL_BANK_LIMITED</option>
+                                <option value="@eBank.CBZ_BANK_LIMITED" selected="@(bankAccount.Bank==eBank.CBZ_BANK_LIMITED)">CBZ_BANK_LIMITED</option>
+                                <option value="@eBank.ECOBANK_ZIMBABWE_LIMITED" selected="@(bankAccount.Bank==eBank.ECOBANK_ZIMBABWE_LIMITED)">ECOBANK_ZIMBABWE_LIMITED</option>
+                                <option value="@eBank.FBC_BANK_LIMITED" selected="@(bankAccount.Bank==eBank.FBC_BANK_LIMITED)">FBC_BANK_LIMITED</option>
+                                <option value="@eBank.NEDBANK_ZIMBABWE_LIMITED" selected="@(bankAccount.Bank==eBank.NEDBANK_ZIMBABWE_LIMITED)">NEDBANK_ZIMBABWE_LIMITED</option>
+                                <option value="@eBank.METBANK" selected="@(bankAccount.Bank==eBank.METBANK)">METBANK</option>
+                                <option value="@eBank.NMB_BANK_LIMITED" selected="@(bankAccount.Bank==eBank.NMB_BANK_LIMITED)">NMB_BANK_LIMITED</option>
+                                <option value="@eBank.STANBIC_BANK_ZIMBABWE_LIMITED" selected="@(bankAccount.Bank==eBank.STANBIC_BANK_ZIMBABWE_LIMITED)">STANBIC_BANK_ZIMBABWE_LIMITED</option>
+                                <option value="@eBank.STANDARD_CHARTERED_BANK_ZIMBABWE_LIMITED" selected="@(bankAccount.Bank==eBank.STANDARD_CHARTERED_BANK_ZIMBABWE_LIMITED)">STANDARD_CHARTERED_BANK_ZIMBABWE_LIMITED</option>
+                                <option value="@eBank.STEWARD_BANK" selected="@(bankAccount.Bank==eBank.STEWARD_BANK)">STEWARD_BANK</option>
+                                <option value="@eBank.ZB_BANK_LIMITED" selected="@(bankAccount.Bank==eBank.ZB_BANK_LIMITED)">ZB_BANK_LIMITED</option>
+                            </select>
+                        </div>
+                    </div>
+
+                </div>
+            </div>
+        </div>
+
+        <br />
+        <br />
+        <br />
+        @*bank info*@
+        <div class="row">
+            <div class="col-md-12">
+                <h3>Address info</h3>
+
+                <div class="row">
+                    <input type="hidden" value="@address.BillerCode" name="BillerCode">
+                    <div class="col-md-4">
+                        <div class="form-group">
+                            <label><span style="color:red">*</span>Street</label>
+                            <input type="text" class="form-control" value="@address.Street" name="Street" placeholder="Street" required>
+                        </div>
+                    </div>
+
+                    <div class="col-md-4">
+                        <div class="form-group">
+                            <label><span style="color:red">*</span>City</label>
+                            <input type="text" class="form-control" value="@address.City" name="City" placeholder="City" required>
+                        </div>
+                    </div>
+
+                </div>
+            </div>
+        </div>
+
+        <div class="row">
+            <div class="col-md-12">
+                <button type="submit" class="btn btn-primary">SAVE</button>
+            </div>
+        </div>
+
+        <br />
+        <br />
+    </form>
+</div>

@@ -1,0 +1,302 @@
+﻿
+@{
+    Layout = "_LayoutMain";
+}
+
+@if(ViewBag.Count > 0){
+    <div class="table-responsive container-fluid">
+        <table class="table  table-mb table-hover">
+            <thead mt-5 mb-5>
+                <tr>
+                    <th style="color:#0C2A46">Ref #</th>
+                    <th style="color:#0C2A46">Type of entity</th>
+                    <th style="color:#0C2A46">Reserved name</th>
+                    <th style="color:#0C2A46">Date reserved</th>
+                    <th style="color:#0C2A46">Expiry date</th>
+                    <th style="color:#0C2A46">Days left</th>
+                    <th style="color:#0C2A46">Action</th>
+                </tr>
+            </thead>
+            <tbody>
+                @if (ViewBag.nameSearches != null)
+                {
+
+                    @foreach (var item in ViewBag.nameSearches)
+                    {
+                <tr>
+                    <td style="color:#0C2A46">@item.searchInfo.SearchRef</td>
+                    <td style="color:#0C2A46">@item.searchInfo.Search_For</td>
+                    @foreach (var name in item.SearchNames)
+                    {
+                        @if (name.Status == "Reserved")
+                        {
+                            <td style="color:#0C2A46">@name.Name</td>
+                        }
+                    }
+
+                    <td style="color:#0C2A46">@item.searchInfo.ApprovedDate</td>
+                    <td style="color:#0C2A46">@item.searchInfo.ExpiryDate</td>
+                    <td style="color:#0C2A46">@item.searchInfo.DaysLeft</td>
+                    <td>
+                        <a href="/Company/AddNewCompany/?searchId=@item.searchInfo.search_ID">
+                            <button class="btn btn-success">Register</button>
+                        </a>
+                    </td>
+                </tr>
+                    }
+                }
+                else
+                {
+
+                }
+                @*<tr>
+            <td style="color:#0C2A46">2</td>
+            <td style="color:#0C2A46">PRIVATE LIMITED COMPANY</td>
+            <td>
+                <button class="btn btn-success" data-toggle="modal" data-target="#">View more</button>
+            </td>
+        </tr>
+        <tr>
+            <td style="color:#0C2A46">3</td>
+            <td style="color:#0C2A46">PRIVATE BUSINESS CORPORATION</td>
+            <td>
+                <button class="btn btn-success" data-toggle="modal" data-target="#">View more</button>
+            </td>
+        </tr>
+        <tr>
+            <td style="color:#0C2A46">4</td>
+            <td style="color:#0C2A46">PUBLIC COMPANY</td>
+            <td>
+                <button class="btn btn-success" data-toggle="modal" data-target="#">View more</button>
+            </td>
+        </tr>
+        <tr>
+            <td style="color:#0C2A46">5</td>
+            <td style="color:#0C2A46">COOPERATIVE</td>
+            <td>
+                <button class="btn btn-success" data-toggle="modal" data-target="#">View more</button>
+            </td>
+        </tr>
+        <tr>
+            <td style="color:#0C2A46">6</td>
+            <td style="color:#0C2A46">ASSOCIATION</td>
+            <td>
+                <button class="btn btn-success" data-toggle="modal" data-target="#">View more</button>
+            </td>
+        </tr>
+        <tr>
+            <td style="color:#0C2A46">7</td>
+            <td style="color:#0C2A46">PARTNERSHIP</td>
+            <td>
+                <button class="btn btn-success" data-toggle="modal" data-target="#">View more</button>
+            </td>
+        </tr>
+        <tr>
+            <td style="color:#0C2A46">8</td>
+            <td style="color:#0C2A46">JOINT VENTURE</td>
+            <td>
+                <button class="btn btn-success" data-toggle="modal" data-target="#">View more</button>
+            </td>
+        </tr>*@
+
+            </tbody>
+        </table>
+    </div>
+}
+else{
+<div class="container-fluid">
+    <h4>No names yet</h4>
+
+</div>
+}
+
+
+<div class="modal fade" id="name-search-modal" tabindex="-9" role="dialog" aria-labelledby="addContactLabel" aria-hidden="true" style="color:#0C2A46">
+    <div class="modal-dialog card" role="document">
+        <div class="modal-content">
+            <div class="card-header bg-white">
+                <h5 class="modal-title " id="addContactLabel" style="color:#0C2A46">NAME SEARCH</h5>
+
+            </div>
+
+            <div class="modal-body">
+                <p style="color:#0C2A46; font-family: 'Ubuntu Condensed', sans-serif;">
+                    This process initializes the business registration process giving one an opportunity to list at most five preferred
+                    names for name reservation in the companies register.
+                </p>
+
+                <p style="color:#0C2A46;font-family: 'Ubuntu Condensed', sans-serif;"><strong>Please take note of the following</strong></p>
+
+                <ul>
+                    <li style="color:#0C2A46">Always list preffered names in the order of PRIORITY</li>
+                    <li style="color:#0C2A46">A name should be longer than three characters</li>
+                    <li style="color:#0C2A46">The Registrar reserves the right to reject any name </li>
+                </ul>
+
+                <table class="table  table-mb table-hover">
+                    <thead mt-5 mb-5>
+                        <tr>
+                            <th style="color:#0C2A46">Service
+                            <th style="color:#0C2A46">Fee</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td style="color:#0C2A46">Name search</td>
+                            <td style="color:#0C2A46">ZWL 80</td>
+                        </tr>
+
+                    </tbody>
+                </table>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-white" data-dismiss="modal" style="color:#0C2A46">Cancel</button>
+                <button type="button" class="btn" style="background-color:#0C2A46">
+                    <a href="/Products/AddNewProduct" style="color:#fff">
+                        Continue
+                    </a>
+                </button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="modal fade" id="private-limited-modal" tabindex="-1" role="dialog" aria-labelledby="addContactLabel" aria-hidden="true" style="border:none">
+    <div class="modal-dialog" role="document" style="border:none">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="addContactLabel">Add contact</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">×</span>
+                </button>
+            </div>
+            <div class="modal-body">
+
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                <button type="button" class="btn btn-primary">Save</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="modal fade" id="pbc-modal" tabindex="-1" role="dialog" aria-labelledby="addContactLabel" aria-hidden="true">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="addContactLabel">Add contact</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">×</span>
+                </button>
+            </div>
+            <div class="modal-body">
+
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                <button type="button" class="btn btn-primary">Save</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="modal fade" id="public-company-modal" tabindex="-1" role="dialog" aria-labelledby="addContactLabel" aria-hidden="true">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="addContactLabel">Add contact</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">×</span>
+                </button>
+            </div>
+            <div class="modal-body">
+
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                <button type="button" class="btn btn-primary">Save</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="modal fade" id="cooperative" tabindex="-1" role="dialog" aria-labelledby="addContactLabel" aria-hidden="true">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="addContactLabel">Add contact</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">×</span>
+                </button>
+            </div>
+            <div class="modal-body">
+
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                <button type="button" class="btn btn-primary">Save</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="modal fade" id="association-modal" tabindex="-1" role="dialog" aria-labelledby="addContactLabel" aria-hidden="true">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="addContactLabel">Add contact</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">×</span>
+                </button>
+            </div>
+            <div class="modal-body">
+
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                <button type="button" class="btn btn-primary">Save</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="modal fade" id="partnership-modal" tabindex="-1" role="dialog" aria-labelledby="addContactLabel" aria-hidden="true">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="addContactLabel">Add contact</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">×</span>
+                </button>
+            </div>
+            <div class="modal-body">
+
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                <button type="button" class="btn btn-primary">Save</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="modal fade" id="joint-venture-modal" tabindex="-1" role="dialog" aria-labelledby="addContactLabel" aria-hidden="true">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="addContactLabel">Add contact</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">×</span>
+                </button>
+            </div>
+            <div class="modal-body">
+
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                <button type="button" class="btn btn-primary">Save</button>
+            </div>
+        </div>
+    </div>
+</div>

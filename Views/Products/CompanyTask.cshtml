@@ -1,0 +1,50 @@
+﻿@{
+    Layout = "../Shared/_LayoutMain";
+}
+
+    <div class="container-fluid">
+        @*<div class="row mt-3">
+            <button class="ml-3 btn btn-success ">Prev</button>
+            <button href="/Products/GetNameSearchesByUserByTaskID?@ViewBag.TaskID" class="mr-3 ml-auto btn btn-success">Next</button>
+        </div>*@
+        @if (ViewBag.CompanyApplications.Count < 1)
+        {
+            <p>There are no applications yet</p>
+        }
+        else
+        {
+            <div class="table  table-mb table-hover">
+                <table>
+                    <thead mt-5 mb-5>
+                        <tr>
+                            <th style="color: #0C2A46">Application ref</th>
+                            <th style="color: #0C2A46">Date submitted</th>
+                            <th style="color: #0C2A46">Proposed name</th>
+                            <th style="color: #0C2A46">Type of entity</th>
+                            <th style="color: #0C2A46">Payment status</th>
+                            <th style="color: #0C2A46">Allocate</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        @foreach (var application in ViewBag.CompanyApplications)
+                        {
+                            <tr>
+                                <td>@application.companyInfo.Application_Ref</td>
+                                <td>@application.companyInfo.Date_Of_Application</td>
+                                <td>@application.companyInfo.Name</td>
+                                <td>@application.companyInfo.Type</td>
+                                <td>@application.companyInfo.Payment</td>
+                                <td>
+                                    <a href="/Products/Detail?reference=@application.companyInfo.Search_Ref">
+                                        Examine
+                                    </a>
+                                </td>
+                            </tr>
+                        }
+                    </tbody>
+                </table>
+            </div>
+        }
+
+    </div>
+    

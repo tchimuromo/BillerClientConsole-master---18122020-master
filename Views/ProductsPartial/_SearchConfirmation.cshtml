@@ -1,0 +1,95 @@
+﻿@using BillerClientConsole.Models;
+@using X.PagedList.Mvc;
+@using X.PagedList;
+@using X.PagedList.Mvc.Core;
+
+@addTagHelper *, Microsoft.AspNetCore.Mvc.TagHelpers
+@addTagHelper *, X.PagedList.Mvc
+@addTagHelper *, X.PagedList
+
+@{
+    //var feedback = (IPagedList)ViewBag.pfeedback;
+}
+
+<style>
+    @*style the drop down select entries - datatables*@
+    .custom-select
+    {
+        height:30px!important;
+        width:50px!important;
+        margin-left:5px!important;
+    }
+    @*style the copy buttons- datatables*@
+    .dt-buttons
+    {
+        margin-left:4px!important;
+    }
+</style>
+
+
+
+<div class="col-md-12">
+    <div class="card mb-3">
+        <h3 class="card-header">Search Info</h3>
+        <ul class="list-group list-group-flush">
+
+
+            <li class="list-group-item d-flex justify-content-between align-items-center">
+                Bussiness Type
+                <span class="badge badge-primary badge-pill">Test</span>
+
+            </li>
+
+
+            <li class="list-group-item d-flex justify-content-between align-items-center">
+                Purpose of search
+                <span class="badge badge-warning badge-pill">tes123</span>
+            </li>
+
+            <li class="list-group-item d-flex justify-content-between align-items-center">
+                Justification
+                <span class="badge badge-primary badge-pill">test123</span>
+            </li>
+
+
+            <li class="list-group-item d-flex justify-content-between align-items-center">
+                Rejected Companies
+                <span class="badge badge-danger badge-pill">test123</span>
+            </li>
+
+        </ul>
+        <div class="card-footer text-muted">
+            &nbsp;
+        </div>
+    </div>
+</div>
+@*
+    @Html.PagedListPager(feedback, page => Url.Action("ListFeedBack", "Reports", new { pageNumber = page }))
+*@
+
+<script>
+    $("#date_from").Zebra_DatePicker({
+        format: 'Y-m-d',
+        icon_position: 'left'
+    });
+
+    $("#date_to").Zebra_DatePicker({
+        format: 'Y-m-d',
+        icon_position: 'left'
+    });
+
+    $('#datatable').DataTable({
+        select: true,
+        responsive: true,
+        dom: 'lBfrtip',
+        buttons: [
+            'copyHtml5',
+            'excelHtml5',
+            'csvHtml5',
+            'pdfHtml5'
+        ]
+    });
+
+
+</script>
+

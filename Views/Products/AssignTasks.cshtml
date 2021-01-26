@@ -1,0 +1,123 @@
+﻿@{
+    Layout = "../Shared/_LayoutMain";
+}
+
+    <div class="container-fluid mt-3">
+        @if (string.IsNullOrEmpty(ViewBag.ToDisplay))
+        {
+            <div class="row">
+                <h4 class="col-md-4">Unassigned name searches : <span class="text-danger">@ViewBag.Count</span></h4>
+            </div>
+        }
+        else if (ViewBag.ToDisplay == "CompanyApplication")
+        {
+            <div class="row">
+                <h4 class="col-md-4">Unassigned company applications : <span class="text-danger">@ViewBag.CompanyApplications</span></h4>
+            </div>
+        }
+
+
+    <form action="/Products/PostTask" method="post">
+        @if (string.IsNullOrEmpty(ViewBag.ToDisplay))
+        {
+            <input type="hidden" name="Service" value="Name Search" />
+        }
+        else if (@ViewBag.ToDisplay == "CompanyApplication")
+        {
+            <input type="hidden" name="Service" value="Private Company Registration" />
+        }
+
+        <input type="hidden" name="Assigner" value="assigner" />
+
+        <input type="hidden" name="Status" value="status" />
+
+        <input type="hidden" name="Date" />
+
+        <div class="row mb-2">
+            <div class="col-md-3">
+                <label>Assign to</label>
+                <select class="form-control" name="AssignTo">
+                    <option selected>--Select Examiner To Assign</option>
+                    =
+                    @foreach (var examiners in ViewBag.people)
+                    {
+                    <option value="@examiners.email">@examiners.email</option>
+
+                    }
+
+                </select>
+            </div>           
+            <div class="col-md-2">
+                <label>No. of records</label>
+                <input type="text" class="form-control" name="NoOfRecords" />
+            </div>
+            <div class="col-md-2">
+                <label>Date of completion</label>
+                <input type="date" class="form-control" name="ExpDateofComp" />
+            </div>
+            <div class="col-md-2">
+                <label>Time</label>
+                <input type="time" class="form-control" name="time" />
+            </div>
+            <div class="col-md-3">
+                @*<label>Comment</label>
+                <input type="text" class="form-control" />*@
+                <label>
+
+                </label>
+                <a href="/Product/PostTask">
+                    <button class="btn btn-success btn-block mt-2">
+                        Assign
+                    </button>
+                </a>
+            </div>
+        </div>
+    </form>
+
+        <div class="card mt-2">
+            <div class="card-header">
+                <h4>Assigned Tasks (Today)</h4>
+            </div>
+            <div class="card-body">
+                <div class="table-responsive">
+                    <table class="table  table-mb table-hover">
+                        <thead mt-5 mb-5>
+                            <tr>
+                                <th style="color:#0C2A46">Task #</th>
+                                <th style="color:#0C2A46">Assigned to</th>
+                                <th style="color:#0C2A46">Number of records</th>
+                                <th style="color:#0C2A46">Deadline</th>
+                                <th style="color:#0C2A46">Action</th>
+                            </tr>
+                        </thead>
+
+                        <tbody>
+                            @if (ViewBag.id != null || ViewBag.id != "")
+                            {
+                                <tr>
+                                    <td> @ViewBag.id</td>
+                                    <td> @ViewBag.assignTo </td>
+                                    <td> @ViewBag.noOfRecords </td>
+                                    <td> @ViewBag.expDateofComp </td>
+                                    <td>
+                                        <div class="btn-group">
+                                            <a href="#" style="color:#0C2A46;text-decoration:underline">View More</a>
+                                        </div>
+                                    </td>
+                                </tr>
+                            }
+
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+        <div class="fa-pull-right mt-5 mb-5">
+            <a href="/Products/UnassignedTasks">
+                <button type="button" class="btn btn-primary">
+                    Back
+                </button>
+            </a>
+        </div>
+    </div>
+       

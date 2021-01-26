@@ -1,0 +1,79 @@
+﻿@{ ViewBag.Title = "";
+    Layout = "../Shared/_LayoutMain"; }
+
+
+
+<div id="step-4" class="tab-pane" role="tabpanel" aria-labelledby="step-4">
+    <div class="card">
+        <div class="card-body">
+            @* form to submit share clause and liability clause *@
+            <form style="width:100%;" id="shareClauseForm" method="post" action="/Queries/AddCompanyMemorandum">
+                <input type="hidden" name="billercode" value="@ViewBag.billercode" />
+                <input type="hidden" name="billercode" value="@ViewBag.billercode" />
+                <input type="hidden" id="objectivesss" name="otherObjectives" />
+                <input type="hidden" name="billercode" value="@ViewBag.billercode" />
+
+                <div class="form-group">
+                    @*<label>Company Members</label>*@
+                    <ejs-grid id="Grid" toolbar="@(new List<string>() {"Edit"})">
+                        <e-grid-editSettings allowEditing="true" allowDeleting="true" mode="Normal"></e-grid-editSettings>
+                        <e-data-manager url="/Queries/UrlDataSource" updateUrl="/Company/CellEditUpdate" insertUrl="/Company/CellEditInsert" removeUrl="/Company/CellEditDelete" adaptor="UrlAdaptor"></e-data-manager>
+
+                        <e-grid-columns>
+                            <e-grid-column field="theObject" headerText="Object" allowEditing="false" allowFiltering="false"></e-grid-column>
+                            @*<e-grid-column field="hasQuery" headerText="Raise query" editType="booleanedit" displayAsCheckBox="true" textAlign="Center" type="boolean"></e-grid-column>
+                            <e-grid-column field="Comment" headerText="Comment"></e-grid-column>*@
+                        </e-grid-columns>
+                    </ejs-grid>
+                </div>
+
+                <div class="row">
+                    <div class="col-md-6">
+                        <label class="form-group">Liability clause</label>
+                        <div class="input-group form-group">
+                            <input type="text" class="form-control" id="liabilityClause" name="liab" value="@ViewBag.Liability_liab" step="3" >
+                        </div>
+                    </div>
+                    <div class="col-md-6">
+                        <label class="form-group">Share clause</label>
+                        <div class="input-group form-group">
+                            <input type="text" class="form-control" id="shareClause" name="shareClo" value="@ViewBag.Share_share" >
+                            <input type="hidden" name="applicationRef" id="applicationRef" value="@ViewBag.ApplicationRef"/>
+                        </div>
+                    </div>
+
+                    <div class="form-group">
+                        <input type="submit" value="Update" class="btn btn-info" /> @*onclick="submitMemo()"*@
+                    </div>
+                   
+
+                </div>
+
+            </form>
+        </div>
+    </div>
+
+</div>
+<script type="text/javascript">
+    function submitMemo() {
+        $.ajax({
+            type: "POST",
+            url: "/Queries/AddCompanyMemorandum",
+            data: {
+                step: 3,
+                liab: document.getElementById("liabilityClause").value,
+                shareClo: document.getElementById("shareClause").value,
+                applicationRef: document.getElementById("applicationref").value
+            },
+            success: function (data) {
+                //alert.log('memo saved');
+                window.location = '/Home/Dashboard';
+            },
+            error: function () {
+                alert("error here");
+            },
+            completed: function () {
+            }
+        });
+    }
+</script>

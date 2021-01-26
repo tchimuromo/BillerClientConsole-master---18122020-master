@@ -1,0 +1,155 @@
+﻿@{
+    Layout = "../Shared/_LayoutMain";
+}
+
+<div class="container-fluid">
+
+    @*My tasks*@
+    <div class="card mb-5 mt-5">
+        <div class="card-header">
+            <h4>My tasks</h4>
+        </div>
+        @if (ViewBag.tasks != null)
+        {
+            <div class="card-body">
+                <div class="table-responsive mt-3 mb-3">
+                    <table class="table  table-mb table-hover">
+                        <thead mt-5 mb-5>
+                            <tr>
+                                <th style="color:#0C2A46">Service</th>
+                                <th style="color:#0C2A46">AssignedBy</th>
+                                <th style="color:#0C2A46">Status</th>
+                                <th style="color:#0C2A46">Deadline</th>
+                                <th style="color:#0C2A46">Number of records</th>
+                                <th style="color:#0C2A46">Action</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            @if (ViewBag.tasks != null)
+                            {
+                                @foreach (var task in ViewBag.tasks)
+                                {
+                                    <tr>
+                                        <td> @task.Service </td>
+                                        <td> Principal Examiner 1 </td>
+                                        <td> @task.Status </td>
+                                        <td> @task.ExpDateofComp </td>
+                                        <td> @task.NoOfRecords </td>
+                                        @if (task.Service == "Name Search")
+                                        {
+                                            <td>
+                                                <div class="btn-group">
+                                                    <a href="/Products/GetNameSearchesByUserByTaskID?TaskId=@task._id" style="color:#0C2A46;text-decoration:underline">View More</a>
+                                                </div>
+                                            </td>
+                                        }
+                                        else if (task.Service == "Private Company Registration")
+                                        {
+                                            <td>
+                                                <div class="btn-group">
+                                                    <a href="/Products/GetCompantTask?TaskId=@task._id" style="color:#0C2A46;text-decoration:underline">View More</a>
+                                                </div>
+                                            </td>
+                                        }
+                                    </tr>
+                                }
+                            }
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+                                }
+        else if (ViewBag.Display == "CompanyApplications")
+        {
+            <div class="card-body">
+                <div class="table-responsive mt-3 mb-3">
+                    <table class="table  table-mb table-hover">
+                        <thead mt-5 mb-5>
+                            <tr>
+                                <th style="color:#0C2A46">Application Ref</th>
+                                <th style="color:#0C2A46">Search Ref</th>
+                                <th style="color:#0C2A46">Date submitted</th>
+                                <th style="color:#0C2A46">Name</th>
+                                <th style="color:#0C2A46">Type</th>
+                                <th style="color:#0C2A46">Payment</th>
+                                <th style="color:#0C2A46">Action</th>
+                            </tr>
+                        </thead>
+
+                        <tbody>
+                            @if (ViewBag.CompanyApplications != null)
+                            {
+                                @foreach (var application in ViewBag.CompanyApplications)
+                                {
+                                    <tr>
+                                        <td> @application.companyInfo.Application_Ref</td>
+                                        <td> @application.companyInfo.Search_Ref</td>
+                                        <td> @application.companyInfo.Date_Of_Application </td>
+                                        <td> @application.companyInfo.Name </td>
+                                        <td> @application.companyInfo.Type </td>
+                                        <td> @application.companyInfo.Payment </td>
+                                        <td>
+                                            <div class="btn-group">
+                                                <a href="/Products/Detail?reference=@application.companyInfo.Search_Ref" style="color:#0C2A46;text-decoration:underline">Examine</a>
+                                            </div>
+                                        </td>
+                                    </tr>
+                                }
+                            }
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+
+        }
+
+        @*<div class="card-footer">
+
+        </div>*@
+    </div>
+
+    @*Completed tasks*@
+    <div class="card">
+        <div class="card-header">
+            <h4>Completed Tasks</h4>
+        </div>
+        <div class="card-body">
+
+            <div class="table-responsive mb-5">
+                <table class="table  table-mb table-hover">
+                    <thead mt-5 mb-5>
+                        <tr>
+                            <th style="color:#0C2A46">Service</th>
+                            <th style="color:#0C2A46">AssignedBy</th>
+                            <th style="color:#0C2A46">Status</th>
+                            <th style="color:#0C2A46">Deadline</th>
+                            <th style="color:#0C2A46">Number of records</th>
+                            <th style="color:#0C2A46">Action</th>
+                        </tr>
+                    </thead>
+
+                    <tbody>
+                        @if (ViewBag.tasks != null)
+                        {
+                            @foreach (var task in ViewBag.Completedtasks)
+                            {
+                                <tr>
+                                    <td> @task.Service </td>
+                                    <td> Principal Examiner 1 </td>
+                                    <td> @task.Status </td>
+                                    <td> @task.ExpDateofComp </td>
+                                    <td> @task.NoOfRecords </td>
+                                    <td>View More</td>
+
+                                </tr>
+                            }
+                        }
+                    </tbody>
+                </table>
+            </div>
+        </div>
+        @*<div class="card-footer">
+
+        </div>*@
+    </div>
+</div>

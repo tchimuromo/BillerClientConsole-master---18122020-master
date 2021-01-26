@@ -1,0 +1,57 @@
+﻿@{
+    Layout = "_LayoutMain";
+}
+
+<style>
+    label {
+        color: rebeccapurple;
+        font-weight: 400;
+    }
+</style>
+
+
+<div class="row container">
+    <div class="col-md-12" style="display:flex;justify-content:center;align-content:center;width:90%;">
+
+        <form action="/Company/CompanyMembers" method="get" style="width:40%;">
+
+            <div class="col-md-12 mt-3 mb-5">
+                <div class="container-fluid">
+                    <label>Authorised capital details</label>
+                </div>
+            </div>
+
+            <div class="form-group">
+                <label >Total shares authorised (Ordinary)</label>
+                <input type="text" class="form-control" name="ordAuth">
+            </div>
+            
+            <div class="form-group">
+                <label>Norminal share value (Ordinary)</label>
+                <input type="text" class="form-control" name="ordNorm">
+            </div>
+
+            <div class="form-group">
+                <label>Total shares (Preference)</label>
+                <input type="text" class="form-control" name="prefTotal">
+            </div>
+
+            <div class="form-group">
+                <label>Nominal share value (Preference)</label>
+                <input type="text" class="form-control" name="prefShareValue">
+            </div>
+
+            <div class="form-group">
+                <label>Authorised capital</label>
+                <input type="text" class="form-control" name="AuthorisedCap">
+            </div>
+
+            <div class="form-group fa-pull-right">
+                <button type="submit" class="btn btn-primary">
+                    Continue
+                </button>
+            </div>
+
+        </form>
+    </div>
+</div>

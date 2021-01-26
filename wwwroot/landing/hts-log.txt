@@ -1,0 +1,35 @@
+HTTrack3.49-2+htsswf+htsjava launched on Sun, 28 Jun 2020 13:59:09 at http://themepixels.me/bracketplus/app-simple-white/chart-chartjs.html +*.png +*.gif +*.jpg +*.jpeg +*.css +*.js -ad.doubleclick.net/* -mime:application/foobar
+(winhttrack -qwC2%Ps2u1%s%uN0%I0p3DaK0H0%kf2A25000%f#f -F "Mozilla/4.5 (compatible; HTTrack 3.0x; Windows 98)" -%F "<!-- Mirrored from %s%s by HTTrack Website Copier/3.x [XR&CO'2014], %s -->" -%l "en, *" http://themepixels.me/bracketplus/app-simple-white/chart-chartjs.html -O1 "C:\My Web Sites\chartsdash" +*.png +*.gif +*.jpg +*.jpeg +*.css +*.js -ad.doubleclick.net/* -mime:application/foobar )
+
+Information, Warnings and Errors reported for this mirror:
+note:	the hts-log.txt file, and hts-cache folder, may contain sensitive information,
+	such as username/password authentication for websites mirrored in this project
+	do not share these files/folders if you want these information to remain private
+
+14:08:26	Warning: 	Retry after error -4 (Incorrect length (240015 Bytes, 520714 expected)) at link themepixels.me/bracketplus/lib/jquery-ui/jquery-ui.js (from themepixels.me/bracketplus/app-simple-white/chart-chartjs.html)
+14:08:26	Warning: 	Retry after error -4 (Incorrect length (478428 Bytes, 788304 expected)) at link themepixels.me/bracketplus/lib/highlightjs/highlight.pack.js (from themepixels.me/bracketplus/app-simple-white/chart-chartjs.html)
+14:08:29	Warning: 	Retry after error -4 (Incorrect length (233365 Bytes, 398184 expected)) at link themepixels.me/bracketplus/lib/chart.js/Chart.js (from themepixels.me/bracketplus/app-simple-white/chart-chartjs.html)
+14:08:36	Warning: 	Retry after error -4 (Incorrect length (231245 Bytes, 337945 expected)) at link themepixels.me/bracketplus/lib/d3/d3.js (from themepixels.me/bracketplus/app-simple-white/index.html)
+14:08:54	Warning: 	Retry after error -4 (Incorrect length (392280 Bytes, 647276 expected)) at link themepixels.me/bracketplus/lib/echarts/echarts.min.js (from themepixels.me/bracketplus/app-simple-white/index.html)
+14:08:56	Warning: 	Retry after error -4 (Incorrect length (228803 Bytes, 402742 expected)) at link themepixels.me/bracketplus/img/img28.jpg (from themepixels.me/bracketplus/app-simple-white/card-social.html)
+14:09:03	Warning: 	Retry after error -4 (Incorrect length (516308 Bytes, 806366 expected)) at link themepixels.me/bracketplus/img/img36.jpg (from themepixels.me/bracketplus/app-simple-white/card-social.html)
+14:09:11	Warning: 	Retry after error -4 (Incorrect length (234290 Bytes, 499427 expected)) at link themepixels.me/bracketplus/img/img45.jpg (from themepixels.me/bracketplus/app-simple-white/card-listing.html)
+14:09:25	Warning: 	Retry after error -4 (Incorrect length (227176 Bytes, 444998 expected)) at link themepixels.me/bracketplus/img/img46.jpg (from themepixels.me/bracketplus/app-simple-white/card-listing.html)
+14:09:35	Warning: 	Retry after error -4 (Incorrect length (227647 Bytes, 347531 expected)) at link themepixels.me/bracketplus/img/img47.jpg (from themepixels.me/bracketplus/app-simple-white/card-listing.html)
+14:09:51	Warning: 	Retry after error -4 (No data (connection closed)) at link themepixels.me/bracketplus/lib/chartist/chartist.css (from themepixels.me/bracketplus/app-simple-white/chart-chartist.html)
+14:09:52	Warning: 	Retry after error -4 (No data (connection closed)) at link themepixels.me/bracketplus/js/chart.chartist.js (from themepixels.me/bracketplus/app-simple-white/chart-chartist.html)
+14:09:54	Warning: 	Retry after error -4 (Incorrect length (231348 Bytes, 372915 expected)) at link themepixels.me/bracketplus/lib/codemirror/codemirror.js (from themepixels.me/bracketplus/app-simple-white/form-editor-code.html)
+14:10:01	Warning: 	Retry after error -4 (Incorrect length (251847 Bytes, 445793 expected)) at link themepixels.me/bracketplus/lib/datatables/jquery.dataTables.js (from themepixels.me/bracketplus/app-simple-white/table-datatable.html)
+14:10:03	Error: 	"Not Found" (404) at link https://api.tiles.mapbox.com/v4/{id}/{z}/{x}/{y}.png?access_token=pk.eyJ1IjoibWFwYm94IiwiYSI6ImNpejY4NXVycTA2emYycXBndHRqcmZ3N3gifQ.rJcFIG214AriISLbB6B5aw (from themepixels.me/bracketplus/app-simple-white/map-leaflet.html)
+14:10:22	Warning: 	Retry after error -4 (Incorrect length (250566 Bytes, 399173 expected)) at link themepixels.me/bracketplus/img/screen3.png (from themepixels.me/bracketplus/app-simple-white/pages.html)
+14:10:31	Warning: 	Retry after error -4 (Incorrect length (708737 Bytes, 788304 expected)) at link themepixels.me/bracketplus/lib/highlightjs/highlight.pack.js (from themepixels.me/bracketplus/app-simple-white/chart-chartjs.html)
+14:10:39	Error: 	"Not Found" (404) at link themepixels.me/bracketplus/lib/Jcrop/Jcrop.gif (from themepixels.me/bracketplus/lib/Jcrop/Jcrop.css)
+14:10:39	Error: 	"Not Found" (404) at link themepixels.me/bracketplus/lib/images/sort_both.png (from themepixels.me/bracketplus/lib/datatables/jquery.dataTables.css)
+14:10:39	Error: 	"Not Found" (404) at link themepixels.me/bracketplus/lib/images/sort_asc.png (from themepixels.me/bracketplus/lib/datatables/jquery.dataTables.css)
+14:10:39	Error: 	"Not Found" (404) at link themepixels.me/bracketplus/lib/images/sort_desc.png (from themepixels.me/bracketplus/lib/datatables/jquery.dataTables.css)
+14:10:39	Error: 	"Not Found" (404) at link themepixels.me/bracketplus/lib/images/sort_asc_disabled.png (from themepixels.me/bracketplus/lib/datatables/jquery.dataTables.css)
+14:10:39	Error: 	"Not Found" (404) at link themepixels.me/bracketplus/lib/images/sort_desc_disabled.png (from themepixels.me/bracketplus/lib/datatables/jquery.dataTables.css)
+14:10:39	Warning: 	Retry after error -4 (Incorrect length (211180 Bytes, 471346 expected)) at link themepixels.me/bracketplus/img/img53.jpg (from themepixels.me/bracketplus/app-simple-white/page-profile.html)
+
+HTTrack Website Copier/3.49-2 mirror complete in 11 minutes 50 seconds : 278 links scanned, 253 files written (21307263 bytes overall) [18136841 bytes received at 25544 bytes/sec], 4061838 bytes transferred using HTTP compression in 82 files, ratio 19%, 2.2 requests per connection
+(7 errors, 17 warnings, 0 messages)

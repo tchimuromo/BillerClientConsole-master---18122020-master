@@ -1,0 +1,116 @@
+﻿@using BillerClientConsole.Models;
+@using X.PagedList.Mvc;
+@using X.PagedList;
+@using X.PagedList.Mvc.Core;
+
+@addTagHelper *, Microsoft.AspNetCore.Mvc.TagHelpers
+@addTagHelper *, X.PagedList.Mvc
+@addTagHelper *, X.PagedList
+
+
+
+<style>
+    @*style the drop down select entries - datatables*@
+    .custom-select
+    {
+        height:30px!important;
+        width:50px!important;
+        margin-left:5px!important;
+    }
+    @*style the copy buttons- datatables*@
+    .dt-buttons
+    {
+        margin-left:4px!important;
+    }
+</style>
+
+<form method="get" action="/Reports/ListTransactionHistory">
+    <input type="hidden" name="pageNumber" value="@ViewBag.pageNumber" />
+    <table>
+        <tr>
+            <td>From: </td>
+            <td><input type="text" class="form-control" name="date_from" id="date_from" style="padding-left:10px;" value="@ViewBag.date_from"></td>
+            <td>To: </td>
+            <td><input type="text" class="form-control" name="date_to" id="date_to" style="padding-left:10px;" value="@ViewBag.date_to"></td>
+            <td>
+                <button type="submit" class="btn btn-primary btn-sm">Filter</button>
+            </td>
+        </tr>
+    </table>
+</form>
+
+
+<div class="table-responsive">
+    <table class="table tblsm table-striped" id="datatable">
+        <thead>
+            <tr>
+                <th>TransactionNumber</th>
+                <th>PayerName</th>
+                <th>PayerPhoneNumber</th>
+                <th>PayerAccount</th>
+                <th>AmountPaid</th>
+                <th>Posted</th>
+                <th>BillerCode</th>
+                <th>BillerProductID</th>
+                <th>BillerProductQuantity</th>
+                <th>TransactionDate</th>
+                <th>TrackingId</th>
+                <th>PaidToBiller</th>
+                <th>Notes</th>
+                <th>OrderID</th>
+                <th>ReversedByBiller</th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var item in ViewBag.transactions)
+            {
+                <tr>
+                    <td title="@item.TransactionNumber">@item.TransactionNumber</td>
+                    <td title="@item.PayerName">@item.PayerName</td>
+                    <td title="@item.PayerPhoneNumber">@item.PayerPhoneNumber</td>
+                    <td title="@item.PayerAccount">@item.PayerAccount</td>
+                    <td title="@item.AmountPaid">@item.AmountPaid</td>
+                    <td title="@item.Posted">@item.Posted</td>
+                    <td title="@item.BillerCode">@item.BillerCode</td>
+                    <td title="@item.BillerProductID">@item.BillerProductID</td>
+                    <td title="@item.BillerProductQuantity">@item.BillerProductQuantity</td>
+                    <td title="@item.TransactionDate">@item.TransactionDate</td>
+                    <td title="@item.TrackingId">@item.TrackingId</td>
+                    <td title="@item.PaidToBiller">@item.PaidToBiller</td>
+                    <td title="@item.Notes">@item.Notes</td>
+                    <td title="@item.OrderID">@item.OrderID</td>
+                    <td title="@item.ReversedByBiller">@item.ReversedByBiller</td>
+                </tr>
+            }
+        </tbody>
+    </table>
+</div>
+
+
+
+<script>
+    $("#date_from").Zebra_DatePicker({
+        format: 'Y-m-d',
+        icon_position: 'left'
+    });
+
+    $("#date_to").Zebra_DatePicker({
+        format: 'Y-m-d',
+        icon_position: 'left'
+    });
+
+    $('#datatable').DataTable({
+        select: true,
+        //responsive: true,
+        dom: 'lBfrtip',
+        buttons: [
+            'copyHtml5',
+            'excelHtml5',
+            'csvHtml5',
+            'pdfHtml5'
+        ]
+    });
+
+
+</script>
+

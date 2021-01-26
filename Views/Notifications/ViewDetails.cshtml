@@ -1,0 +1,29 @@
+﻿@{
+    Layout = "/Views/Shared/_LayoutMain.cshtml";
+}
+
+    <div class="container">
+        <div class="row">
+            <div class="col-md-4">
+                Date: @(DateTime.Parse(ViewBag.notification.date.ToString()).ToString("yyyy-MM-dd"))
+        </div>
+    </div>
+    <br />
+
+    <hr />
+    <br />
+
+    <div class="row">
+        <div class="col-md-12">
+            @ViewBag.notification.message
+        </div>
+        <br />
+    </div>
+    <br />
+    <div class="row">
+        <div class="col-md-12">
+            <a href="/Notifications/Delete/@ViewBag.notification.id/-1/-1/AllNotifications" class="badge badge-danger">Delete</a>
+        </div>
+    </div>
+
+    </div>

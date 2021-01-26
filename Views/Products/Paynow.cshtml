@@ -1,0 +1,49 @@
+﻿@{
+    Layout = "_LayoutMain";
+}
+
+<style>
+    label {
+        color: rebeccapurple;
+        font-weight: 400;
+    }
+</style>
+
+
+<div class="container-fluid" style="color:#0C2A46">
+
+    <div style="width:100%">
+
+        @if (ViewBag.Paid == "false")
+        {
+            <p mt-3 mb-5 style="margin-left:auto; margin-right:auto">You need to make a payment of $ 1 for your application to be processed</p>
+            <a href="@ViewBag.PaynowLink" style="margin-left:auto; margin-right:auto" class="btn btn-info">
+                Make payment
+            </a>
+        }
+        else
+        {
+            <p mt-3 mb-5 style="margin-left:auto; margin-right:auto">You have successfully made your payment of $ @ViewBag.Amount. Reference number for your application is @ViewBag.RefNumber </p>
+            <a href="/Home/Dashboard" style="margin-left:auto; margin-right:auto" class="btn btn-info">
+                Continue
+            </a>
+        }
+
+
+
+    </div>
+</div>
+@*
+
+    <div class="container">
+            <div class="col-md-12" style="display:flex;justify-content:center;align-content:center;width:90%;">
+
+                <div class="col-md-6" style="width:30%;">
+
+                </div>
+
+            </div>
+        </div>
+    *@
+
+

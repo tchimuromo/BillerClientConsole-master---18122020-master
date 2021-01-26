@@ -1,0 +1,53 @@
+﻿@addTagHelper *, Microsoft.AspNetCore.Mvc.TagHelpers
+@addTagHelper *, PagedList.Core.Mvc
+
+@using Microsoft.AspNetCore.Identity
+@using BillerClientConsole
+@namespace BillerClientConsole
+
+@{
+    Layout = "../Shared/_LayoutMain";
+}
+<div class="container" id="data">
+
+    @*placeholder loader*@
+    <div style="display:flex;align-content:center;align-items:center; justify-content:center;height:50vh;">
+        <img src="~/assets/img/_loading.gif" height="100" width="100" />
+        <br />
+        <h2 id="no_data" style="visibility:hidden;">No data</h2>
+    </div>
+
+
+</div>
+
+
+@*load data into the data div , via ajax*@
+<script>
+    $.ajax({
+        type:"GET",
+        url: "@TempData["loadUrl"]",
+        data: {
+            billercode: "@TempData["billercode"]",
+            pageNumber: "@TempData["pageNumber"]",
+            date_from: "@TempData["date_from"]",
+            date_to: "@TempData["date_to"]",
+            open: "@TempData["open"]",
+            closed: "@TempData["closed"]",
+        },
+        success: function (data) {
+             $("#_loader").hide(1000);
+            if (data.length == 0) {
+                $("#no_data").css("visibility", "visible");
+            } else {
+                $("#data").html(data);
+            }
+        },
+        error: function () {
+            $("#_loader").hide(1000);
+            alert("error");
+        },
+        completed: function () {
+            $("#_loader").hide(1000);
+        }
+    });
+</script>

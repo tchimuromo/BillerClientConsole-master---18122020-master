@@ -1,0 +1,60 @@
+﻿@using BillerClientConsole.Models;
+@using X.PagedList.Mvc;
+@using X.PagedList;
+@using X.PagedList.Mvc.Core;
+
+@addTagHelper *, Microsoft.AspNetCore.Mvc.TagHelpers
+@addTagHelper *, X.PagedList.Mvc
+@addTagHelper *, X.PagedList
+
+@{
+    var feedback = (IPagedList)ViewBag.pfeedback;
+}
+
+@Html.PagedListPager(feedback, page => Url.Action("FeedBack", "Reports", new { pageNumber = page }))
+
+<div class="table-responsive">
+    <table class="table tblsm table-striped">
+        <thead>
+            <tr>
+                <th>
+                    <div class="custom-control custom-checkbox">
+                        <input type="checkbox" class="custom-control-input" id="chk_all" checked="">
+                        <label class="custom-control-label" for="chk_all"></label>
+                    </div>
+                </th>
+                <th>Customer</th>
+                <th>Phone</th>
+                <th>Feedback</th>
+                <th>Action</th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var item in ViewBag.pfeedback)
+            {
+                <tr>
+                    <td>
+                        <div class="custom-control custom-checkbox">
+                            <input type="checkbox" class="custom-control-input" id="@item.id" checked="">
+                            <label class="custom-control-label" for="@item.id"></label>
+                        </div>
+                    </td>
+                    <td title="@item.id">@item.id</td>
+                    <td title="@item.customername">@item.customername</td>
+                    <td title="@item.customerphone">@item.customerphone</td>
+                    <td title="@item.feedback">@item.feedback</td>
+                    <td>
+                        <a href="#" class="badge badge-success">open</a> |
+                        <a href="#" class="badge badge-danger">mark-as-read</a> |
+                        <a href="#" class="badge badge-info">delete</a>
+                    </td>
+                </tr>
+            }
+        </tbody>
+    </table>
+</div>
+
+@Html.PagedListPager(feedback, page => Url.Action("FeedBack", "Reports", new { pageNumber = page }))
+
+
+

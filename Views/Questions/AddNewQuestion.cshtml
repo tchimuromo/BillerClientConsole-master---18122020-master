@@ -1,0 +1,44 @@
+﻿@{
+    Layout = "_LayoutMain";
+}
+
+<style>
+    label {
+        color: rebeccapurple;
+        font-weight: 400;
+    }
+</style>
+
+        
+<div class="row container">
+    <div class="col-md-12" style="display:flex;justify-content:center;align-content:center;width:90%;">
+
+        <form action="/Questions/AddNewQuestion" method="post" style="width:40%;">
+            <input type="hidden" name="billercode" value="@ViewBag.billercode" />
+
+            <div class="form-group">
+                <label><span style="color:red;">*</span>Question</label>
+                <textarea class="form-control"  name="question" required placeholder="Enter question..."></textarea>
+            </div>
+
+
+            <div class="form-group">
+                <label><span style="color:red;">*</span>Status</label>
+               <select name="status" class="form-control">
+                   <option value="true">Active</option>
+                   <option value="false">Disabled</option>
+               </select>
+            </div>
+
+
+           
+            <div class="form-group">
+                <button type="submit" class="btn btn-primary">
+                    SAVE
+                </button>
+            </div>
+
+        </form>
+    </div>
+
+</div>

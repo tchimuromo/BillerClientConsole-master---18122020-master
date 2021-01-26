@@ -1,0 +1,131 @@
+﻿@{
+    Layout = "../Shared/_LayoutMain";
+}
+
+
+
+<script>
+    $("#f1").validate();
+</script>
+
+<!-- LARGE MODAL -->
+<div >
+    <div class="modal-dialog modal-lg" role="document">
+        <div class="modal-content tx-size-sm">
+            <div class="modal-header pd-x-20">
+                <h6 class="tx-14 mg-b-0 tx-uppercase tx-inverse tx-bold">Internal Sign up</h6>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body pd-20">
+                <form action="/Authinternal/Register" method="post">
+                    <div class="form-layout form-layout-1">
+                        <div class="row mg-b-25">
+                            <div class="col-lg-6">
+                                <div class="form-group">
+                                    <label class="form-control-label">Firstname: <span class="tx-danger">*</span></label>
+                                    <input class="form-control" type="text" name="firstname" placeholder="Firstname">
+                                </div>
+                            </div><!-- col-4 -->
+                            <div class="col-lg-6">
+                                <div class="form-group">
+                                    <label class="form-control-label">Lastname: <span class="tx-danger">*</span></label>
+                                    <input class="form-control" type="text" name="lastname" placeholder="Lastname">
+
+                                </div>
+                            </div><!-- col-4 -->
+                            <div class="col-lg-4">
+                                <div class="form-group">
+                                    <label class="form-control-label">National ID/ Passport Number: <span class="tx-danger">*</span></label>
+                                    <input class="form-control" type="text" name="natid" placeholder="National ID / Passport Number">
+                                </div>
+                            </div><!-- col-4 -->
+                            <div class="col-lg-8">
+                                <div class="form-group mg-b-10-force">
+                                    <label class="form-control-label">Email Address: <span class="tx-danger">*</span></label>
+                                    <input class="form-control" type="email" name="email" placeholder="Email">
+                                </div>
+                            </div><!-- col-8 -->
+
+
+                            <div class="col-lg-6">
+                                <div class="form-group mg-b-10-force">
+                                    <label class="form-control-label">Role: <span class="tx-danger">*</span></label>
+                                    <select class="form-control select2" name="role" data-placeholder="Choose Role">
+                                        <option label="Choose Role"></option>
+                                        <option value="1">Principal Examiner</option>
+                                        <option value="2">Examiner</option>
+                                        <option value="3">Client</option>
+                                        
+                                    </select>
+                                </div>
+                            </div><!-- col-4 -->
+                            <div class="col-lg-6">
+                            </div>
+
+
+                            <div class="col-lg-12">
+                                <div class="form-group mg-b-10-force">
+                                    <label class="form-control-label">Residential Address: <span class="tx-danger">*</span></label>
+                                    <input class="form-control" type="text" name="address" placeholder="Residential address">
+                                </div>
+                            </div><!-- col-8 -->
+
+                            <div class="col-lg-6">
+                                <div class="form-group mg-b-10-force">
+                                    <label class="form-control-label">City: <span class="tx-danger">*</span></label>
+                                    <input class="form-control" type="text" name="city" placeholder="City">
+                                </div>
+                            </div><!-- col-8 -->
+
+                            <div class="col-lg-6">
+                                <div class="form-group mg-b-10-force">
+                                    <label class="form-control-label">Country: <span class="tx-danger">*</span></label>
+                                    <select class="form-control select2" name="country" data-placeholder="Choose country">
+                                        <option label="Choose country"></option>
+                                        <option value="USA">United States of America</option>
+                                        <option value="UK">United Kingdom</option>
+                                        <option value="China">China</option>
+                                        <option value="Japan">Japan</option>
+                                    </select>
+                                </div>
+                            </div><!-- col-4 -->
+
+                            <div class="col-lg-6">
+                                <div class="form-group mg-b-10-force">
+                                    <label class="form-control-label">Password: <span class="tx-danger">*</span></label>
+                                    <input class="form-control" type="text" name="password" placeholder="City">
+                                </div>
+                            </div><!-- col-8 -->
+
+                            <div class="col-lg-6">
+                                <div class="form-group mg-b-10-force">
+                                    <label class="form-control-label">Confirm password: <span class="tx-danger">*</span></label>
+                                    <input class="form-control" type="text" name="passwordb" placeholder="City">
+                                </div>
+                            </div><!-- col-8 -->
+
+                        </div><!-- row -->
+                            <div class="form-layout-footer">
+                                <button class="btn btn-info tx-size-xs">Submit Form</button>
+                                <button class="btn btn-secondary tx-size-xs">Cancel</button>
+                            </div>
+
+
+
+                        </div><!-- form-layout -->
+
+                </form>
+
+
+
+
+
+
+
+            </div><!-- modal-body -->
+
+        </div>
+    </div><!-- modal-dialog -->
+</div><!-- modal -->

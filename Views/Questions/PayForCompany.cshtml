@@ -1,0 +1,44 @@
+﻿@{
+    Layout = "_LayoutMain";
+}
+
+
+
+<style>
+    label {
+        color: rebeccapurple;
+        font-weight: 400;
+    }
+</style>
+
+
+<div class="container-fluid" style="color:#0C2A46">
+
+    <div style="width:100%">
+        @if (ViewBag.paid == 0)
+        {
+            <p mt-3 mb-5 style="margin-left:auto; margin-right:auto">Before we begin you must first make an application of $800 to proceed</p>
+            <a href="@ViewBag.link">
+                <button class="btn btn-info" >
+                    MAke payment
+                </button>
+            </a>
+        }
+        else
+        {
+            <p mt-3 mb-5 style="margin-left:auto; margin-right:auto">Your payment was processed successfully</p>
+            <a href="/Company/CompanyApplication">
+                <button class="btn btn-info">
+                    Proceed
+                </button>
+            </a>
+        }
+    </div>
+    <script>
+
+        function submitApplication() {
+            alert("Your application has been submitted");
+            window.location.href = "/Home/Dashboard";
+        }
+    </script>
+</div>

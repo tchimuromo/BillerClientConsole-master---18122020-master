@@ -1,0 +1,430 @@
+﻿<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+
+    <title>@ViewBag.title - Company Registrations</title>
+
+    @*bs from bootswatch*@
+    <link href="~/assets/css/bootstrap.min.css" rel="stylesheet" />
+    @*<link rel="stylesheet" href="https://cdn.syncfusion.com/ej2/18.1.42/bootstrap.css" />
+
+        <script src="https://cdn.syncfusion.com/ej2/18.1.42/dist/ej2.min.js"></script>*@
+
+
+    @*@*main_style*@
+    <link href="~/assets/css/main_style.css?v=@DateTime.Now.Second" rel="stylesheet" />
+    @*cust_style*@
+    <link href="~/assets/css/cust_style.css" rel="stylesheet" />
+
+    @*jq*@
+    <script src="~/assets/js/jquery-3.4.1.min.js"></script>
+
+
+
+    @*busy load full*@
+    <link defer href="~/libs/busyloadfull/busy_load.min.css" rel="stylesheet" />
+    <script defer src="~/libs/busyloadfull/busy_load.min.js"></script>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.1/css/all.min.css" rel="stylesheet"/>
+
+    @* Scrollbar Custom CSS *@
+    <link defer href="~/assets/css/jquery.mCustomScrollbar.min.css" rel="stylesheet" />
+
+    @* Font Awesome JS *@
+    <script defer src="~/assets/js/solid.js"></script>
+    <script defer src="~/assets/js/fontawesome.js"></script>
+
+
+    @*popper*@
+    <script defer src="~/assets/js/popper.min.js"></script>
+    @*bs js*@
+    <script defer src="~/assets/js/bootstrap.min.js"></script>
+    @*scollbar*@
+    <script defer src="~/assets/js/jquery.mCustomScrollbar.concat.min.js"></script>
+
+    @*validate*@
+    <script defer src="~/assets/js/jquery.validate.min.js"></script>
+
+    @*fa*@
+    <link defer href="~/libs/font_awesome/css/all.css" rel="stylesheet" />
+    <link defer href="~/libs/font_awesome/css/brands.css" rel="stylesheet" />
+    <link defer href="~/libs/font_awesome/css/fontawesome.css" rel="stylesheet" />
+    <link defer href="~/libs/font_awesome/css/regular.css" rel="stylesheet" />
+    <link defer href="~/libs/font_awesome/css/solid.css" rel="stylesheet" />
+    <link defer href="~/libs/font_awesome/css/svg-with-js.css" rel="stylesheet" />
+    <link defer href="~/libs/font_awesome/css/v4-shims.css" rel="stylesheet" />
+
+    @*pagination*@
+    <link defer href="~/assets/css/pagination.css" rel="stylesheet" />
+
+    @*zebra datetime*@
+
+    @* Step wizard *@
+    <link href="~/assets/css/step-wizard/smart_wizard_all.css" rel="stylesheet" type="text/css" />
+    <link href="~/assets/css/step-wizard/smart_wizard_arrow.css" rel="stylesheet" type="text/css" />
+
+    @*data tables*@
+    <link defer href="~/libs/data_tables/datatables.min.css" rel="stylesheet" />
+    <script src="~/libs/data_tables/datatables.min.js"></script>
+
+
+    @*validate*@
+    <script src="~/assets/js/jquery.validate.min.js"></script>
+
+    <link rel="stylesheet" href="~/assets/css/bs-stepper.css">
+
+    @*font*@
+    <link href="https://fonts.googleapis.com/css2?family=Source+Sans+Pro:ital,wght@0,200;0,300;0,400;0,600;0,700;0,900;1,200;1,300;1,400;1,600;1,700;1,900&display=swap" rel="stylesheet">
+
+    @*font*@
+    <link href="https://fonts.googleapis.com/css2?family=Ubuntu+Condensed&display=swap" rel="stylesheet">
+
+    @*font*@
+    <link href="https://fonts.googleapis.com/css2?family=Ubuntu:ital,wght@0,300;0,400;0,500;0,700;1,300;1,400;1,500;1,700&display=swap" rel="stylesheet">
+    @{
+
+        var db = new BillerClientConsole.Models.dbContext();
+        var user = db.AspNetUsers.Where(i => i.Email == User.Identity.Name).FirstOrDefault();
+        db.Dispose();
+        string num_notifications = "0";
+        ViewBag.Role = user.Role;
+        //num_notifications = BillerClientConsole._Globals.Globals.Globals.count_un_read_notifications(user.BillerCode).Result
+        ViewBag.num_notifications = num_notifications;
+    }
+
+    <!--Snycfusion-->
+    @*<link href="~/content/ejthemes/bootstrap-theme/ej.web.all.min.css" rel="stylesheet" />
+        <link href="~/content/ejthemes/responsive-css/ej.responsive.css" rel="stylesheet" />
+        <link href="~/content/ejthemes/responsive-css/ejgrid.responsive.css" rel="stylesheet" />*@
+
+    <link href="~/assets/css/bootstrap.min.css" rel="stylesheet" />
+    <link rel="stylesheet" href="https://cdn.syncfusion.com/ej2/18.1.42/material.css" />
+
+    <script src="https://cdn.syncfusion.com/ej2/18.1.42/dist/ej2.min.js"></script>
+    <link href="~/styles/Grid/style.css" rel="stylesheet" />
+</head>
+<body style="background-color:#F1F1F1; font-family: 'Ubuntu Condensed', sans-serif; color:#0C2A46">
+
+    <nav class="navbar navbar-inverse navbar-expand-lg fixed-top" style="background-image: linear-gradient(to right, #5BC0DE,#13406A );">
+        <div class="container-fluid">
+            <!-- Brand and toggle get grouped for better mobile display -->
+            <img src="~/assets/img/1200px-Coat_of_arms_of_Zimbabwe.svg.png" style="height:55px;width:55px" class="mb-2 ml-5 ml-3" />
+            <div class="navbar-translate">
+                <a class="navbar-brand text-white" href="#0">eRegistrations Companies & Other Business Entities</a>
+                <button class="navbar-toggler" type="button" data-toggle="collapse" aria-expanded="false" aria-label="Toggle navigation">
+                    <span class="sr-only text-white">Toggle navigation</span>
+                    <span class="navbar-toggler-icon text-white"></span>
+                    <span class="navbar-toggler-icon text-white"></span>
+                    <span class="navbar-toggler-icon text-white"></span>
+                </button>
+            </div>
+            <!-- Collect the nav links, forms, and other content for toggling -->
+            <div class="collapse navbar-collapse">
+                <ul class="navbar-nav ml-auto">
+                    <li class="dropdown nav-item">
+                        <a href="javascript:;" class="profile-photo dropdown-toggle nav-link" data-toggle="dropdown">
+                            <div class="profile-photo-small">
+                                <img src="~/assets/img/businessman-flat-icon-business-and-person-vector-16051278.jpg" alt="Circle Image" class="rounded-circle img-fluid" style="height: 40px;width: 40px;">
+                            </div>
+                        </a>
+                        <div class="dropdown-menu dropdown-menu-right">
+                            @if (ViewBag.Role == 1)
+                            {
+                                <h6 class="dropdown-header">Principal examiner</h6>
+                            }
+                            else if (ViewBag.Role == 2)
+                            {
+                                <h6 class="dropdown-header">Examiner</h6>
+                            }
+                            else
+                            {
+                                <h6 class="dropdown-header">Client</h6>
+                            }
+
+                            @*<a href="javascript:;" class="dropdown-item ">Me</a>*@
+                            @*<a href="javascript:;" class="dropdown-item ">Settings and other stuff</a>*@
+                            <a href="/auth/logout" class="dropdown-item ">Sign out</a>
+                        </div>
+                    </li>
+                </ul>
+            </div><!-- /.navbar-collapse -->
+        </div><!-- /.container-->
+    </nav>
+
+
+
+
+
+
+    <!-- Page Content  -->
+    <div id="content" role="main">
+
+        @if (ViewBag.Role == 3)
+        {
+            <nav id="sidebar" style="height:100%">
+
+                <p class="user_info mb-5">
+                    <center>
+                        User.Identity.Name
+                        <br />
+
+                    </center>
+                </p>
+
+
+                <ul class="list-unstyled components">
+
+                    <li>
+
+
+
+                    <li class="@(ViewBag.title=="Dashboard"?"active":"")">
+                        <a href="/Home/Dashboard/" style="color:#0C2A46">Dashboard</a>
+                    </li>
+
+                    <li class="@(ViewBag.title.Contains("Account")?"active":"")">
+                        <a href="#Account"
+                           data-toggle="collapse"
+                           aria-expanded="false"
+                           class="dropdown-toggle" style="color:#0C2A46">Account</a>
+                        <ul class="collapse list-unstyled" id="Account">
+                            <li>
+                                <a href="/Account/ChangePassword" style="color:#0C2A46">Change Password</a>
+                            </li>
+                        </ul>
+                    </li>
+
+
+
+                    <li @(ViewBag.title.Contains("Search") ? "active" : "")>
+                        <a href="#searches"
+                           data-toggle="collapse"
+                           aria-expanded="false"
+                           class="dropdown-toggle" style="color:#0C2A46">Name Search</a>
+                        <ul class="collapse list-unstyled" id="searches">
+                            <li>
+                                <a href="/Payments/CreditStatus/Name search" style="color:#0C2A46">New Name Search</a>
+                            </li>
+                        </ul>
+                    </li>
+
+                    <li @(ViewBag.title.Contains("Companies") ? "active" : "")>
+                        <a href="#Company"
+                           data-toggle="collapse"
+                           aria-expanded="false"
+                           class="dropdown-toggle" style="color:#0C2A46">Companies</a>
+                        <ul class="collapse list-unstyled" id="Company">
+
+                            <li>
+                                <a href="/Payments/CreditStatus/Private Limited Entity" style="color:#0C2A46">Add  New Application</a>
+                            </li>
+                        </ul>
+                    </li>
+
+
+
+                    <li @(ViewBag.title.Contains("Report") ? "active" : "")>
+                        <a href="#Reports"
+                           data-toggle="collapse"
+                           aria-expanded="false"
+                           class="dropdown-toggle" style="color:#0C2A46">Payments</a>
+                        <ul class="collapse list-unstyled" id="Reports">
+                            <li>
+                                <a href="/Payments/PaymentHistory" style="color:#0C2A46">Payment</a> @*/Products/Detail?reference=100000042*@
+                            </li>
+
+                        </ul>
+                    </li>
+                </ul>
+
+
+            </nav>
+        }
+        else if (ViewBag.Role == 2)
+        {
+            <nav id="sidebar" style="height:100%">
+                <p class="user_info mb-5">
+                    <center>
+                        User.Identity.Name
+                        <br />
+
+                    </center>
+                </p>
+
+
+                <ul class="list-unstyled components">
+
+                    <li>
+
+
+
+                    <li class="@(ViewBag.title=="Dashboard"?"active":"")">
+                        <a href="/Home/ExaminerTasks" style="color:#0C2A46">Dashboard</a>
+                    </li>
+
+                    <li class="@(ViewBag.title.Contains("Account")?"active":"")">
+                        <a href="#Account"
+                           data-toggle="collapse"
+                           aria-expanded="false"
+                           class="dropdown-toggle" style="color:#0C2A46">Account</a>
+                        <ul class="collapse list-unstyled" id="Account">
+                            <li>
+                                <a href="/Account/ChangePassword" style="color:#0C2A46">Change Password</a>
+                            </li>
+                        </ul>
+                    </li>
+
+
+
+                    <li @(ViewBag.title.Contains("Tasks") ? "active" : "")>
+                        <a href="#searches"
+                           data-toggle="collapse"
+                           aria-expanded="false"
+                           class="dropdown-toggle" style="color:#0C2A46">My Tasks</a>
+                        <ul class="collapse list-unstyled" id="searches">
+                            <li>
+                                <a href="/Home/ExaminerTasks" style="color:#0C2A46">Pending Namesearches</a>
+                                <a href="/Home/ExaminerTasks?display=CompanyApplications">Pending Company applications</a>
+                            </li>
+                        </ul>
+                    </li>
+                </ul>
+
+
+            </nav>
+        }
+
+        else if (ViewBag.Role == 1)
+        {
+            <nav id="sidebar" style="height:100%">
+                <p class="user_info mb-5">
+                    <center>
+                        User.Identity.Name
+                        <br />
+
+                    </center>
+                </p>
+
+
+                <ul class="list-unstyled components">
+
+                    <li>
+
+
+
+                    <li class="@(ViewBag.title=="Dashboard"?"active":"")">
+                        <a href="/Home/PrincipalExaminer" style="color:#0C2A46">Dashboard</a>
+                    </li>
+
+                    <li class="@(ViewBag.title.Contains("Account")?"active":"")">
+                        <a href="#Account"
+                           data-toggle="collapse"
+                           aria-expanded="false"
+                           class="dropdown-toggle" style="color:#0C2A46">Account</a>
+                        <ul class="collapse list-unstyled" id="Account">
+                            <li>
+                                <a href="/Account/ChangePassword" style="color:#0C2A46">Change Password</a>
+                            </li>
+                        </ul>
+                    </li>
+                    <li class="@(ViewBag.title=="Dashboard"?"active":"")">
+                        <a href="/Authinternal/Register" style="color:#0C2A46">Users Management</a>
+                    </li>
+
+
+                    <li @(ViewBag.title.Contains("Applications") ? "active" : "")>
+                        <a href="#application"
+                           data-toggle="collapse"
+                           aria-expanded="false"
+                           class="dropdown-toggle" style="color:#0C2A46">Applications</a>
+                        <ul class="collapse list-unstyled" id="application">
+                            <li>
+                                <a href="/Products/PrincipalExaminer" style="color:#0C2A46">Unassigned Task</a>
+                            </li>
+                            <li>
+                                <a href="/Products/ListBillerProducts" style="color:#0C2A46">Assigned Task</a>
+                            </li>
+                        </ul>
+                    </li>
+
+                </ul>
+
+
+            </nav>
+        }
+
+
+
+
+        <div style="padding-top:100px">
+
+            @RenderBody()
+        </div>
+        <div class="modal" tabindex="-1" role="dialog" id="queryform-modal">
+            <div class="modal-dialog" role="document">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h5 class="modal-title">Modal title</h5>
+                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                            <span aria-hidden="true">&times;</span>
+                        </button>
+                    </div>
+                    <div class="modal-body">
+
+                    </div>
+
+                </div>
+            </div>
+        </div>
+    </div>
+
+
+    @*.wrapper*@
+
+
+    @*busyload*@
+    <script>
+        $(window).on('beforeunload', function () {
+            $.busyLoadFull("show");
+        });
+    </script>
+
+    @*scrollbar*@
+    <script type="text/javascript">
+        $(document).ready(function () {
+            $("#sidebar").mCustomScrollbar({
+                theme: "minimal"
+            });
+
+            $('.el_nav').on('click', function () {
+                $('#sidebar, #content').toggleClass('active');
+                $('.collapse.in').toggleClass('in');
+                $('a[aria-expanded=true]').attr('aria-expanded', 'false');
+            });
+        });
+    </script>
+
+
+    <ejs-scripts></ejs-scripts>
+
+    @*Include jQuery
+        <script src="https://code.jquery.com/jquery-3.5.0.min.js" integrity="sha256-xNzN2a4ltkB44Mc/Jz3pT4iU1cmeR0FkXs4pru/JxaQ=" crossorigin="anonymous"></script>
+
+         Include SmartWizard JavaScript source
+        <script type="text/javascript" src="./js/jquery.smartWizard.min.js"></script>*@
+
+
+    @*<script src="https://code.jquery.com/jquery-3.5.0.min.js" integrity="sha256-xNzN2a4ltkB44Mc/Jz3pT4iU1cmeR0FkXs4pru/JxaQ=" crossorigin="anonymous"></script>*@
+    <script type="text/javascript" src="~/assets/js/step-wizard/jquery.smartWizard.min.js"></script>
+
+
+    <script src="~/js/site.js" asp-append-version="true"></script>
+    @*<script src="~/scripts/jsrender.min.js"></script>
+        <script src="~/scripts/ej.web.all.min.js" type="text/javascript"></script>
+        <script src="~/scripts/properties.js" type="text/javascript"></script>
+        <script src="~/scripts/jquery.validate.min.js"></script>
+        <script src="~/scripts/jquery.validate.unobtrusive.min.js"></script>*@
+</body>
+</html>

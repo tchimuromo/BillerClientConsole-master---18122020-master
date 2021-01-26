@@ -1,0 +1,67 @@
+﻿@{
+    Layout = "_LayoutMain";
+}
+
+<style>
+    label {
+        color: rebeccapurple;
+        font-weight: 400;
+    }
+</style>
+
+        
+<div class="row container">
+    <div class="col-md-12" style="display:flex;justify-content:center;align-content:center;width:90%;">
+
+        <form action="/Products/UpdateProduct" method="post" style="width:40%;">
+            <input type="hidden" name="id" value="@ViewBag.product.id" />
+            <input type="hidden" name="billercode" value="@ViewBag.product.billercode" />
+
+            <div class="form-group">
+                <label>Product code</label>
+                <input type="text" class="form-control" value="@ViewBag.product.productcode" name="productcode" required>
+            </div>
+
+
+
+            <div class="form-group">
+                <label>Name</label>
+                <input type="text" class="form-control" value="@ViewBag.product.name" name="name" required>
+            </div>
+
+
+            <div class="form-group">
+                <label>Price</label>
+                <input type="number" step="any" class="form-control" value="@ViewBag.product.price" name="price" required>
+            </div>
+
+            <div class="form-group">
+                <label>Description</label>
+                <input type="text" class="form-control" value="@ViewBag.product.description" name="description" required>
+            </div>
+
+
+            <div class="form-group">
+                <label>Image Url</label>
+                <input type="text" class="form-control" value="@ViewBag.product.image_url" name="image_url">
+            </div>
+
+
+            <div class="form-group">
+                <label>Available</label>
+                <select class="form-control" name="available">
+                    <option value="true" selected="@(bool.Parse(ViewBag.product.available.ToString()))">Yes</option>
+                    <option value="false" selected="@(!bool.Parse(ViewBag.product.available.ToString()))">No</option>
+                </select>
+            </div>
+
+            <div class="form-group">
+                <button type="submit" class="btn btn-success">
+                    SAVE
+                </button>
+            </div>
+
+        </form>
+    </div>
+
+</div>

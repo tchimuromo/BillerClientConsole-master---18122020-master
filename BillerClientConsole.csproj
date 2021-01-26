@@ -1,0 +1,258 @@
+﻿<Project Sdk="Microsoft.NET.Sdk.Web">
+
+  <PropertyGroup>
+    <TargetFramework>netcoreapp2.2</TargetFramework>
+    <UserSecretsId>aspnet-BillerClientConsole-C67A2B20-3BEB-4B6F-8CBA-A56CD51174E8</UserSecretsId>
+    <AspNetCoreHostingModel>InProcess</AspNetCoreHostingModel>
+    <TypeScriptToolsVersion>3.0</TypeScriptToolsVersion>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <Compile Remove="Areas\**" />
+    <Compile Remove="NewFolder\**" />
+    <Compile Remove="wwwroot\libs\**" />
+    <Content Remove="Areas\**" />
+    <Content Remove="NewFolder\**" />
+    <Content Remove="wwwroot\libs\**" />
+    <EmbeddedResource Remove="Areas\**" />
+    <EmbeddedResource Remove="NewFolder\**" />
+    <EmbeddedResource Remove="wwwroot\libs\**" />
+    <EntityDeploy Remove="Areas\**" />
+    <EntityDeploy Remove="NewFolder\**" />
+    <EntityDeploy Remove="wwwroot\libs\**" />
+    <None Remove="Areas\**" />
+    <None Remove="NewFolder\**" />
+    <None Remove="wwwroot\libs\**" />
+    <TypeScriptCompile Remove="NewFolder\**" />
+    <TypeScriptCompile Remove="wwwroot\libs\**" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Content Remove="wwwroot\scripts\ej2.min.js" />
+    <Content Remove="wwwroot\scripts\ej2.min.js.map" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <TypeScriptCompile Remove="wwwroot\scripts\ej2.d.ts" />
+  </ItemGroup>
+
+
+  <ItemGroup>
+    <PackageReference Include="BarCode" Version="2020.4.0.1" />
+    <PackageReference Include="EntityFramework" Version="6.3.0" />
+    <PackageReference Include="IronPdf" Version="5.2.0.1" />
+    <PackageReference Include="Microsoft.AspNetCore" Version="2.2.0" />
+    <PackageReference Include="Microsoft.AspNetCore.App" />
+    <PackageReference Include="Microsoft.AspNetCore.Mvc" Version="2.2.0" />
+    <PackageReference Include="Microsoft.AspNetCore.Razor.Design" Version="2.2.0" PrivateAssets="All" />
+    <PackageReference Include="Microsoft.AspNetCore.StaticFiles" Version="2.2.0" />
+    <PackageReference Include="Microsoft.EntityFrameworkCore" Version="2.2.0" />
+    <PackageReference Include="Microsoft.EntityFrameworkCore.Design" Version="2.2.0" />
+    <PackageReference Include="Microsoft.EntityFrameworkCore.SqlServer" Version="2.2.0" />
+    <PackageReference Include="Microsoft.EntityFrameworkCore.SqlServer.Design" Version="1.1.6" />
+    <PackageReference Include="Microsoft.AspNetCore.App" />
+    <PackageReference Include="Microsoft.AspNetCore.Razor.Design" Version="2.2.0" PrivateAssets="All" />
+    <PackageReference Include="Microsoft.EntityFrameworkCore.Tools" Version="2.2.0">
+      <PrivateAssets>all</PrivateAssets>
+      <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
+    </PackageReference>
+    <PackageReference Include="Microsoft.Extensions.Logging.Debug" Version="2.2.0" />
+    <PackageReference Include="Microsoft.TypeScript.MSBuild" Version="3.9.5">
+      <PrivateAssets>all</PrivateAssets>
+      <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
+    </PackageReference>
+    <PackageReference Include="Microsoft.VisualStudio.Web.BrowserLink" Version="2.2.0" />
+    <PackageReference Include="Microsoft.VisualStudio.Web.CodeGeneration.Design" Version="2.2.4" />
+    <PackageReference Include="PasswordGenerator" Version="2.0.5" />
+    <PackageReference Include="Paynow" Version="1.0.3" />
+    <PackageReference Include="Syncfusion.EJ2.AspNet.Core" Version="18.1.0.42" />
+    <PackageReference Include="System.IO.Compression" Version="4.3.0" />
+    <PackageReference Include="X.PagedList.Mvc.Core" Version="7.9.1" />
+  </ItemGroup>
+
+
+  <ItemGroup>
+    <Folder Include="Views\CompanyPartial\" />
+    <Folder Include="Views\Company\" />
+    <Folder Include="Views\Documents\" />
+    <Folder Include="Views\PrincipalExaminer\" />
+  </ItemGroup>
+
+
+  <ItemGroup>
+    <None Include="wwwroot\assets\js\bootstrap.min.js" />
+    <None Include="wwwroot\assets\js\fontawesome.js" />
+    <None Include="wwwroot\assets\js\jquery-3.4.1.min.js" />
+    <None Include="wwwroot\assets\js\jquery.mCustomScrollbar.concat.min.js" />
+    <None Include="wwwroot\assets\js\jquery.validate.min.js" />
+    <None Include="wwwroot\assets\js\step-wizard\jquery.smartWizard.js" />
+    <None Include="wwwroot\assets\js\step-wizard\jquery.smartWizard.min.js" />
+    <None Include="wwwroot\assets\js\popper.min.js" />
+    <None Include="wwwroot\assets\js\solid.js" />
+    <None Include="wwwroot\scripts\bluebird.min.js" />
+    <None Include="wwwroot\scripts\chart\financial-data.js" />
+    <None Include="wwwroot\scripts\chart\images\Download.svg" />
+    <None Include="wwwroot\scripts\chart\images\pause.svg" />
+    <None Include="wwwroot\scripts\chart\images\Play.svg" />
+    <None Include="wwwroot\scripts\chart\images\Tick.svg" />
+    <None Include="wwwroot\scripts\chart\stock-chart-data.js" />
+    <None Include="wwwroot\scripts\common.min.js" />
+    <None Include="wwwroot\scripts\crossroads.js" />
+    <None Include="wwwroot\scripts\data-service.js" />
+    <None Include="wwwroot\scripts\datasource.js" />
+    <None Include="wwwroot\scripts\documenteditor\import-helper.js" />
+    <None Include="wwwroot\scripts\elasticlunr.min.js" />
+    <None Include="wwwroot\scripts\fuse.min.js" />
+    <None Include="wwwroot\scripts\generatedata.js" />
+    <None Include="wwwroot\scripts\hasher.min.js" />
+    <None Include="wwwroot\scripts\highlight.min.js" />
+    <None Include="wwwroot\scripts\Images\Gantt\face-mask.svg" />
+    <None Include="wwwroot\scripts\Images\Gantt\moments.svg" />
+    <None Include="wwwroot\scripts\Images\Gantt\oscar.svg" />
+    <None Include="wwwroot\scripts\index.js" />
+    <None Include="wwwroot\scripts\js-signals.min.js" />
+    <None Include="wwwroot\scripts\locale-string.js" />
+    <None Include="wwwroot\scripts\MapsData\africa.js" />
+    <None Include="wwwroot\scripts\MapsData\africasingle.js" />
+    <None Include="wwwroot\scripts\MapsData\australia.js" />
+    <None Include="wwwroot\scripts\MapsData\curvedlinemarkers.js" />
+    <None Include="wwwroot\scripts\MapsData\defaultdata.js" />
+    <None Include="wwwroot\scripts\MapsData\electiondata.js" />
+    <None Include="wwwroot\scripts\MapsData\flightroutes.js" />
+    <None Include="wwwroot\scripts\MapsData\highlightmarkers.js" />
+    <None Include="wwwroot\scripts\MapsData\indianpopulation.js" />
+    <None Include="wwwroot\scripts\MapsData\markercluster.js" />
+    <None Include="wwwroot\scripts\MapsData\markerlocation.js" />
+    <None Include="wwwroot\scripts\MapsData\navigationline.js" />
+    <None Include="wwwroot\scripts\MapsData\oklahoma.js" />
+    <None Include="wwwroot\scripts\MapsData\population.js" />
+    <None Include="wwwroot\scripts\MapsData\populationdensity.js" />
+    <None Include="wwwroot\scripts\MapsData\ProductWorth.js" />
+    <None Include="wwwroot\scripts\MapsData\randomcountrydata.js" />
+    <None Include="wwwroot\scripts\MapsData\salescontinent.js" />
+    <None Include="wwwroot\scripts\MapsData\SouthAmericanCountryCapitals.js" />
+    <None Include="wwwroot\scripts\MapsData\unocontries.js" />
+    <None Include="wwwroot\scripts\MapsData\usMap.js" />
+    <None Include="wwwroot\scripts\MapsData\usPopulation.js" />
+    <None Include="wwwroot\scripts\MapsData\worldcup.js" />
+    <None Include="wwwroot\scripts\MapsData\world_continent.js" />
+    <None Include="wwwroot\scripts\pivotData\data-source.js" />
+    <None Include="wwwroot\scripts\Progressbar\bootstrap-Download.svg" />
+    <None Include="wwwroot\scripts\Progressbar\bootstrap-pause.svg" />
+    <None Include="wwwroot\scripts\Progressbar\bootstrap-Play.svg" />
+    <None Include="wwwroot\scripts\Progressbar\bootstrap-Tick.svg" />
+    <None Include="wwwroot\scripts\Progressbar\bootstrap4-Download.svg" />
+    <None Include="wwwroot\scripts\Progressbar\bootstrap4-pause.svg" />
+    <None Include="wwwroot\scripts\Progressbar\bootstrap4-Play.svg" />
+    <None Include="wwwroot\scripts\Progressbar\bootstrap4-Tick.svg" />
+    <None Include="wwwroot\scripts\Progressbar\fabric-Download.svg" />
+    <None Include="wwwroot\scripts\Progressbar\fabric-pause.svg" />
+    <None Include="wwwroot\scripts\Progressbar\fabric-Play.svg" />
+    <None Include="wwwroot\scripts\Progressbar\fabric-Tick.svg" />
+    <None Include="wwwroot\scripts\Progressbar\highcontrast-Download.svg" />
+    <None Include="wwwroot\scripts\Progressbar\highcontrast-pause.svg" />
+    <None Include="wwwroot\scripts\Progressbar\highcontrast-Play.svg" />
+    <None Include="wwwroot\scripts\Progressbar\highcontrast-Tick.svg" />
+    <None Include="wwwroot\scripts\Progressbar\material-Download.svg" />
+    <None Include="wwwroot\scripts\Progressbar\material-pause.svg" />
+    <None Include="wwwroot\scripts\Progressbar\material-Play.svg" />
+    <None Include="wwwroot\scripts\Progressbar\material-Tick.svg" />
+    <None Include="wwwroot\scripts\range-navigator\default_data.js" />
+    <None Include="wwwroot\scripts\range-navigator\double_data.js" />
+    <None Include="wwwroot\scripts\range-navigator\period-data.js" />
+    <None Include="wwwroot\scripts\range-navigator\stock-data.js" />
+    <None Include="wwwroot\scripts\samplelist.js" />
+    <None Include="wwwroot\scripts\schedule\applyCategoryColor.js" />
+    <None Include="wwwroot\scripts\search-index.js" />
+    <None Include="wwwroot\scripts\SparkLine\OrderData.js" />
+    <None Include="wwwroot\scripts\StockChartData\aapl.js" />
+    <None Include="wwwroot\scripts\StockChartData\aman.js" />
+    <None Include="wwwroot\scripts\StockChartData\goog.js" />
+    <None Include="wwwroot\scripts\StockChartData\googl.js" />
+    <None Include="wwwroot\scripts\StockChartData\indicator-data.js" />
+    <None Include="wwwroot\scripts\StockChartData\tsla.js" />
+    <None Include="wwwroot\scripts\TreeGrid\templateData.js" />
+    <None Include="wwwroot\scripts\TreeMapData\AirPort_Count.js" />
+    <None Include="wwwroot\scripts\TreeMapData\CarSales.js" />
+    <None Include="wwwroot\scripts\TreeMapData\ColorData.js" />
+    <None Include="wwwroot\scripts\TreeMapData\Continent_Data.js" />
+    <None Include="wwwroot\scripts\TreeMapData\Country_Population.js" />
+    <None Include="wwwroot\scripts\TreeMapData\Drilldown.js" />
+    <None Include="wwwroot\scripts\TreeMapData\Economics.js" />
+    <None Include="wwwroot\scripts\TreeMapData\Election.js" />
+    <None Include="wwwroot\scripts\TreeMapData\Imports.js" />
+    <None Include="wwwroot\scripts\TreeMapData\Medals.js" />
+    <None Include="wwwroot\scripts\TreeMapData\ProductSale.js" />
+    <None Include="wwwroot\scripts\TreeMapData\rtl-data.js" />
+    <None Include="wwwroot\styles\bootstrap.scss" />
+    <None Include="wwwroot\styles\fabric.scss" />
+    <None Include="wwwroot\styles\file-manager\images\css.svg" />
+    <None Include="wwwroot\styles\file-manager\images\excel.svg" />
+    <None Include="wwwroot\styles\file-manager\images\exclamatory.svg" />
+    <None Include="wwwroot\styles\file-manager\images\exe.svg" />
+    <None Include="wwwroot\styles\file-manager\images\folder.svg" />
+    <None Include="wwwroot\styles\file-manager\images\html.svg" />
+    <None Include="wwwroot\styles\file-manager\images\image.svg" />
+    <None Include="wwwroot\styles\file-manager\images\js.svg" />
+    <None Include="wwwroot\styles\file-manager\images\msi.svg" />
+    <None Include="wwwroot\styles\file-manager\images\music.svg" />
+    <None Include="wwwroot\styles\file-manager\images\pdf.svg" />
+    <None Include="wwwroot\styles\file-manager\images\php.svg" />
+    <None Include="wwwroot\styles\file-manager\images\ppt.svg" />
+    <None Include="wwwroot\styles\file-manager\images\rar.svg" />
+    <None Include="wwwroot\styles\file-manager\images\rtf.svg" />
+    <None Include="wwwroot\styles\file-manager\images\text.svg" />
+    <None Include="wwwroot\styles\file-manager\images\video.svg" />
+    <None Include="wwwroot\styles\file-manager\images\word.svg" />
+    <None Include="wwwroot\styles\file-manager\images\xml.svg" />
+    <None Include="wwwroot\styles\file-manager\images\zip.svg" />
+    <None Include="wwwroot\styles\Grid\Fonts\Grid control Font.svg" />
+    <None Include="wwwroot\styles\highcontrast.scss" />
+    <None Include="wwwroot\styles\images\circulargauge\image1.svg" />
+    <None Include="wwwroot\styles\images\circulargauge\image2.svg" />
+    <None Include="wwwroot\styles\images\circulargauge\image3.svg" />
+    <None Include="wwwroot\styles\images\circulargauge\image4.svg" />
+    <None Include="wwwroot\styles\images\circulargauge\image5.svg" />
+    <None Include="wwwroot\styles\images\circulargauge\image6.svg" />
+    <None Include="wwwroot\styles\images\lineargauge\Cycling.svg" />
+    <None Include="wwwroot\styles\images\lineargauge\cycling1.svg" />
+    <None Include="wwwroot\styles\images\lineargauge\Diastolic.svg" />
+    <None Include="wwwroot\styles\images\lineargauge\Exercise Tracking.svg" />
+    <None Include="wwwroot\styles\images\lineargauge\High.svg" />
+    <None Include="wwwroot\styles\images\lineargauge\Low.svg" />
+    <None Include="wwwroot\styles\images\lineargauge\Moderate.svg" />
+    <None Include="wwwroot\styles\images\lineargauge\Pulse.svg" />
+    <None Include="wwwroot\styles\images\lineargauge\Running.svg" />
+    <None Include="wwwroot\styles\images\lineargauge\running1.svg" />
+    <None Include="wwwroot\styles\images\lineargauge\Systolic.svg" />
+    <None Include="wwwroot\styles\images\lineargauge\Walking.svg" />
+    <None Include="wwwroot\styles\images\lineargauge\walking1.svg" />
+    <None Include="wwwroot\styles\images\maps\cluster.svg" />
+    <None Include="wwwroot\styles\images\maps\compass.svg" />
+    <None Include="wwwroot\styles\images\maps\group.svg" />
+    <None Include="wwwroot\styles\images\maps\map-tooltip.svg" />
+    <None Include="wwwroot\styles\images\maps\oval.svg" />
+    <None Include="wwwroot\styles\images\Preview-label.svg" />
+    <None Include="wwwroot\styles\images\sb-icons\fonts\icons.svg" />
+    <None Include="wwwroot\styles\images\sb-icons\Syncfusion-logo.svg" />
+    <None Include="wwwroot\styles\images\sb-icons\Syncfusion-mobile-logo.svg" />
+    <None Include="wwwroot\styles\images\treemap\airplane.svg" />
+    <None Include="wwwroot\styles\images\treemap\Athletics.svg" />
+    <None Include="wwwroot\styles\images\treemap\Basketball.svg" />
+    <None Include="wwwroot\styles\images\treemap\Boxing.svg" />
+    <None Include="wwwroot\styles\images\treemap\Cycling.svg" />
+    <None Include="wwwroot\styles\images\treemap\Gymnastics.svg" />
+    <None Include="wwwroot\styles\images\treemap\Judo.svg" />
+    <None Include="wwwroot\styles\images\treemap\Rowing.svg" />
+    <None Include="wwwroot\styles\images\treemap\Shooting.svg" />
+    <None Include="wwwroot\styles\images\treemap\Soccer.svg" />
+    <None Include="wwwroot\styles\images\treemap\Swimming.svg" />
+    <None Include="wwwroot\styles\images\treemap\Tennis.svg" />
+    <None Include="wwwroot\styles\images\treemap\TrackAndField.svg" />
+    <None Include="wwwroot\styles\images\treemap\Triathlon.svg" />
+    <None Include="wwwroot\styles\images\treemap\Water_polo.svg" />
+    <None Include="wwwroot\styles\images\treemap\Wrestling.svg" />
+    <None Include="wwwroot\styles\material.scss" />
+  </ItemGroup>
+
+</Project>

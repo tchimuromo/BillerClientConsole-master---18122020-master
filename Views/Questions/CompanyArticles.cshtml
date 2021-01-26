@@ -1,0 +1,51 @@
+﻿@addTagHelper *, Microsoft.AspNetCore.Mvc.TagHelpers
+@addTagHelper *, PagedList.Core.Mvc
+
+@using Microsoft.AspNetCore.Identity
+@using BillerClientConsole
+@namespace BillerClientConsole
+
+@{
+    Layout = "../Shared/_LayoutMain";
+}
+
+
+<div class="container-fluid mt-3">
+    <div class="col-md-12">
+
+        <form action="/Company/CompanyAuthorisedShareCapital" method="get" style="width:80%;">
+            <input type="hidden" name="billercode" value="@ViewBag.billercode" />
+
+
+            <div class="form-group">
+                <label>Liability clause</label>
+                <textarea type="text" class="form-control" name="LiabilityClause"></textarea>
+            </div>
+
+            <div class="radio radio-primary form-group">
+                <input type="radio" name="tableB" id="Radios1" value="Yes">
+                <label>Table B: Model Articles for Private Companies Limited by Shares</label>
+            </div>
+
+            <div class="radio radio-primary form-group">
+                <input type="radio" name="tableC" id="Radios1" value="Yes">
+                <label>Table C: Model Articles for Private Companies Limited by Guarantee</label>
+            </div>
+
+            <div class="form-group">
+                <label>Provisions of non applicable or amended articles</label>
+                <textarea type="text" class="form-control" name="ammendedArticles"></textarea>
+            </div>
+
+            <div class="form-group fa-pull-right">
+                <button type="submit" class="btn btn-primary">
+                    Continue
+                </button>
+            </div>
+
+        </form>
+
+
+    </div>
+
+</div>

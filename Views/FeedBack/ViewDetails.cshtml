@@ -1,0 +1,35 @@
+﻿@{
+    Layout = "/Views/Shared/_LayoutMain.cshtml";
+}
+
+    <div class="container">
+        <div class="row">
+            <div class="col-md-4">
+                Date: @ViewBag.date
+            </div>
+
+            <div class="col-md-4">
+                Customer: @ViewBag.customer
+            </div>
+
+            <div class="col-md-4">
+                Phone: @ViewBag.phone
+            </div>
+        </div>
+
+        <hr />
+        <div class="row">
+            <div class="col-md-12">
+                @ViewBag.feedback
+            </div>
+            <br />
+           
+        </div>
+        <br />
+        <div class="row">
+            <div class="col-md-12">
+                <a href="/FeedBack/Delete/@ViewBag.id" class="badge badge-danger">Delete</a>
+            </div>
+        </div>
+
+    </div>

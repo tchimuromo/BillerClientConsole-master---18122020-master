@@ -1,0 +1,93 @@
+﻿@{
+    Layout = "../Shared/_LayoutMain";
+}
+
+    <style>
+    @*style the drop down select entries - datatables*@
+    .custom-select
+    {
+        height:30px!important;
+        width:50px!important;
+        margin-left:5px!important;
+    }
+    @*style the copy buttons- datatables*@
+    .dt-buttons
+    {
+        margin-left:4px!important;
+    }
+    </style>
+
+<form method="get" action="/Notifications/AllNotifications">
+    <table>
+        <tr>
+            <td>From: </td>
+            <td><input type="text" class="form-control" name="date_from" id="date_from" style="padding-left:10px;" value="@ViewBag.date_from"></td>
+            <td>To: </td>
+            <td><input type="text" class="form-control" name="date_to" id="date_to" style="padding-left:10px;" value="@ViewBag.date_to"></td>
+            <td>
+                <button type="submit" class="btn btn-primary btn-sm">Filter</button>
+            </td>
+        </tr>
+    </table>
+</form>
+
+
+<div class="table-responsive">
+    <table class="table tblsm" id="datatable">
+        <thead>
+            <tr>
+                <th>Date</th>
+                <th>Message</th>
+                <th>Action</th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var item in ViewBag.notifications)
+            {
+                <tr class="@(bool.Parse(item.isRead.ToString())==true?"":"table-active")">
+
+                    <td title="@(DateTime.Parse(item.date.ToString()).ToString("yyyy-MM-dd"))">@(DateTime.Parse(item.date.ToString()).ToString("yyyy-MM-dd"))</td>
+                    <td title="@item.message">@item.message</td>
+                    <td>
+                        <a href="/Notifications/ViewDetails/@item.id" class="badge badge-success">open</a> |
+                        @if (bool.Parse(item.isRead.ToString())==true)
+                        {
+                            <a href="/Notifications/MarkAsUnRead/@item.id/@(ViewBag.date_from ?? -1)/@(ViewBag.date_to ?? -1)/AllNotifications" class="badge badge-dark">mark-as-un-read</a>
+                        }
+                        else
+                        {
+                            <a href="/Notifications/MarkAsRead/@item.id/@(ViewBag.date_from ?? -1)/@(ViewBag.date_to ?? -1)/AllNotifications" class="badge badge-info">mark-as-read</a>
+                        }
+                        |<a href="/Notifications/Delete/@item.id/@(ViewBag.date_from??-1)/@(ViewBag.date_to??-1)/AllNotifications" class="badge badge-danger">delete</a>
+                    </td>
+                </tr>
+            }
+        </tbody>
+    </table>
+</div>
+
+<script>
+    $("#date_from").Zebra_DatePicker({
+        format: 'Y-m-d',
+        icon_position: 'left'
+    });
+
+    $("#date_to").Zebra_DatePicker({
+        format: 'Y-m-d',
+        icon_position: 'left'
+    });
+
+    $('#datatable').DataTable({
+        select: true,
+        responsive: true,
+        dom: 'lBfrtip',
+        buttons: [
+            'copyHtml5',
+            'excelHtml5',
+            'csvHtml5',
+            'pdfHtml5'
+        ]
+    });
+
+
+</script>

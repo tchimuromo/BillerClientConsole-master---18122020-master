@@ -1,0 +1,164 @@
+﻿
+
+
+@{ Layout = "_LayoutMain"; }
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.5.0/Chart.min.js"></script>
+
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+
+<div class="container-fluid">
+    <div class="container">
+        <br />
+        <div class="row ">
+            <br />
+
+            <div class="col-lg-12">
+                <div class="card-deck">
+
+                    
+                    <div class="card bg-primary">
+                        <a href="/Products/UnassignedTasks">
+
+                            <div class="card-body text-center">
+                                <h1 style="color:white;">@ViewBag.Unassigned </h1>
+
+                                <p class="card-text" style="color:white;"><b>Unassigned tasks </b></p>
+
+                            </div>
+                        </a>
+                    </div>
+
+
+
+
+                    <div class="card bg-warning">
+
+                        <a>
+                            <div class="card-body text-center">
+                                <h1 style="color:white;">@ViewBag.Assigned </h1>
+
+                                <p class="card-text" style="color:white;"><b> Assigned tasks </b></p>
+
+                            </div>
+                        </a>
+                    </div>
+
+
+
+
+                    <div class="card bg-success">
+
+                        <a href="/Products/UnassignedTasks?ToDisplay=CompanyApplications">
+                            <div class="card-body text-center">
+                                <h1 style="color:white;">@ViewBag.CompanyApps </h1>
+
+                                <p class="card-text" style="color:white;"><b>Companies </b></p>
+
+                            </div>
+                        </a>
+                    </div>
+
+
+
+
+                    <div class="card bg-info">
+
+                        <a href="#">
+                            <div class="card-body text-center">
+                                <h1 style="color:white;">@ViewBag.TotalNameSearches </h1>
+                                <p class="card-text" style="color:white;"><b>Total Namesearches </b></p>
+
+                            </div>
+                        </a>
+                    </div>
+
+
+
+                </div>
+            </div>
+
+
+
+        </div>
+        <br />
+        <div class="row ">
+            <div class="col-sm-6">
+                <div class="card">
+
+                    <canvas id="bar-chart" width="200" height="120"></canvas>
+                </div>
+            </div>
+
+            @*<div class="col-sm-6">
+                <div class="card">
+
+                    <canvas id="bar-chartb" width="200" height="120"></canvas>
+                </div>
+            </div>*@
+        </div>
+    </div>
+</div>
+
+
+
+
+
+
+
+
+
+<script>
+    // Bar chart
+    new Chart(document.getElementById("bar-chart"), {
+        type: 'bar',
+
+        data: {
+            labels: ["Unassigned", "assigned ", "Name Searches", "Companies"],
+            datasets: [
+                {
+                    label: "Registrations (No# of Registrations)",
+                    backgroundColor: ["#3e95cd", "#8e5ea2", "#3cba9f", "#e8c3b9"],
+                    data: [@ViewBag.Unassigned, 5, @ViewBag.TotalNameSearches , 3]
+                }
+            ]
+        },
+        options: {
+            legend: { display: true },
+            title: {
+                display: true,
+                text: 'Number of company registrations in a day'
+            }
+        }
+    });
+
+
+
+</script>
+<script>
+    // Bar chart
+    new Chart(document.getElementById("bar-chartb"), {
+        type: 'bar',
+        data: {
+            labels: ["Unassigned", "Assigned", "Total Names", "Thursday", "Friday"],
+            datasets: [
+                {
+                    label: "Registrations (No# of Registrations)",
+                    backgroundColor: ["#3e95cd", "#8e5ea2", "#3cba9f", "#e8c3b9", "#c45850"],
+                    data: [@ViewBag.Unassigned, 22, 7, 3, 4]
+                }
+            ]
+        },
+        options: {
+            legend: { display: true },
+            title: {
+                display: true,
+                text: 'Number of company registrations in a day'
+            }
+        }
+    });
+
+
+
+</script>

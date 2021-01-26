@@ -1,0 +1,167 @@
+﻿@using BillerClientConsole.Models;
+@using X.PagedList.Mvc;
+@using X.PagedList;
+@using X.PagedList.Mvc.Core;
+
+@addTagHelper *, Microsoft.AspNetCore.Mvc.TagHelpers
+@addTagHelper *, X.PagedList.Mvc
+@addTagHelper *, X.PagedList
+
+@{
+    //var feedback = (IPagedList)ViewBag.pfeedback;
+}
+
+<style>
+    @*style the drop down select entries - datatables*@
+    .custom-select
+    {
+        height:30px!important;
+        width:50px!important;
+        margin-left:5px!important;
+    }
+    @*style the copy buttons- datatables*@
+    .dt-buttons
+    {
+        margin-left:4px!important;
+    }
+</style>
+
+<form action="/Products/SubmitSearch/@ViewBag.data.search_ID" method="post" style="width:100%;">
+    <input type="hidden" name="tempsearchID" value="@ViewBag.data.search_ID">
+
+    <div class=" row col-md-12">
+        <div class="col-md-6">
+            <div class="card mb-3">
+                <h3 class="card-header">Search Info</h3>
+                <ul class="list-group list-group-flush">
+
+                    <li class="list-group-item d-flex justify-content-between align-items-center">
+                        Business Type
+                        <span>@ViewBag.data.Search_For</span>
+
+                    </li>
+
+
+                    <li class="list-group-item d-flex justify-content-between align-items-center">
+                        Purpose of search
+                        <span>@ViewBag.data.Purpose</span>
+                    </li>
+
+                    <li class="list-group-item d-flex justify-content-between align-items-center">
+                        Designation
+                        <span>@ViewBag.data.Desigination</span>
+                    </li>
+
+                    <li class="list-group-item d-flex justify-content-between align-items-center">
+                        Justification
+                        <span>@ViewBag.data.Justification</span>
+                    </li>
+
+
+                    <li class="list-group-item d-flex justify-content-between align-items-center">
+                        Processing office
+                        <span>@ViewBag.data.SortingOffice</span>
+                    </li>
+
+                    <li class="list-group-item d-flex justify-content-between align-items-center">
+                        Reason for search
+                        <span>@ViewBag.data.Reason_For_Search</span>
+                    </li>
+
+                </ul>
+                <div class="card-footer text-muted">
+                    &nbsp;
+                </div>
+            </div>
+        </div>
+        <div class="col-md-6">
+            <div class="card mb-3">
+                <h3 class="card-header">Proposed Names</h3>
+                <ul class="list-group list-group-flush">
+
+                    @foreach (var item in ViewBag.names)
+                    {
+
+                        <li class="list-group-item d-flex justify-content-between align-items-center">
+                            @item.Name
+                        </li>
+                    }
+
+                    @*
+                        <li class="list-group-item d-flex justify-content-between align-items-center">
+                            Name 2
+                            <span>B</span>
+                        </li>
+
+                        <li class="list-group-item d-flex justify-content-between align-items-center">
+                            Name 3
+                            <span>C</span>
+                        </li>
+
+                        <li class="list-group-item d-flex justify-content-between align-items-center">
+                            Name 4
+                            <span>D</span>
+                        </li>
+                    *@
+
+
+                </ul>
+                <div class="card-footer text-muted">
+                    &nbsp;
+                </div>
+            </div>
+        </div>
+
+    </div>
+    <div class=" row col-md-12">
+        <div class="col-md-6">
+
+        </div>
+        <div class="col-md-6">
+
+            <div class="">
+                <span style="flex: 1 1 auto"></span>
+                <button type="submit" class="btn btn-primary fa-pull-right">
+                    SUBMIT
+                </button>
+            </div>
+        </div>
+
+    </div>
+
+
+
+</form>
+
+@*
+    @Html.PagedListPager(feedback, page => Url.Action("ListFeedBack", "Reports", new { pageNumber = page }))
+*@
+
+<script>
+    $("#date_from").Zebra_DatePicker({
+        format: 'Y-m-d',
+        icon_position: 'left'
+    });
+
+    $("#date_to").Zebra_DatePicker({
+        format: 'Y-m-d',
+        icon_position: 'left'
+    });
+
+    $('#datatable').DataTable({
+        select: true,
+        responsive: true,
+        dom: 'lBfrtip',
+        buttons: [
+            'copyHtml5',
+            'excelHtml5',
+            'csvHtml5',
+            'pdfHtml5'
+        ]
+    });
+
+
+
+
+</script>
+

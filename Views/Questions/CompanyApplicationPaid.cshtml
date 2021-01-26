@@ -1,0 +1,42 @@
+﻿@{
+    Layout = "_LayoutMain";
+}
+
+<style>
+    label {
+        color: rebeccapurple;
+        font-weight: 400;
+    }
+</style>
+
+
+<div class="container-fluid" style="color:#0C2A46">
+
+    <div style="width:100%">
+
+        @if (ViewBag.Payment > 0)
+        {
+        <p mt-3 mb-5 style="margin-left:auto; margin-right:auto">You have made your payment of @ViewBag.Amount. The transaction ref number is @ViewBag.RefNumber</p>
+            <button class="btn btn-info" onclick="submitApplication()">
+                Submit application
+            </button>
+        }
+        else
+        {
+            <p mt-3 mb-5 style="margin-left:auto; margin-right:auto">Your payment is still in process</p>
+            <button class="btn btn-info" >
+                Check again
+            </button>
+        }
+
+
+
+    </div>
+    <script>
+
+        function submitApplication() {
+            alert("Your application has been submitted");
+            window.location.href = "/Home/Dashboard";
+        }
+    </script>
+</div>

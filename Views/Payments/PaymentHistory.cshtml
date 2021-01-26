@@ -1,0 +1,170 @@
+﻿
+@{
+    ViewData["Title"] = "PaymentHistory";
+    Layout = "~/Views/Shared/_LayoutMain.cshtml";
+}
+
+    <div class="container-fluid">
+        <div class="card mt-3">
+            <div class="card-body">
+                <div class="row">
+                    <div class="col-md-6">
+                        <label><strong>Account Balance</strong> : @ViewBag.Balance</label>
+                    </div>
+                    <div class="col-md-6">
+                        @if (ViewBag.credits.NameSearch > 0 || ViewBag.credits.PvtLimitedCompany > 0)
+                        {
+                            <label><strong>Credits</strong></label>
+                            <ul class="mb-4">
+                                @if (ViewBag.credits.NameSearch > 0)
+                                {
+                                    <li>
+                                        <label>Name Search : @ViewBag.credits.NameSearch</label>
+                                    </li>
+                                }
+
+                                @if (ViewBag.credits.PvtLimitedCompany > 0)
+                                {
+                                    <li>
+                                        <label>Private Limited Entity : @ViewBag.credits.PvtLimitedCompany</label>
+                                    </li>
+                                }
+
+
+                            </ul>
+                        }
+
+                    </div>
+                </div>
+            </div>
+            <div class="card-footer">
+                <div class="row">
+                    <div class="col-md-6">
+                        <div class="row">
+                            <div class="col-md-3">
+                                <button class="btn btn-primary" data-toggle="modal" data-target="#name-search-modal">Topup</button>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-md-6">
+                        @if (@ViewBag.Balance > 0)
+                        {
+                            <div class="row">
+                                <div class="col-md-4">
+                                    <button class="btn btn-primary" data-toggle="modal" data-target="#purchase-modal">Purchase credits</button>
+                                </div>
+                            </div>
+                        }
+                    </div>
+                </div>
+            </div>
+        </div>
+
+
+        @if (@ViewBag.Payments.Count > 0)
+        {
+            <div class="card mt-5">
+                <div class="card-header">
+                    <h4>Your payment History</h4>
+                </div>
+                <div class="card-body">
+                    <table class="table  table-mb table-hover" style="color:#0C2A46;">
+                        <thead mt-5 mb-5 style="color:#0C2A46;">
+                            <tr>
+                                <th style="color:#0C2A46">Date time</th>
+                                <th style="color:#0C2A46">Description</th>
+                                <th style="color:#0C2A46">Amount Debited</th>
+                                <th style="color:#0C2A46">Amount Credited</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            @foreach (var payment in ViewBag.Payments)
+                            {
+                                <tr>
+                                    <td>@payment.Date</td>
+                                    <td>@payment.Description</td>
+                                    @if (@payment.AmountDr > 0)
+                                    {
+                                        <td>@payment.AmountDr</td>
+                                    }
+                                    else
+                                    {
+                                        <td>-</td>
+                                    }
+                                    @if (@payment.AmountCr > 0)
+                                    {
+                                        <td>@payment.AmountCr</td>
+                                    }
+                                    else
+                                    {
+                                        <td>-</td>
+                                    }
+
+                                </tr>
+                            }
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        }
+    </div>
+
+    <div class="modal fade" id="name-search-modal" tabindex="-9" role="dialog" aria-labelledby="addContactLabel" aria-hidden="true" style="color:#0C2A46">
+        <form action="/Payments/MakePayment/PaymentHistory" method="post">
+            <div class="modal-dialog card" role="document">
+                <div class="modal-content">
+                    <div class="card-header bg-white">
+                        <h4>Account Topup</h4>
+                    </div>
+
+                    <div class="modal-body">
+                        <div>
+                            <label style="color:#0C2A46">Email address</label>
+                            <input type="text" class="form-control" name="email" required>
+                        </div>
+                        <div>
+                            <label style="color:#0C2A46">Amount</label>
+                            <input type="text" class="form-control" name="amount" required>
+                        </div>
+                    </div>
+
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-white" data-dismiss="modal" style="color:#0C2A46">Cancel</button>
+                        <button type="submit" class="btn" style="background-color:#0C2A46">Continue</button>
+                    </div>
+                </div>
+            </div>
+        </form>
+    </div>
+
+
+    <div class="modal fade" id="purchase-modal" tabindex="-9" role="dialog" aria-labelledby="addContactLabel" aria-hidden="true" style="color:#0C2A46">
+        <form action="/Payments/PurchaseCredits/PaymentHistory" method="post">
+            <div class="modal-dialog card" role="document">
+                <div class="modal-content">
+                    <div class="card-header bg-white">
+                        <h4>Purchase credits</h4>
+                    </div>
+
+                    <div class="modal-body">
+                        <div>
+                            <label style="color:#0C2A46">Select service</label>
+                            <select class="form-control" name="service">
+                                <option value="Name Search">NAME SEARCH</option>
+                                <option value="Private Limited Entity">PVT LIMITED COMPANY</option>
+                            </select>
+                        </div>
+                        <div>
+                            <label style="color:#0C2A46">Number of credits</label>
+                            <input type="text" class="form-control" name="numberOfCredits" required>
+                        </div>
+                    </div>
+
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-white" data-dismiss="modal" style="color:#0C2A46">Cancel</button>
+                        <button type="submit" class="btn" style="background-color:#0C2A46">Continue</button>
+                    </div>
+                </div>
+            </div>
+        </form>
+    </div>

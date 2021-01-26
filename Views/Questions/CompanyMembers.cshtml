@@ -1,0 +1,422 @@
+﻿@*using Syncfusion.EJ2*@
+
+
+@{
+    Layout = "_LayoutMain";
+}
+
+<style>
+    label {
+        color: rebeccapurple;
+        font-weight: 400;
+    }
+</style>
+
+
+<div class="container mb-3">
+    <div class="col-md-12" style="display:flex;justify-content:center;align-content:center;width:100%;">
+
+        <form action="/Company/AddCompanyMembers" method="post" style="width:100%;">
+            <input type="hidden" name="billercode" value="@ViewBag.billercode"/>
+
+            <div class="card">
+                <div class="card-header">
+                    <label class="mt-3">Members</label>
+                    <span style="flex: 1 1 auto"></span>
+                    <button class="fa-pull-right btn btn-success" type="button" data-toggle="modal" data-target="#name-search-modal">Add</button>
+                </div>
+                <div class="card-body">
+                    <div class="form-group">
+                        <table class="table table-hover">
+                            <thead>
+                            <tr>
+                                <th scope="col">#</th>
+                                <th scope="col">National id</th>
+                                <th scope="col">Nationality</th>
+                                <th scope="col">Full name</th>
+                                <th scope="col">Gender</th>
+                                <th scope="col">Physical address</th>
+                                <th scope="col">Ordinary shares</th>
+                                <th scope="col">Preference shares</th>
+                                <th scope="col">Total shares</th>
+                            </tr>
+                            </thead>
+                            <tbody id="personTable">
+                            @*<tr>
+                                <th scope="row">1</th>
+                                <td>Mark</td>
+                                <td>Otto</td>
+                                <td>mdo</td>
+                                <td>mdo</td>
+                                <td>mdo</td>
+                                <td>mdo</td>
+                                <td>mdo</td>
+                                <td>mdo</td>
+                            </tr>
+                            <tr>
+                                <th scope="row">2</th>
+                                <td>Jacob</td>
+                                <td>Thornton</td>
+                                <td>fat</td>
+                                <td>mdo</td>
+                                <td>mdo</td>
+                                <td>mdo</td>
+                                <td>mdo</td>
+                                <td>mdo</td>
+                            </tr>
+                            <tr>
+                                <th scope="row">3</th>
+                                <td colspan="2">Larry the Bird</td>
+                                <td>twitter</td>
+                                <td>mdo</td>
+                                <td>mdo</td>
+                                <td>mdo</td>
+                                <td>mdo</td>
+                                <td>mdo</td>
+                            </tr>*@
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+
+            <div class="card mt-5 mb-3">
+                <div class="card-header">
+                    <label class="mt-3">Member entities</label>
+                    <span style="flex: 1 1 auto"></span>
+                    <button class="fa-pull-right btn btn-success" type="button" data-toggle="modal" data-target="#company-modal">Add</button>
+                </div>
+                <div class="card-body">
+                    <div class="form-group">
+                        <table class="table table-hover">
+                            <thead>
+                            <tr>
+                                <th scope="col">#</th>
+                                <th scope="col">Entity name</th>
+                                <th scope="col">Entity number</th>
+                                <th scope="col">Country of origin</th>
+                                <th scope="col">Ordinary shares</th>
+                                <th scope="col">Preference shares</th>
+                                <th scope="col">Total shares</th>
+                            </tr>
+                            </thead>
+                            <tbody id="companyTable">
+                            @*<tr>
+                                <th scope="row">1</th>
+                                <td>Mark</td>
+                                <td>Otto</td>
+                                <td>mdo</td>
+                                <td>mdo</td>
+                                <td>mdo</td>
+                                <td>mdo</td>
+                            </tr>
+                            <tr>
+                                <th scope="row">2</th>
+                                <td>Jacob</td>
+                                <td>Thornton</td>
+                                <td>fat</td>
+                                <td>mdo</td>
+                                <td>mdo</td>
+                                <td>mdo</td>
+                            </tr>
+                            <tr>
+                                <th scope="row">3</th>
+                                <td colspan="2">Larry the Bird</td>
+                                <td>twitter</td>
+                                <td>mdo</td>
+                                <td>mdo</td>
+                                <td>mdo</td>
+                            </tr>*@
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+
+            <div class="form-group fa-pull-right">
+                <button type="submit" class="btn btn-primary">
+                    Continue
+                </button>
+            </div>
+
+
+            <input type="hidden" name="members" id="members"/>
+            <input type="hidden" name="companyMembers" id="companyMembers"/>
+        </form>
+    </div>
+</div>
+
+<div class="modal fade" id="name-search-modal" tabindex="-9" role="dialog" aria-labelledby="addContactLabel" aria-hidden="true" style="color:#0C2A46">
+    <div class="modal-dialog card" role="document" style="overflow-y: initial !important">
+        <form>
+            <div class="modal-content">
+                <div class="card-header bg-white">
+                    <h5 class="modal-title " id="addContactLabel" style="color:#0C2A46">Please enter the following</h5>
+                </div>
+
+                <div class="modal-body" id="text-fields" style="height: 500px;overflow-y: auto;">
+
+                    <div class="form-group">
+                        <label>National id</label>
+                        <input type="text" class="form-control" id="natID">
+                    </div>
+                    <div class="form-group">
+                        <label>Nationality</label>
+                        <input type="text" class="form-control" id="Nationality">
+                    </div>
+                    <div class="form-group">
+                        <label>Full name</label>
+                        <input type="text" class="form-control" id="fullname">
+                    </div>
+                    <div class="form-group">
+                        <label>Gender</label>
+                        <input type="text" class="form-control" id="gender">
+                    </div>
+
+                    <div class="form-group">
+                        <label>Physical address</label>
+                        <input type="text" class="form-control" id="physicalAdd">
+                    </div>
+                    <div class="form-group">
+                        <label>Ordinary shares</label>
+                        <input type="text" class="form-control" id="OrdShares">
+                    </div>
+                    <div class="form-group">
+                        <label>Preference shares</label>
+                        <input type="text" class="form-control" id="PrefShares">
+                    </div>
+                    <div class="form-group">
+                        <label>Tatal shares</label>
+                        <input type="text" class="form-control" id="TotalShares">
+                    </div>
+
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-white" data-dismiss="modal" style="color:#0C2A46">Cancel</button>
+                    <button type="button" class="btn" data-dismiss="modal" style="background-color:#0C2A46;color:#fff" onclick="populatePerson()">Done</button>
+                </div>
+            </div>
+        </form>
+    </div>
+</div>
+
+<script>
+    var persons = [];
+
+    var personCounter = 0;
+    var personContainer = document.getElementById('personTable');
+    var personTransporter = document.getElementById('members');
+    
+
+    function populatePerson() {
+        personCounter++;
+
+        var personCollection = [
+            document.getElementById('natID').value,
+            document.getElementById('Nationality').value,
+            document.getElementById('fullname').value,
+            document.getElementById('gender').value,
+            document.getElementById('physicalAdd').value,
+            document.getElementById('OrdShares').value,
+            document.getElementById('PrefShares').value,
+            document.getElementById('TotalShares').value
+        ];
+
+        persons.push(personCollection);
+        persons.push("|");
+
+        personTransporter.value = persons;
+        console.log(personTransporter.value);
+
+        var row = document.createElement('tr');
+
+        var rownumber = document.createElement('th');
+        rownumber.scope = 'row';
+        rownumber.textContent = personCounter;
+        row.appendChild(rownumber);
+
+        var natId = document.createElement('td');
+        natId.textContent = document.getElementById('natID').value;
+        row.appendChild(natId);
+        console.log(document.getElementById('natID').value);
+        document.getElementById('natID').value = "";
+
+        var Nationality = document.createElement('td');
+        Nationality.textContent = document.getElementById('Nationality').value;
+        row.appendChild(Nationality);
+        document.getElementById('Nationality').value = "";
+
+        var fullname = document.createElement('td');
+        fullname.textContent = document.getElementById('fullname').value;
+        row.appendChild(fullname);
+        document.getElementById('fullname').value = "";
+
+        var gender = document.createElement('td');
+        gender.textContent = document.getElementById('gender').value;
+        row.appendChild(gender);
+        document.getElementById('gender').value = "";
+
+        var physicalAdd = document.createElement('td');
+        physicalAdd.textContent = document.getElementById('physicalAdd').value;
+        row.appendChild(physicalAdd);
+        document.getElementById('physicalAdd').value = "";
+
+        var OrdShares = document.createElement('td');
+        OrdShares.textContent = document.getElementById('OrdShares').value;
+        row.appendChild(OrdShares);
+        document.getElementById('OrdShares').value = "";
+
+        var PrefShares = document.createElement('td');
+        PrefShares.textContent = document.getElementById('PrefShares').value;
+        row.appendChild(PrefShares);
+        document.getElementById('PrefShares').value = "";
+
+        var TotalShares = document.createElement('td');
+        TotalShares.textContent = document.getElementById('TotalShares').value;
+        row.appendChild(TotalShares);
+        document.getElementById('TotalShares').value = "";
+
+        
+        personContainer.appendChild(row);
+    }
+
+</script>
+
+<div class="modal fade" id="company-modal" tabindex="-9" role="dialog" aria-labelledby="addContactLabel" aria-hidden="true" style="color:#0C2A46">
+    <div class="modal-dialog card" role="document" style="overflow-y: initial !important">
+        <div class="modal-content">
+            <div class="card-header bg-white">
+                <h5 class="modal-title " id="addContactLabel" style="color:#0C2A46">Please enter the following</h5>
+            </div>
+
+            <div class="modal-body" id="text-fields" style="height: 500px;overflow-y: auto;">
+                <div class="form-group">
+                    <label>Company name</label>
+                    <input type="text" class="form-control" id="CoName">
+                </div>
+                <div class="form-group">
+                    <label>Company number</label>
+                    <input type="text" class="form-control" id="CoNumber">
+                </div>
+                <div class="form-group">
+                    <label>Company origin</label>
+                    <input type="text" class="form-control" id="CoOrigin">
+                </div>
+                <div class="form-group">
+                    <label>Ordinary shares</label>
+                    <input type="text" class="form-control" id="OOrd">
+                </div>
+
+                <div class="form-group">
+                    <label>Preference shares</label>
+                    <input type="text" class="form-control" id="PrefShare">
+                </div>
+                <div class="form-group">
+                    <label>Total shares</label>
+                    <input type="text" class="form-control" id="Tot">
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-white" data-dismiss="modal" style="color:#0C2A46">Cancel</button>
+                <button type="button" class="btn" data-dismiss="modal" style="background-color:#0C2A46;color:#fff" onclick="populateCompany()">Done</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script>
+    var companies = [];
+
+    var companyCounter = 0;
+    var companyContainer = document.getElementById('companyTable');
+    var companyTrans = document.getElementById('companyMembers');
+
+    function populateCompany() {
+        companyCounter++;
+
+        var companyMembers = [
+            document.getElementById('CoName').value,
+            document.getElementById('CoNumber').value,
+            document.getElementById('CoOrigin').value,
+            document.getElementById('OOrd').value,
+            document.getElementById('PrefShare').value,
+            document.getElementById('Tot').value
+        ];
+
+        companies.push(companyMembers);
+        companyMembers.push("|");
+
+        companyTrans.value = companies;
+        console.log(companyTrans.value);
+
+        var row = document.createElement('tr');
+
+        var rownumber = document.createElement('th');
+        rownumber.scope = 'row';
+        rownumber.textContent = companyCounter;
+        row.appendChild(rownumber);
+
+        var CoName = document.createElement('td');
+        CoName.textContent = document.getElementById('CoName').value;
+        row.appendChild(CoName);
+        //console.log(document.getElementById('CoName').value);
+        document.getElementById('CoName').value = "";
+
+        var CoNumber = document.createElement('td');
+        CoNumber.textContent = document.getElementById('CoNumber').value;
+        row.appendChild(CoNumber);
+        document.getElementById('CoNumber').value = "";
+
+        var CoOrigin = document.createElement('td');
+        CoOrigin.textContent = document.getElementById('CoOrigin').value;
+        row.appendChild(CoOrigin);
+        document.getElementById('CoOrigin').value = "";
+
+        var OOrd = document.createElement('td');
+        OOrd.textContent = document.getElementById('OOrd').value;
+        row.appendChild(OOrd);
+        document.getElementById('OOrd').value = "";
+
+        var PrefShare = document.createElement('td');
+        PrefShare.textContent = document.getElementById('PrefShare').value;
+        row.appendChild(PrefShare);
+        document.getElementById('PrefShare').value = "";
+
+        var Tot = document.createElement('td');
+        Tot.textContent = document.getElementById('Tot').value;
+        row.appendChild(Tot);
+        document.getElementById('Tot').value = "";
+
+        //var PrefShares = document.createElement('td');
+        //PrefShares.textContent = document.getElementById('PrefShares').value;
+        //row.appendChild(PrefShares);
+        //document.getElementById('PrefShares').value = "";
+
+        //var TotalShares = document.createElement('td');
+        //TotalShares.textContent = document.getElementById('TotalShares').value;
+        //row.appendChild(TotalShares);
+        //document.getElementById('TotalShares').value = "";
+
+        companyContainer.appendChild(row);
+    }
+
+</script>
+
+@*<div class="container">
+    <div class="col-md-12" style="display:flex;justify-content:center;align-content:center;width:90%;">
+
+        <div class="col-md-6" style="width:30%;">
+            <div class="form-control">
+                <label></label>
+            </div>
+        </div>
+
+    </div>
+</div>*@
+
+
+<style>
+    #typeddl {
+        min-width: 100px;
+    }
+</style>

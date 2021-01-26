@@ -1,0 +1,402 @@
+﻿@using BillerClientConsole.Models.QueryModel
+@{
+    Layout = "../Shared/_LayoutMain";
+}
+<div class="container-fluid">
+
+    <div class="row">
+        @*companies*@
+
+        <div class="col-md-8 mb-5">
+
+            @if (ViewBag.RegEntitiesSummary != null && ViewBag.RegEntitiesSummary.Count > 0)
+            {
+                <div class="card mt-3 boader-0">
+                    <div class="card-header boader-0">
+                        <div class="row">
+                            <h3 style="color:#0C2A46" class="pull-left ml-3">Registered Entities</h3>
+                            <span style="flex: 1 1 auto"></span>
+                            <div class="btn-group pull-right mr-3 ml-3">
+                                <a href="/Payments/CreditStatus/Private Limited Entity" class="btn btn-success">Register</a>
+                            </div>
+                        </div>
+
+                    </div>
+                    <div class="card-body">
+
+                        <div class="table-responsive">
+                            <table class="table  table-mb table-hover">
+                                <thead mt-5 mb-5>
+                                    <tr>
+                                        <th style="color:#0C2A46">Type of entity</th>
+
+                                        <th style="color:#0C2A46">Registered name</th>
+                                        <th style="color:#0C2A46">Registered number</th>
+                                        <th style="color:#0C2A46">Designation</th>
+                                        <th style="color:#0C2A46">Action</th>
+
+                                        <th style="color:#0C2A46">COI</th>
+                                    </tr>
+                                </thead>
+
+                                <tbody>
+
+                                    @foreach (var summary in ViewBag.RegEntitiesSummary)
+                                    {
+                                        <tr>
+
+                                            <td> @summary.TypeOfEntity </td>
+                                            <td> @summary.RegisteredName </td>
+                                            <td> @summary.RegisteredNumber </td>
+                                            <td> @summary.Designation</td>
+                                            <td>
+                                                <div class="btn-group">
+                                                    <a href="/Docs/Summary?=@summary.SearchRef" style="color:#0C2A46;text-decoration:underline">Company Document Summary</a>
+                                                </div>
+                                            </td>
+                                            <td>
+                                                <div class="btn-group">
+                                                    <a href="/Docs/Test?=@summary.SearchRef" style="color:#0C2A46;text-decoration:underline">Company Certificate</a>
+                                                </div>
+                                            </td>
+                                        </tr>
+                                    }
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+            }
+
+            <div class="row">
+                <div class="col-md-12 mb-5 mt-3">
+
+                    <!-- Tabs on Plain Card -->
+                    <div class="card card-nav-tabs card-plain">
+                        <div class="card-header card-header-danger">
+                            <!-- colors: "header-primary", "header-info", "header-success", "header-warning", "header-danger" -->
+                            <div class="row">
+                                <h3 style="color:#0C2A46" class="pull-left ml-3">My applications</h3>
+                                <span style="flex: 1 1 auto"></span>
+                                <div class="btn-group pull-right mr-3 ml-3">
+                                    @*<button class="btn bg-white text-dark">Show all</button>*@
+                                    <a href="/Products/Services" class="text-white">
+                                        <button class="btn btn-success">
+                                            Make application
+                                        </button>
+                                    </a>
+                                </div>
+                            </div>
+                            <div class="nav-tabs-navigation">
+                                <div class="nav-tabs-wrapper">
+                                    <ul class="nav nav-tabs" data-tabs="tabs">
+                                        <li class="nav-item">
+                                            <a class="nav-link active" href="#home" data-toggle="tab">Name searches</a>
+                                        </li>
+                                        <li class="nav-item">
+                                            <a class="nav-link" href="#updates" data-toggle="tab">Company/ Entity Registration</a>
+                                        </li>
+                                    </ul>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="card-body ">
+                            <div class="tab-content text-center">
+
+                                <div class="tab-pane active" id="home">
+                                    <div class="table-responsive">
+                                        <table class="table  table-mb table-hover" style="color:#0C2A46;">
+                                            <thead mt-5 mb-5 style="color:#0C2A46;">
+                                                <tr>
+                                                    <th style="color:#0C2A46">Ref no.</th>
+                                                    <th style="color:#0C2A46">Status</th>
+                                                    <th style="color:#0C2A46">Date submitted</th>
+                                                    <th style="color:#0C2A46">Action</th>
+                                                </tr>
+                                            </thead>
+                                            <tbody>
+                                                @if (ViewBag.nameSearches != null)
+                                                {
+                                                    @foreach (var nameSearch in ViewBag.nameSearches)
+                                                    {
+                                                        <tr>
+                                                            <td style="color:#0C2A46">@nameSearch.SearchRef</td>
+                                                            <td style="color:#0C2A46">@nameSearch.Satus</td>
+                                                            <td style="color:#0C2A46">@nameSearch.SearchDate</td>
+                                                            <td style="color:#0C2A46">
+                                                                <div class="btn-group pull-right">
+                                                                    @if (nameSearch.Satus == "Approved")
+                                                                    {
+                                                                        <a href="/Products/ConvertToCR6?nameRef=@nameSearch.search_ID" style="color:#0C2A46;text-decoration:underline">View CV4 </a>
+                                                                    }
+                                                                    else if (nameSearch.Satus == "Approved" && nameSearch.Payment == "Paid")
+                                                                    {
+
+                                                                        <a href="#" style="color:#0C2A46;text-decoration:underline">Register with name</a>
+                                                                        <span> </span>
+                                                                    }
+                                                                    else if (nameSearch.Satus == "Pending" && nameSearch.Payment == "Not paid")
+                                                                    {
+                                                                        <a href="/Products/Paynow" style="color:#0C2A46;text-decoration:underline">Pay for application</a>
+                                                                        <span> </span>
+                                                                    }
+                                                                </div>
+                                                            </td>
+                                                        </tr>
+                                                    }
+                                                }
+
+                                            </tbody>
+                                        </table>
+                                    </div>
+                                </div>
+                                <div class="tab-pane" id="updates">
+                                    <div class="table-responsive">
+                                        <table class="table  table-mb table-hover" style="color:#0C2A46;">
+                                            <thead mt-5 mb-5 style="color:#0C2A46;">
+                                                <tr>
+                                                    <th style="color:#0C2A46">Ref no.</th>
+                                                    <th style="color:#0C2A46">Status</th>
+                                                    <th style="color:#0C2A46">Date submitted</th>
+                                                    <th style="color:#0C2A46">Action</th>
+                                                </tr>
+                                            </thead>
+                                            <tbody>
+                                                @if (ViewBag.EntityApplications != null)
+                                                {
+                                                    @foreach (var Entity in ViewBag.EntityApplications)
+                                                    {
+                                                        <tr>
+                                                            <td> @Entity.companyInfo.Search_Ref</td>
+                                                            @if (Entity.companyInfo.HasQuery == 1)
+                                                            {
+                                                                <td class="text-danger">Has Query</td>
+                                                            }
+                                                            else
+                                                            {
+                                                                <td> @Entity.companyInfo.Status</td>
+                                                            }
+
+                                                            <td> @Entity.companyInfo.Date_Of_Application</td>
+                                                            <td>
+                                                                <div class="btn-group">
+                                                                    <a href="/Examination/@Entity.companyInfo.Application_Ref/detail" style="color:#0C2A46;text-decoration:underline">View More</a>
+                                                                </div>
+                                                            </td>
+                                                        </tr>
+
+                                                    }
+
+                                                }
+
+
+                                            </tbody>
+                                        </table>
+                                    </div>
+                                </div>
+                                <div class="tab-pane" id="history">
+                                    <p> I think that&#x2019;s a responsibility that I have, to push possibilities, to show people, this is the level that things could be at. I will be the leader of a company that ends up being worth billions of dollars, because I got the answers. I understand culture. I am the nucleus. I think that&#x2019;s a responsibility that I have, to push possibilities, to show people, this is the level that things could be at.</p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+
+                </div>
+            </div>
+
+
+        </div>
+
+        <div class="col-md-4 mt-3">
+            <div class="card">
+                <div class="card-header">
+                    <h4>Balance : $ @ViewBag.Balance</h4>
+                </div>
+
+                @if (ViewBag.credits.NameSearch > 0 || ViewBag.credits.PvtLimitedCompany > 0 || ViewBag.Payments.Count > 0)
+                {
+                    <div class="card-body">
+                        @if (ViewBag.credits.NameSearch > 0 || ViewBag.credits.PvtLimitedCompany > 0)
+                        {
+                            <ul class="list-group list-group-flush border-bottom border-gray">
+                                @if (ViewBag.credits.NameSearch > 0)
+                                {
+                                    <li class="list-group-item d-flex justify-content-between">
+                                        Name Search
+                                        <span>@ViewBag.credits.NameSearch</span>
+                                    </li>
+                                }
+                                @if (ViewBag.credits.PvtLimitedCompany > 0)
+                                {
+                                    <li class="list-group-item d-flex justify-content-between">
+                                        Private Limited Entity
+                                        <span>@ViewBag.credits.PvtLimitedCompany</span>
+                                    </li>
+                                }
+                            </ul>
+                        }
+
+                        @*if (ViewBag.Payments.Count > 0)
+                            {
+                                <table class="table  table-mb table-hover" style="color:#0C2A46;">
+                                    <thead mt-5 mb-5 style="color:#0C2A46;">
+                                        <tr>
+                                            <th style="color:#0C2A46">Date time</th>
+                                            <th style="color:#0C2A46">Description</th>
+                                            <th style="color:#0C2A46">Amount Debited</th>
+                                            <th style="color:#0C2A46">Amount Credited</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>*@
+                        @*@foreach (var payment in ViewBag.Payments)
+                                        {
+                                            <tr>
+                                                <td>@payment.Date</td>
+                                                <td>@payment.Description</td>
+                                                @if (@payment.AmountDr > 0)
+                                                {
+                                                    <td>@payment.AmountDr</td>
+                                                }
+                                                else
+                                                {
+                                                    <td>-</td>
+                                                }
+                                                @if (@payment.AmountCr > 0)
+                                                {
+                                                    <td>@payment.AmountCr</td>
+                                                }
+                                                else
+                                                {
+                                                    <td>-</td>
+                                                }
+
+                                            </tr>
+                                        }
+                                    </tbody>
+                                </table>
+                            }*@
+                    </div>
+                }
+
+
+                <div class="card-footer">
+                    <button class="btn btn-primary" data-toggle="modal" data-target="#name-search-modal">Topup</button>
+                    @if (@ViewBag.Balance > 0)
+                    {
+                        <button class="btn btn-primary" data-toggle="modal" data-target="#purchase-modal">Purchase credits</button>
+                    }
+                </div>
+            </div>
+        </div>
+
+        @if (ViewBag.Queries != null)
+        {
+    <div class="col-md-8 ml-1 mt-0">
+        <div class="card">
+            <h2 class="card-header"><strong>Queries</strong></h2>
+
+            <div class="card-body">
+                <div class="table">
+                    <table>
+                        <thead>
+                            <tr>
+                                <th>Reference No</th>
+                                <th>Query Comment</th>
+                                <th>Step </th>
+                                <th>Action</th>
+                            </tr>
+                        </thead>
+                        @foreach (Queries item in ViewBag.Queries)
+                        {
+                            <tbody>
+                                <tr>
+                                    <td>@item.applicationID</td>
+                                    <td>@item.comment</td>
+                                    <td>@item.tableName</td>
+                                    <td>
+                                        <a class="btn btn-info" asp-action="ResolveQuery" asp-controller="Queries" asp-route-id="@item.officeid" asp-route-step="@item.tableName" asp-route-applicationRef="@item.applicationRef" asp-route-applicationID="@item.applicationID">Resolve Query</a>
+                                        @*<a onclick="showInPopup('@Url.Action("ResolveQuery","Queries",new {id = item.officeid, step=item.tableName, applicationRef=item.applicationRef },Context.Request.Scheme)', 'Update Information')" class="btn btn-info text-white">Resolve Query</a>*@
+
+                                    </td>
+
+                                </tr>
+                            </tbody>
+                        }
+                    </table>
+                </div>
+            </div>
+        </div>
+    </div>
+
+
+                }
+
+
+
+
+            </div>
+        </div>
+    
+
+
+
+
+<div class="modal fade" id="name-search-modal" tabindex="-9" role="dialog" aria-labelledby="addContactLabel" aria-hidden="true" style="color:#0C2A46">
+    <form action="/Payments/MakePayment/Dashboard" method="post">
+        <div class="modal-dialog card" role="document">
+            <div class="modal-content">
+                <div class="card-header bg-white">
+                    <h4>Account Topup</h4>
+                </div>
+
+                <div class="modal-body">
+                    <div>
+                        <label style="color:#0C2A46">Email address</label>
+                        <input type="text" class="form-control" name="email" required>
+                    </div>
+                    <div>
+                        <label style="color:#0C2A46">Amount</label>
+                        <input type="text" class="form-control" name="amount" required>
+                    </div>
+                </div>
+
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-white" data-dismiss="modal" style="color:#0C2A46">Cancel</button>
+                    <button type="submit" class="btn" style="background-color:#0C2A46">Continue</button>
+                </div>
+            </div>
+        </div>
+    </form>
+</div>
+
+<div class="modal fade" id="purchase-modal" tabindex="-9" role="dialog" aria-labelledby="addContactLabel" aria-hidden="true" style="color:#0C2A46">
+    <form action="/Payments/PurchaseCredits/Dashboard" method="post">
+        <div class="modal-dialog card" role="document">
+            <div class="modal-content">
+                <div class="card-header bg-white">
+                    <h4>Purchase credits</h4>
+                </div>
+
+                <div class="modal-body">
+                    <div>
+                        <label style="color:#0C2A46">Select service</label>
+                        <select class="form-control" name="service">
+                            <option value="Name Search">NAME SEARCH</option>
+                            <option value="Private Limited Entity">PVT LIMITED COMPANY</option>
+                        </select>
+                    </div>
+                    <div>
+                        <label style="color:#0C2A46">Number of credits</label>
+                        <input type="text" class="form-control" name="numberOfCredits" required>
+                    </div>
+                </div>
+
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-white" data-dismiss="modal" style="color:#0C2A46">Cancel</button>
+                    <button type="submit" class="btn" style="background-color:#0C2A46">Continue</button>
+                </div>
+            </div>
+        </div>
+    </form>
+</div>

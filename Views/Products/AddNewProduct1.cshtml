@@ -1,0 +1,281 @@
+﻿@{
+    Layout = "_LayoutMain";
+}
+
+<style>
+    label {
+        color: rebeccapurple;
+        font-weight: 400;
+    }
+</style>
+
+
+<div class="container-fluid" style="color:#0C2A46">
+
+    <form action="/Products/AddNewProduct" method="post">
+        <input type="hidden" name="billercode" value="@ViewBag.billercode" />
+        <div class="row">
+            <div class="col-md-6 mt-3">
+                <div>
+                    <label style="color:#0C2A46">Select Business Type</label>
+                    <select class="form-control" name="Search_For" id="Search_For">
+                        <option value="PRIVATE LIMITED COMPANY">PRIVATE LIMITED COMPANY</option>
+                        <option value="PRIVATE BUSINESS CORPORATION">PRIVATE BUSINESS CORPORATION</option>
+                        <option value="PUBLIC COMPANY">PUBLIC COMPANY</option>
+                        <option value="COOPERATIVE">COOPERATIVE</option>
+                        <option value="ASSOCIATION">ASSOCIATION</option>
+                        <option value="PARTNERSHIP">PARTNERSHIP</option>
+                        <option value="JOINT VENTURE">JOINT VENTURE</option>
+                    </select>
+                </div>
+            </div>
+
+            @if (TempData["entityType"] != null)
+            {
+                <script>
+                    $('#Search_For').val('TempData["entityType"]');
+                </script>
+            }
+
+            <div class="col-md-6 mt-3">
+                <div>
+                    <label style="color:#0C2A46">Main objective</label>
+                    <input type="text" class="form-control" name="Brief" id="Brief" required>
+                </div>
+            </div>
+
+            @if (TempData["objective"] != null)
+            {
+                <script>
+                    $('#Brief').val('TempData["objective"]');
+                </script>
+            }
+
+            <div class="col-md-6 mt-3">
+                <div>
+                    <label style="color:#0C2A46">Designation</label>
+                    <select class="form-control" name="Desigination">
+                        <option value="COMPANY SECRETARY">COMPANY SECRETARY</option>
+                        <option value="DIRECTOR">DIRECTOR</option>
+                        <option value="MEMBER">MEMBER</option>
+                    </select>
+                </div>
+            </div>
+
+            <div class="col-md-6 mt-3">
+                <div>
+                    <label style="color:#0C2A46">Reason for search</label>
+                    <select class="form-control" name="Reason">
+                        <option value="NEW REGISTRATION">NEW REGISTRATION</option>
+                        <option value="ASSUMING ANOTHER NAME">ASSUMING ANOTHER NAME</option>
+                        <option value="FURTHER RESERVATION">FURTHER RESERVATION</option>
+                        <option value="CHANGE OF NAME">CHANGE OF NAME</option>
+                    </select>
+                </div>
+            </div>
+        </div>
+
+        <div class="card mb-5 mt-4" style="font-family: 'Ubuntu Condensed', sans-serif;">
+            <div class="card-header bg-white">
+                <p class="font-weight-bold" style="color:#0C2A46;font-family: 'Ubuntu Condensed', sans-serif;">Provide names in order of PRIORITY. The first available name will be reserved for the registration process of your entity.</p>
+            </div>
+            <div class="card-body">
+                <div class="row">
+                    <div class="col-md-6">
+                        <div class="row">
+                            <div class="col-md-8">
+                                <div>
+                                    <input type="text" class="form-control" name="name1" required onblur="checkForAvailability(1)" id="name1">
+                                    <label style="color:#0C2A46">Preferred name 1</label>
+                                </div>
+                            </div>
+                            <div class="col-md-4" id="availability1" style="font-family: 'Ubuntu Condensed', sans-serif;">
+
+                            </div>
+                        </div>
+
+                        <div class="row">
+                            <div class="col-md-8">
+                                <div>
+                                    <input type="text" class="form-control" name="name2" onblur="checkForAvailability(2)" id="name2">
+                                    <label style="color:#0C2A46">Preferred name 2</label>
+                                </div>
+                            </div>
+                            <div class="col-md-4" id="availability2" style="font-family: 'Ubuntu Condensed', sans-serif;">
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-md-8">
+                                <div>
+                                    <input type="text" class="form-control" name="name3" onblur="checkForAvailability(3)" id="name3">
+                                    <label style="color:#0C2A46">Preferred name 3</label>
+                                </div>
+                            </div>
+                            <div class="col-md-4" id="availability3" style="font-family: 'Ubuntu Condensed', sans-serif;">
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-md-6">
+                        <div class="row">
+                            <div class="col-md-8">
+                                <div>
+                                    <input type="text" class="form-control" name="name4" onblur="checkForAvailability(4)" id="name4">
+                                    <label style="color:#0C2A46">Preferred name 4</label>
+                                </div>
+                            </div>
+                            <div class="col-md-4" id="availability4" style="font-family: 'Ubuntu Condensed', sans-serif;">
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-md-8">
+                                <div>
+                                    <input type="text" class="form-control" name="name5" onblur="checkForAvailability(5)" id="name5">
+                                    <label style="color:#0C2A46">Preferred name 5</label>
+                                </div>
+                            </div>
+                            <div class="col-md-4" id="availability5" style="font-family: 'Ubuntu Condensed', sans-serif;">
+                            </div>
+                        </div>
+                        <div class="row">
+                            @*<div class="col-md-8">
+                                    <div>
+                                        <input type="text" class="form-control" name="name6" required onblur="checkForAvailability(6)" id="name6">
+                                        <label style="color:#0C2A46">Preferred name 6</label>
+                                    </div>
+                                </div>
+                                <div class="col-md-4" id="availability6" style="font-family: 'Ubuntu Condensed', sans-serif;">
+                                </div>*@
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="row mt-3 mb-3" s>
+            <div class="col-md-6 container-fluid ">
+                <div>
+                    <label style="color:#0C2A46">Justification</label>
+                    <input type="text" class="form-control" name="Justification" placeholder="Optional"></input>
+                </div>
+            </div>
+            <div class="col-md-6 container-fluid ">
+                <div>
+                    <label style="color:#0C2A46">Processing office</label>
+                    <select class="form-control" name="sortingOffice">
+                        <option value="Harare" selected>Harare</option>
+                        <option value="Bulawayo">Bulawayo</option>
+
+                    </select>
+                </div>
+            </div>
+        </div>
+
+        <div class="fa-pull-right mb-5 mt-2">
+            <button type="submit" class="btn btn-primary">
+                Continue
+            </button>
+        </div>
+    </form>
+</div>
+
+
+<style>
+    #typeddl {
+        min-width: 100px;
+    }
+</style>
+
+<script>
+    function checkForAvailability(a) {
+
+        var name1 = 'name';
+
+        var x = document.getElementById(name1 + a)
+        var name = x.value;
+        name = name.trim();
+
+        if (name.length >= 4) {
+            $.ajax({
+                type: "POST",
+                url: "/Products/CheckAvailbility",
+                data: {
+                    name: name
+                },
+                success: function (data) {
+                    var container = document.getElementById('availability' + a);
+                    while (container.hasChildNodes()) {
+                        container.removeChild(container.lastChild);
+                    }
+
+                    var msg = document.createElement('p');
+                    msg.style.fontFamily = '\'Ubuntu Condensed\', sans-serif';
+                    if (data.res === "ok") {
+                        msg.classList.add('text-success');
+                    } else {
+                        msg.classList.add('text-danger');
+                    }
+
+                    if (data.message === "Name Available") {
+                        msg.textContent = 'Name might be available';
+                    } else {
+                        msg.textContent = 'Name not available';
+                    }
+                    container.appendChild(msg);
+
+                },
+                error: function () {
+                    alert("error here");
+                },
+                completed: function () {
+                }
+            });
+        } else {
+            var container = document.getElementById('availability' + a);
+            while (container.hasChildNodes()) {
+                container.removeChild(container.lastChild);
+            }
+
+            var msg = document.createElement('p');
+            msg.style.fontFamily = '\'Ubuntu Condensed\', sans-serif';
+            msg.classList.add('text-warning');
+            msg.textContent = 'Name should contain four(4) or more characters';
+            container.appendChild(msg);
+        }
+        //console.log("inside if rema names rechi")
+        //console.log(name);
+        //$.ajax({
+        //    type: "POST",
+        //    url: "/Products/CheckAvailbility",
+        //    data: {
+        //        name: name
+        //    },
+        //    success: function (data) {
+        //        var container = document.getElementById('availability' + a);
+        //        while (container.hasChildNodes()) {
+        //            container.removeChild(container.lastChild);
+        //        }
+
+        //        var msg = document.createElement('p');
+        //        msg.style.fontFamily = '\'Ubuntu Condensed\', sans-serif';
+        //        if (data.res === "ok") {
+        //            msg.classList.add('text-success');
+        //        } else {
+        //            msg.classList.add('text-danger');
+        //        }
+
+        //        if (data.message === "Name Available") {
+        //            msg.textContent = 'Name might be available';
+        //        } else {
+        //            msg.textContent = 'Name not available';
+        //        }
+        //        container.appendChild(msg);
+
+        //    },
+        //    error: function () {
+        //        alert("error here");
+        //    },
+        //    completed: function () {
+        //    }
+        //});
+    };
+</script>

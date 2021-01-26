@@ -1,0 +1,90 @@
+﻿
+<style>
+    @*style the drop down select entries - datatables*@
+    .custom-select
+    {
+        height:30px!important;
+        width:50px!important;
+        margin-left:5px!important;
+    }
+    @*style the copy buttons- datatables*@
+    .dt-buttons
+    {
+        margin-left:4px!important;
+    }
+</style>
+
+
+<form method="get" action="/Enquiries/ListAllEnquiries">
+    <table>
+        <tr>
+            <td>From: </td>
+            <td><input type="text" class="form-control" name="date_from" id="date_from" style="padding-left:10px;" value="@ViewBag.date_from"></td>
+            <td>To: </td>
+            <td><input type="text" class="form-control" name="date_to" id="date_to" style="padding-left:10px;" value="@ViewBag.date_to"></td>
+            <td>
+                <button type="submit" class="btn btn-primary btn-sm">Filter</button>
+            </td>
+        </tr>
+    </table>
+</form>
+
+
+
+<div class="table-responsive">
+    <table class="table tblsm" id="datatable">
+        <thead>
+            <tr>
+                <th> Date </th>
+                <th> Payer Name </th>
+                <th> Phone Number </th>
+                <th> Action </th>
+            </tr>
+        </thead>
+        <tbody>
+            @if (ViewBag.enqs != null)
+            {
+                @foreach (var item in ViewBag.enqs)
+                {
+
+                    <tr class="@(bool.Parse(ViewBag.enq.isRead) ? "" : "table-active")">
+                        <td title="@ViewBag.enq.payerName"> @ViewBag.enq.payerName </td>
+                        <td title="@ViewBag.enq.phoneNumber"> @ViewBag.enq.phoneNumber </td>
+                        <td title="@(DateTime.Parse(ViewBag.enq.date.ToString()).ToString("yyyy-MM-dd"))"> @(DateTime.Parse(ViewBag.enq.date.ToString()).ToString("yyyy-MM-dd")) </td>
+                        <td>
+                            <a href="/Enquiries/ViewEnquiryDetails/@item.id" class="badge badge-dark">open</a>
+                        </td>
+                    </tr>
+                }
+            }
+        </tbody>
+    </table>
+</div>
+
+
+<script>
+    $("#date_from").Zebra_DatePicker({
+        format: 'Y-m-d',
+        icon_position: 'left'
+    });
+
+    $("#date_to").Zebra_DatePicker({
+        format: 'Y-m-d',
+        icon_position: 'left'
+    });
+
+    $('#datatable').DataTable({
+        select: true,
+        responsive: true,
+        dom: 'lBfrtip',
+        buttons: [
+            'copyHtml5',
+            'excelHtml5',
+            'csvHtml5',
+            'pdfHtml5'
+        ]
+    });
+
+
+</script>
+

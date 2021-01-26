@@ -1,0 +1,36 @@
+﻿@using BillerClientConsole.Models.QueryModel
+@model IEnumerable<Queries>
+
+
+
+@{ Layout = "_LayoutMain";
+                }
+
+<div class="card">
+    <h2 class="card-header"><strong class="text-danger"></strong>Application Submitted With Queries</h2>
+    <div class="card-body">
+        @if (Model.Any())
+        {
+        <table>
+            <thead>
+                <th>Comment</th>
+                <th>Step</th>
+                <th>Status</th>
+            </thead>
+            @foreach (var item in Model)
+            {
+                <tbody>
+                    <tr>
+                        <td>@item.comment</td>
+                        <td>@item.tableName</td>
+                        <td>@item.status</td>
+                    </tr>
+                </tbody>
+            }
+        </table>
+        }
+    </div>
+    <div class="card-footer">
+<button class="btn btn-primary" value="Ok"/>
+    </div>
+</div>
