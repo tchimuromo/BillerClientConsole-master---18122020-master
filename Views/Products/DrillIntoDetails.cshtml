@@ -215,11 +215,12 @@ else
                                 </table>
                             </div>
                             @*advanced pane*@
-                            <div class="tab-pane" id="advanced">
-                                <form method="post" action="">
-                                    <input type="text" class="form-control" id="myInput" onkeyup="myFunction()" placeholder="Search for names.." title="Type in a name">
-                                </form>
-                            </div>
+                        <div class="tab-pane" id="advanced">
+                            <form method="post" action="">
+                                <input type="text" class="form-control" id="myInput" onkeyup="myFunction()" placeholder="Search for names.." title="Type in a name">
+                            </form>
+                            <div id="response"></div>
+                        </div>
 
                         </div>
                     </div>
@@ -246,8 +247,11 @@ else
                                     'name': value
                                 },
                                 dataType: "text",
-                                success: function (msg) {
-                                    $('#response').val(search); 
+                                success: function (res) {
+                                    $.each(data.location, function (index, element) {
+                                        $('#response').append("<p id='response_" + index + "'> ID: " + element.ID + " Name: " + element.Name + "</p>");
+                                    });
+                                    console.log(data);
                                 }
                             });
                         }

@@ -1209,6 +1209,28 @@ namespace BillerClientConsole.Controllers
             return memoObjects;
         }
 
+        [HttpGet("ApplicationResubmission")]
+        public async Task<IActionResult> ApplicationResubmission()
+        {
+
+        }
+
+        [HttpGet("QueryCard/{applicationID}")]
+        public IActionResult QueryCard(string applicationID)
+        {
+            List<Queries> query = new List<Queries>();
+           
+                var query1 = context.Queries
+                    .Where(q => q.applicationID == applicationID && q.status == "Pending")
+                    .ToList();
+                foreach (var query1item in query1)
+                {
+                    query.Add(query1item);
+                }
+
+
+            return View(query);
+        }
 
 
         [HttpGet("ResolveQuery/{id}")]
@@ -1267,6 +1289,11 @@ namespace BillerClientConsole.Controllers
                var result= await client.PostAsJsonAsync($"{Globals.Globals.service_end_point}/UpdateRegisteredOffice", model);
                 if (result.IsSuccessStatusCode)
                 {
+                    var query = context.Queries.Where(e => e.officeid == model.OfficeId && e.status == "Pending");
+                    var queryObject = query.FirstOrDefault();
+                    queryObject.status = "Resolved";
+                    context.Queries.Update(queryObject);
+                    context.SaveChanges();
                     return RedirectToAction("Dashboard","Home");
                 }   
             }
