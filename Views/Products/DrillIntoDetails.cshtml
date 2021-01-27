@@ -226,23 +226,36 @@ else
                 </div>
             </div>
             <script type="text/javascript">
+
+                var searchRequest = null;
                 function myFunction() {
-                    $(".myInput").keyup(function () {
-                        var searchid = $(this).val();
-                        var dataString = 'search=' + searchid;
-                        if (searchid != '') {
-                            $.ajax({
-                                type: "POST",
-                                url: "upload.php",
-                                data: dataString,
-                                cache: false,
-                                success: function (html) {
-                                    $("#result").html(html).show();
+                   // alert("I am an alert box!");
+                    var minlength = 3;
+
+                    $("#myInput").keyup(function () {
+                        var that = this,
+                            value = $(this).val();
+
+                        if (value.length >= minlength) {
+                            if (searchRequest != null)
+                                searchRequest.abort();
+                            searchRequest = $.ajax({
+                                type: "GET",
+                                url: "/AdvancedSearch/Contains/",
+                                data: {
+                                    'name': value
+                                },
+                                dataType: "text",
+                                success: function (msg) {
+                                    $('#response').val(search); 
                                 }
                             });
                         }
-                        return false;
-                    };
+                    });
+                }
+            </script>
+
+
             </script>
 
 

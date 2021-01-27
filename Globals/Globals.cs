@@ -9,7 +9,7 @@ namespace BillerClientConsole.Globals
 {
     public class Globals
     {
-        public static string service_end_point = "https://localhost:44380";//"http://localhost/company"  ;; http://localhost:4430/
+        public static string service_end_point = "http://localhost:4430";//"http://localhost/company"  ;; http://localhost:4430/
         public static string searchApplicationID = "";
 
         public static string tempSearchNameId1 = "";
@@ -31,8 +31,12 @@ namespace BillerClientConsole.Globals
         //public static mCompany PrivateCompany = new mCompany();
 
         //missing apis test mode
-      //  string applicationId;
-   // public static string end_point_register_office= $"{service_end_point}​/PvtRegistration​/{Dto.applicationId}​/RegisterOffice";
+        //  string applicationId;
+        //Advanced search routes
+        public static string end_point_FilterNames = $"{service_end_point}/api/v1/FilterNames";
+
+
+        // public static string end_point_register_office= $"{service_end_point}​/PvtRegistration​/{Dto.applicationId}​/RegisterOffice";
         //reports
         //feedback
         public static string end_point_add_search = $"{service_end_point}/api/v1/postSearch";
