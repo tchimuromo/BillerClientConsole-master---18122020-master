@@ -282,57 +282,6 @@ namespace BillerClientConsole.Controllers
                 }
             }
         }
-
-        [HttpPost("MemberUrlDataSource")]
-        public IActionResult MemberUrlDataSource([FromBody] DataManagerRequest dm)
-        {
-            //if (members == null)
-            //    members = new List<MemberExaminerDto>();
-            //shareClause.Insert(0, value.Value);
-            //return Json(value);
-
-            IEnumerable DataSource = GetMemberObjects();
-            DataOperations operation = new DataOperations();
-            if (dm.Search != null && dm.Search.Count > 0)
-            {
-                DataSource = operation.PerformSearching(DataSource, dm.Search);  //Search
-            }
-            if (dm.Sorted != null && dm.Sorted.Count > 0) //Sorting
-            {
-                DataSource = operation.PerformSorting(DataSource, dm.Sorted);
-            }
-            if (dm.Where != null && dm.Where.Count > 0) //Filtering
-            {
-                DataSource = operation.PerformFiltering(DataSource, dm.Where, dm.Where[0].Operator);
-            }
-            int count = DataSource.Cast<MemberExaminerDto>().Count();
-            if (dm.Skip != 0)
-            {
-                DataSource = operation.PerformSkip(DataSource, dm.Skip);         //Paging
-            }
-            if (dm.Take != 0)
-            {
-                DataSource = operation.PerformTake(DataSource, dm.Take);
-            }
-            return dm.RequiresCounts ? Json(new { result = DataSource, count = count }) : Json(DataSource);
-        }
-
-        private List<MemberExaminerDto> GetMemberObjects()
-        {
-            if (members == null)
-                members = new List<MemberExaminerDto>();
-            int Count = members.Count();
-            return members;
-        }
-        [HttpPost("MemberCellEditInsert")]
-        public ActionResult MemberCellEditInsert([FromBody] CRUDModel<MemberExaminerDto> value)
-        {
-            if (members == null)
-                members = new List<MemberExaminerDto>();
-            if (value != null)
-                members.Insert(0, value.Value);
-            return Json(value);
-        }
         [HttpGet("ResolveShareClauseQuery")]
         public async Task<IActionResult> ResolveShareClauseQuery(string applicationID)
         {
@@ -697,7 +646,7 @@ namespace BillerClientConsole.Controllers
             NameOfficeResponse nameOffice = JsonConvert.DeserializeObject<NameOfficeResponse>(nameOfficeJson.ToString());
             ViewBag.NameOffice = nameOffice;
 
-         
+
 
             foreach (var clause in companyApplication.memo.LiabilityClause)
             {
@@ -1002,6 +951,155 @@ namespace BillerClientConsole.Controllers
             //ViewBag.datasource = order;
             return View();
         }
+        [HttpGet("QueryCard/{applicationID}")]
+        public IActionResult QueryCard(string applicationID)
+        {
+            List<Queries> query = new List<Queries>();
+
+            var query1 = context.Queries
+                .Where(q => q.applicationID == applicationID && q.status == "Pending")
+                .ToList();
+            foreach (var query1item in query1)
+            {
+                query.Add(query1item);
+            }
+
+
+            return View(query);
+        }
+
+
+        [HttpGet("ResolveQuery/{id}")]
+        [HttpGet("ResolveQuery/{applicationRef}")]
+        public async Task<IActionResult> ResolveQuery(string step, string applicationRef, string id = null, string applicationID = null)
+        {
+            var client = new HttpClient();
+            //Code to get Registered Office Details
+            if (step == "Step2")
+            {
+                var registeredOfficeExists = await client.GetAsync($"{Globals.Globals.service_end_point}/RegisteredOffice/{id}").Result.Content.ReadAsStringAsync();
+                var model = JsonConvert.DeserializeObject<RegisteredOffice>(registeredOfficeExists);
+                return View(model);
+            }
+            else if (step == "Step3")
+            {   //ViewBag.CompanyApplication = companyApplication;
+                // Redirecting to an another Action with the model data from database........
+                return RedirectToAction("ResolveMembersQuery", new { applicationID = applicationID });
+
+                ///return ResolveMembersQuery(companyApplication);
+            }
+            else if (step == "Step4")
+            {
+                return RedirectToAction("ResolveShareClauseQuery", new { applicationID = applicationID });
+            }
+
+
+            return NotFound();
+        }
+
+        [HttpPost("PostResolveQuery")]
+
+        public async Task<IActionResult> PostResolveQuery(RegisteredOffice model)
+        {
+            var client = new HttpClient();
+            if (ModelState.IsValid)
+            {
+                var result = await client.PostAsJsonAsync($"{Globals.Globals.service_end_point}/UpdateRegisteredOffice", model);
+                if (result.IsSuccessStatusCode)
+                {
+                    var query = context.Queries.Where(e => e.officeid == model.OfficeId && e.status == "Pending");
+                    var queryObject = query.FirstOrDefault();
+                    queryObject.status = "Resolved";
+                    context.Queries.Update(queryObject);
+                    context.SaveChanges();
+                    return RedirectToAction("Dashboard", "Home");
+                }
+            }
+            return View(model);
+        }
+
+        [HttpPost("ApplicationResubmission/{id}")]
+        public async Task ApplicationResubmission(string id)
+        {
+           
+            if (id != null)
+            {
+                HttpClient client = new HttpClient();
+                var queryExists = context.Queries.Where(query => query.applicationID == id && query.status == "Pending").ToList();
+                if(queryExists.Count > 0)
+                {
+                    HttpResponseMessage response = await client.PostAsJsonAsync($"{Globals.Globals.end_point_resubmit_application}/{id}", "");//Result.Content.ReadAsStringAsync()
+                    if (response.IsSuccessStatusCode)
+                    {
+                        return Ok();
+                        //return RedirectToAction("Dashboard", "Home");
+                    }
+                    return BadRequest();
+
+                }
+                else
+                {
+                    return RedirectToAction("", "");
+                }
+                
+            }
+            else
+            {
+                return BadRequest();
+            }
+            
+        }
+        [HttpPost("MemberUrlDataSource")]
+        public IActionResult MemberUrlDataSource([FromBody] DataManagerRequest dm)
+        {
+            //if (members == null)
+            //    members = new List<MemberExaminerDto>();
+            //shareClause.Insert(0, value.Value);
+            //return Json(value);
+
+            IEnumerable DataSource = GetMemberObjects();
+            DataOperations operation = new DataOperations();
+            if (dm.Search != null && dm.Search.Count > 0)
+            {
+                DataSource = operation.PerformSearching(DataSource, dm.Search);  //Search
+            }
+            if (dm.Sorted != null && dm.Sorted.Count > 0) //Sorting
+            {
+                DataSource = operation.PerformSorting(DataSource, dm.Sorted);
+            }
+            if (dm.Where != null && dm.Where.Count > 0) //Filtering
+            {
+                DataSource = operation.PerformFiltering(DataSource, dm.Where, dm.Where[0].Operator);
+            }
+            int count = DataSource.Cast<MemberExaminerDto>().Count();
+            if (dm.Skip != 0)
+            {
+                DataSource = operation.PerformSkip(DataSource, dm.Skip);         //Paging
+            }
+            if (dm.Take != 0)
+            {
+                DataSource = operation.PerformTake(DataSource, dm.Take);
+            }
+            return dm.RequiresCounts ? Json(new { result = DataSource, count = count }) : Json(DataSource);
+        }
+
+        private List<MemberExaminerDto> GetMemberObjects()
+        {
+            if (members == null)
+                members = new List<MemberExaminerDto>();
+            int Count = members.Count();
+            return members;
+        }
+        [HttpPost("MemberCellEditInsert")]
+        public ActionResult MemberCellEditInsert([FromBody] CRUDModel<MemberExaminerDto> value)
+        {
+            if (members == null)
+                members = new List<MemberExaminerDto>();
+            if (value != null)
+                members.Insert(0, value.Value);
+            return Json(value);
+        }
+       
 
         [HttpPost("AddNewProduct")]
         public async Task<IActionResult> AddProduct(postSearch product)
@@ -1208,59 +1306,7 @@ namespace BillerClientConsole.Controllers
 
             return memoObjects;
         }
-
-        [HttpGet("ApplicationResubmission")]
-        public async Task<IActionResult> ApplicationResubmission()
-        {
-
-        }
-
-        [HttpGet("QueryCard/{applicationID}")]
-        public IActionResult QueryCard(string applicationID)
-        {
-            List<Queries> query = new List<Queries>();
-           
-                var query1 = context.Queries
-                    .Where(q => q.applicationID == applicationID && q.status == "Pending")
-                    .ToList();
-                foreach (var query1item in query1)
-                {
-                    query.Add(query1item);
-                }
-
-
-            return View(query);
-        }
-
-
-        [HttpGet("ResolveQuery/{id}")]
-        [HttpGet("ResolveQuery/{applicationRef}")]
-        public async Task<IActionResult> ResolveQuery( string step, string applicationRef, string id=null, string applicationID=null)
-        {
-            var client = new HttpClient();
-            //Code to get Registered Office Details
-            if (step == "Step2")
-            {
-                var registeredOfficeExists = await client.GetAsync($"{Globals.Globals.service_end_point}/RegisteredOffice/{id}").Result.Content.ReadAsStringAsync();
-                var model = JsonConvert.DeserializeObject<RegisteredOffice>(registeredOfficeExists);
-                return View(model);
-            }
-            else if (step == "Step3")
-            {   //ViewBag.CompanyApplication = companyApplication;
-                // Redirecting to an another Action with the model data from database........
-                return RedirectToAction("ResolveMembersQuery", new { applicationID = applicationID });
-                
-                ///return ResolveMembersQuery(companyApplication);
-            }
-            else if (step == "Step4")
-            {
-                return RedirectToAction("ResolveShareClauseQuery", new { applicationID=applicationID});
-            }
-
-                   
-            return NotFound();
-        }
-
+                      
         [HttpPost("AddCompanyMemorandum")]
         public async Task<ActionResult> AddCompanyMemorandumAsync(MemoViewModel model)
       {
@@ -1279,25 +1325,6 @@ namespace BillerClientConsole.Controllers
             
         }
 
-        [HttpPost("PostResolveQuery")]
-
-        public async Task<IActionResult> PostResolveQuery(RegisteredOffice model)
-        {
-            var client = new HttpClient();
-            if (ModelState.IsValid)
-            {
-               var result= await client.PostAsJsonAsync($"{Globals.Globals.service_end_point}/UpdateRegisteredOffice", model);
-                if (result.IsSuccessStatusCode)
-                {
-                    var query = context.Queries.Where(e => e.officeid == model.OfficeId && e.status == "Pending");
-                    var queryObject = query.FirstOrDefault();
-                    queryObject.status = "Resolved";
-                    context.Queries.Update(queryObject);
-                    context.SaveChanges();
-                    return RedirectToAction("Dashboard","Home");
-                }   
-            }
-            return View(model);
-        }
+        
     }
 }
