@@ -79,6 +79,7 @@ namespace BillerClientConsole.Models
         public string ExaminerTaskId { get; set; }
 
         public int HasQuery { get; set; }
+        public int QueryCount { get; set; }
 
         public string Comment { get; set; }
 

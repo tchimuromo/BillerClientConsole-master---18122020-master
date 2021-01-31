@@ -152,6 +152,7 @@ namespace BillerClientConsole.Globals
         public static string end_point_post_update_companyinfo = $"{service_end_point}/api/v1/UpdateCompanyInfo";// update company info queries
         public static string end_point_resolveQuery_companyinfo = $"{service_end_point}/api/v1/ResolveQuery";// update company info queries
         public static string end_point_Update_memoInfo = $"{service_end_point}/UpdateMemoOfArticles";// update company info queries
+        public static string end_point_resubmit_application = $"{service_end_point}/CompanyApplicationResubmission";// Resubmit Company Application
 
 
 

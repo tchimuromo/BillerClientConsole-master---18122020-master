@@ -219,7 +219,25 @@ else
                             <form method="post" action="">
                                 <input type="text" class="form-control" id="myInput" onkeyup="myFunction()" placeholder="Search for names.." title="Type in a name">
                             </form>
-                            <div id="response"></div>
+
+                            <div class="tab-pane" id="messages">
+                                <table class="table  table-mb table-hover">
+                                    <thead mt-5 mb-5>
+                                        <tr>
+                                            <th style="color:#0C2A46">Name</th>
+                                            <th style="color:#0C2A46">Search Id</th>
+                                            <th style="color:#0C2A46">Status</th>
+                                            <th style="color:#0C2A46">Name Id</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody id="youdividb"></tbody>
+                                </table>
+                            </div>
+
+                            <div id="yourdivid"></div>
+
+
+                            
                         </div>
 
                         </div>
@@ -238,20 +256,44 @@ else
                             value = $(this).val();
 
                         if (value.length >= minlength) {
+                            var word = $("#myInput").val();
+                            //alert(str);
                             if (searchRequest != null)
                                 searchRequest.abort();
                             searchRequest = $.ajax({
                                 type: "GET",
                                 url: "/AdvancedSearch/Contains/",
                                 data: {
-                                    'name': value
+                                    name: word
                                 },
-                                dataType: "text",
-                                success: function (res) {
-                                    $.each(data.location, function (index, element) {
-                                        $('#response').append("<p id='response_" + index + "'> ID: " + element.ID + " Name: " + element.Name + "</p>");
+                                dataType: "json",
+                                success: function (data) {
+                                    var html_to_append = '';
+                                    $.each(data.data, function (i, item) {
+                                        html_to_append +=
+                                            console.log(data);
+                                        data.data.forEach(name => addToRow(name));
+
+                                        $("#yourdivid").append(document.createTextNode(item.name));
+                                        //
+                                       // $("#resultstat").append(document.html_to_append("<br>"));
+                                       
+                                        
                                     });
-                                    console.log(data);
+
+
+                                   /* $.each(data, function (key, value) {
+                                        html += '<tr>';
+                                        html += '<td>' + value.name + '</td>';
+                                        html += '<td>' + value.status + '</td>';
+                                        
+                                        html += '</tr>';
+                                    });
+                                    $('table tbody').html(html);*/
+                                    //$.each(data.location, function (index, element) {
+                                    //    $('#response').append("<p id='response_" + index + "'> ID: " + element.ID + " Name: " + element.Name + "</p>");
+                                    //});
+                                   // console.log(data);
                                 }
                             });
                         }
@@ -260,7 +302,7 @@ else
             </script>
 
 
-            </script>
+
 
 
             <div class="modal-footer">
