@@ -32,7 +32,7 @@ namespace BillerClientConsole.Models
             if (!optionsBuilder.IsConfigured)
             {
 
-                optionsBuilder.UseSqlServer("Server=DEEDSAPP\\SQLEXPRESS2;Database=stanchart_simba_biller_console;User Id=sa;Password=Password123;");
+                optionsBuilder.UseSqlServer("Server=DESKTOP-Q6TP3P1\\SQLEXPRESS;Database=stanchart_simba_biller_console;User Id=sa;Password=Password123;");
             }
         }
 

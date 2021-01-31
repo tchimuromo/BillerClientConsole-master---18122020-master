@@ -46,11 +46,11 @@ namespace BillerClientConsole.Controllers
             {
                 var paynow = new Paynow("10057", "5220513d-580d-402e-8eb4-abceff3efae5");
 
-          
-                paynow.ResultUrl = "https://deedsapp.ttcsglobal.com/Paynow/Result";
-                paynow.ReturnUrl = $"https://deedsapp.ttcsglobal.com/Payments/Response/{redirect}";
-                //paynow.ResultUrl = "http://localhost:2015/Paynow/Result";
-                //paynow.ReturnUrl = $"http://localhost:2015/Payments/Response/{redirect}";
+
+                //paynow.ResultUrl = "https://deedsapp.ttcsglobal.com/Paynow/Result";
+                //paynow.ReturnUrl = $"https://deedsapp.ttcsglobal.com/Payments/Response/{redirect}";
+                paynow.ResultUrl = "http://localhost:2015/Paynow/Result";
+                paynow.ReturnUrl = $"http://localhost:2015/Payments/Response/{redirect}";
 
                 var payment = paynow.CreatePayment(Guid.NewGuid().ToString(), Email);
                 payment.Add("Account Topup", Amount);

@@ -179,7 +179,7 @@ namespace BillerClientConsole.Controllers
                     try
                     {
                         //This is my connection string i have assigned the database file address path  
-                        string MyConnection2 = "Server=DEEDSAPP\\SQLEXPRESS2;Database=stanchart_simba_biller_console;User Id=sa;Password=Password123;";
+                        string MyConnection2 = "Server=DESKTOP-Q6TP3P1\\SQLEXPRESS;Database=stanchart_simba_biller_console;User Id=sa;Password=Password123;";
                         //This is my insert query in which i am taking input from the user through windows forms  
                         //string Query = "insert into student.studentinfo(idStudentInfo,Name,Father_Name,Age,Semester) values('" + this.IdTextBox.Text + "','" + this.NameTextBox.Text + "','" + this.FnameTextBox.Text + "','" + this.AgeTextBox.Text + "','" + this.SemesterTextBox.Text + "');";
                         string Query = "UPDATE AspNetUsers SET Role ='"+ role +"' WHERE Id = '" + userid +"'";

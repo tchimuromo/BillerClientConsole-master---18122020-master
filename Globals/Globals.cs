@@ -9,7 +9,7 @@ namespace BillerClientConsole.Globals
 {
     public class Globals
     {
-        public static string service_end_point =  "http://localhost:4430";//"http://localhost/company"  ;; http://localhost:4430/"https://localhost:44380";//
+        public static string service_end_point = "http://localhost:800";//  "http://localhost:4430";//"http://localhost/company"  ;; http://localhost:4430/"https://localhost:44380";//
         public static string searchApplicationID = "";
 
         public static string tempSearchNameId1 = "";
@@ -144,7 +144,7 @@ namespace BillerClientConsole.Globals
         public static string end_point_assign_company_for_examination = $"{service_end_point}/api/v1/AssignCompanyForExamination";
         public static string end_point_get_company_application_by_application_ref = $"{service_end_point}/api/v1/GetCompanyApplicationByApplicationRef";
 
-        //Examination endpoints..
+        //Queries endpoints..
         public static string end_point_post_address_has_query = $"{service_end_point}/api/v1/PostAddressHasQuery";
         public static string end_point_post__has_query = $"{service_end_point}/api/v1/PostHasQuery";// End point for queries
         public static string end_point_get_queries = $"{service_end_point}/api/v1/GetApplicationQueries";// End point to get all queries
@@ -152,6 +152,7 @@ namespace BillerClientConsole.Globals
         public static string end_point_post_update_companyinfo = $"{service_end_point}/api/v1/UpdateCompanyInfo";// update company info queries
         public static string end_point_resolveQuery_companyinfo = $"{service_end_point}/api/v1/ResolveQuery";// update company info queries
         public static string end_point_Update_memoInfo = $"{service_end_point}/UpdateMemoOfArticles";// update company info queries
+        public static string end_point_resubmit_application = $"{service_end_point}/CompanyApplicationResubmission";// Resubmit Company Application
 
 
 
