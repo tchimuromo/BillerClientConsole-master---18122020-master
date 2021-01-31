@@ -83,60 +83,6 @@ namespace BillerClientConsole.Controllers
                 return RedirectToAction("ExaminerTasks");
             }
 
-            //var user = db.AspNetUsers.Where(i => i.Email == User.Identity.Name).FirstOrDefault();
-            //var client = new HttpClient();
-            //var res = await client.GetAsync($"{Globals.Globals.end_point_get_company_applications}").Result.Content.ReadAsStringAsync();
-            //db.Dispose();
-            //dynamic json_data = JsonConvert.DeserializeObject(res);
-
-            //var data = json_data.data.value;
-            //List<mCompany> enqs = JsonConvert.DeserializeObject<List<mCompany>>(data.ToString());
-
-
-            //List<mCompanyInfor> Summary = new List<mCompanyInfor>();
-            //int p = 1;
-
-            //foreach (mCompany item in enqs)
-            //{
-            //    mCompanyInfor items = new mCompanyInfor();
-
-            //    items.Application_Ref = item.CompanyInfo.Application_Ref;
-            //    items.RegNumber = item.CompanyInfo.RegNumber;
-            //    items.AppliedBy = item.CompanyInfo.AppliedBy;
-            //    items.Name = item.CompanyInfo.Name;
-            //    items.No_Of_Directors = item.CompanyInfo.No_Of_Directors;
-            //    //items.Objective = item.CompanyInfo.Objective;
-            //    items.Date_Of_Application = item.CompanyInfo.Date_Of_Application;
-            //    items.Type = item.CompanyInfo.Type;
-            //    items.Status = item.CompanyInfo.Status;
-
-            //    Summary.Add(items);
-            //    if (p ==3 )
-            //    {
-            //        //break;
-            //    }
-            //    p++;
-            //}
-
-            //List<mCompanyInfor> rejesteredCompanies = Summary.Where(q => q.AppliedBy == user.UserName).ToList();
-            //List<mCompanyInfor> pendingCompanies = Summary.Where(q => q.Status == "Pending").ToList();
-            //ViewBag.title = "Summary of Companies";
-            //ViewBag.datasource = rejesteredCompanies;
-            //ViewBag.companyApplication = pendingCompanies;
-
-            //var resp = await client.GetAsync($"{Globals.Globals.end_point_get_name_searches_by_user_v1}?UserID={user.Email}").Result.Content.ReadAsStringAsync();
-            //json_data = JsonConvert.DeserializeObject(resp);
-
-            //data = json_data.data.value;
-            //List<mSearch> nameSearches = JsonConvert.DeserializeObject<List<mSearch>>(data.ToString());
-            //List<mSearchInfo> nameSearchSummary = new List<mSearchInfo>();
-
-            //foreach(mSearch search in nameSearches)
-            //{
-            //    nameSearchSummary.Add(search.searchInfo);
-            //}
-
-            //ViewBag.nameSearches = nameSearchSummary;
             var resp = await client.GetAsync($"{Globals.Globals.end_point_get_name_searches_by_user_v1}?UserID={user.UserName}").Result.Content.ReadAsStringAsync();
 
             dynamic json_data = JsonConvert.DeserializeObject(resp);

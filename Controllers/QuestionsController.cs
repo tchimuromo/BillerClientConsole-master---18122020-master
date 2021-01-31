@@ -1586,7 +1586,10 @@ namespace BillerClientConsole.Controllers
 
 
 
-               
+                //Code to do Query Verification on the incoming ApplicationId
+                //var result = await client.GetAsync($"{Globals.Globals.end_point_get_queries}").Result.Content.ReadAsStringAsync();
+                //// var res= result.Content.ReadAsStringAsync();
+                //var queries = JsonConvert.DeserializeObject<IEnumerable<mQuery>>(result).ToList();
                 var response = await client.PostAsJsonAsync<string>($"{Globals.Globals.service_end_point}/PvtRegistration/{applicationId}/Approve", user.Email).Result.Content.ReadAsStringAsync();
                 return Ok();
             }
