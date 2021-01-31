@@ -39,11 +39,12 @@
                         <div class="input-group form-group">
                             <input type="text" class="form-control" id="shareClause" name="shareClo" value="@ViewBag.Share_share" >
                             <input type="hidden" name="applicationRef" id="applicationRef" value="@ViewBag.ApplicationRef"/>
+                            <input type="hidden" name="applicationId" id="applicationId" value="@ViewBag.applicationID"/>
                         </div>
                     </div>
 
                     <div class="form-group">
-                        <input type="submit" value="Update" class="btn btn-info" /> @*onclick="submitMemo()"*@
+                        <button onclick="UpdateShareClauseQuery(@ViewBag.ApplicationId)" value="Update" class="btn btn-info" /> @*onclick="submitMemo()"*@
                     </div>
                    
 
@@ -55,6 +56,20 @@
 
 </div>
 <script type="text/javascript">
+
+    function UpdateShareClauseQuery(applicationId) {
+        $.ajax({
+            type: 'GET',
+            url: '/Queries/UpdateShareClause/' + applicationId,
+            success: function (data) {
+               // alert("Query Resolved");
+                window.location = '/Queries/QueryCard/' + applicationId;
+            },
+            error: function (err) {
+                alert(err);
+            }
+        })
+    }
     function submitMemo() {
         $.ajax({
             type: "POST",
