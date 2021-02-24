@@ -53,7 +53,7 @@ namespace BillerClientConsole.Controllers
 
             CompanyApplicationForRewiew companyApplication = JsonConvert.DeserializeObject<CompanyApplicationForRewiew>(json_dataa.ToString());
             ViewBag.CompanyApplication = companyApplication;
-
+            ViewBag.email = companyApplication.office.EmailAddress;
 
             //displaying Queries for the client user
             List<Queries> query = new List<Queries>();

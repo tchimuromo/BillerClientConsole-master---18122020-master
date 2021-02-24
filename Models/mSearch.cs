@@ -65,12 +65,22 @@ namespace BillerClientConsole.Models
     public class postSearch
     {
         public string Search_For { get; set; }
+        public string search_id { get; set; }
         public string Brief { get; set; }
         public string Justification { get; set; }
         public string sortingOffice { get; set; }
         public string Desigination { get; set; }
         public string Reason { get; set; }
         public string name1 { get; set; }
+
+        public string tempSearchNameId1 { get; set; }
+        public string tempSearchNameId2 { get; set; }
+        public string tempSearchNameId3 { get; set; }
+        public string tempSearchNameId4 { get; set; }
+        public string tempSearchNameId5 { get; set; }
+        public string tempSearchNameId6 { get; set; }
+        public string tempSearchId1 { get; set; }
+
         public string name2 { get; set; }
         public string name3 { get; set; }
         public string name4 { get; set; }

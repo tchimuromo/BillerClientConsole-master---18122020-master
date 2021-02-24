@@ -111,6 +111,7 @@
                                                     <th style="color:#0C2A46">Ref no.</th>
                                                     <th style="color:#0C2A46">Status</th>
                                                     <th style="color:#0C2A46">Date submitted</th>
+                                                    <th style="color:#0C2A46">Expiry date</th>
                                                     <th style="color:#0C2A46">Action</th>
                                                 </tr>
                                             </thead>
@@ -119,30 +120,37 @@
                                                 {
                                                     @foreach (var nameSearch in ViewBag.nameSearches)
                                                     {
-                                                        <tr>
-                                                            <td style="color:#0C2A46">@nameSearch.SearchRef</td>
-                                                            <td style="color:#0C2A46">@nameSearch.Satus</td>
-                                                            <td style="color:#0C2A46">@nameSearch.SearchDate</td>
-                                                            <td style="color:#0C2A46">
-                                                                <div class="btn-group pull-right">
-                                                                    @if (nameSearch.Satus == "Approved")
-                                                                    {
-                                                                        <a href="/Products/ConvertToCR6?nameRef=@nameSearch.search_ID" style="color:#0C2A46;text-decoration:underline">View CV4 </a>
+                                                <tr>
+                                                    <td style="color:#0C2A46">@nameSearch.SearchRef</td>
+                                                    <td style="color:#0C2A46">@nameSearch.Satus</td>
+                                                    <td style="color:#0C2A46">@nameSearch.SearchDate</td>
+                                                    @if (nameSearch.Satus == "Approved")
+                                                    {
+                                                <td style="color:red">
+                                                   
+                                                    @DateTime.Parse(nameSearch.ApprovedDate).AddDays(30);
+                                                </td>
                                                                     }
-                                                                    else if (nameSearch.Satus == "Approved" && nameSearch.Payment == "Paid")
-                                                                    {
+                                                    <td style="color:#0C2A46">
+                                                        <div class="btn-group pull-right">
+                                                            @if (nameSearch.Satus == "Approved")
+                                                            {<ul>
+                                                                <li> <a href="/Products/ConvertToCR6?nameRef=@nameSearch.search_ID" style="color:#0C2A46;text-decoration:underline">View CV4 </a></li>
+                                                                <li></li>
+                                                                </ul>
+                                                                }
+                                                                else if (nameSearch.Satus == "Approved" && nameSearch.Payment == "Paid")
+                                                                {
 
-                                                                        <a href="#" style="color:#0C2A46;text-decoration:underline">Register with name</a>
-                                                                        <span> </span>
-                                                                    }
-                                                                    else if (nameSearch.Satus == "Pending" && nameSearch.Payment == "Not paid")
-                                                                    {
-                                                                        <a href="/Products/Paynow" style="color:#0C2A46;text-decoration:underline">Pay for application</a>
-                                                                        <span> </span>
-                                                                    }
-                                                                </div>
-                                                            </td>
-                                                        </tr>
+                                                                <a href="#" style="color:#0C2A46;text-decoration:underline">Register with name</a>
+                                                                <span> </span> }
+                                                                else if (nameSearch.Satus == "Pending" && nameSearch.Payment == "Not paid")
+                                                                {
+                                                                <a href="/Products/Paynow" style="color:#0C2A46;text-decoration:underline">Pay for application</a>
+                                                                <span> </span>}
+                                                            </div>
+                                                    </td>
+                                                </tr>
                                                     }
                                                 }
 

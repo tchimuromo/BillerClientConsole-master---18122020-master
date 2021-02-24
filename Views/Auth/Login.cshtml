@@ -1,6 +1,4 @@
-﻿@{
-    Layout = "../Shared/_LayoutAuth";
-}
+﻿@{ Layout = "../Shared/_LayoutAuth"; }
 
 <div class="row no-gutters flex-row-reverse ht-100v">
     <div class="col-md-6 bg-gray-200 d-flex align-items-center justify-content-center">
@@ -12,13 +10,13 @@
                     <span class="input-group-addon bg-primary tx-white bd-primary">
                         <i class="icon ion-person tx-16 lh-0 op-6"></i>
                     </span>
-                    <input type="email" name="email" class="form-control" placeholder="Enter your email">
+                    <input type="email" name="email" class="form-control" required placeholder="Enter your email">
                 </div><!-- form-group -->
                 <div class="form-group input-group">
                     <span class="input-group-addon bg-success tx-white brand-success">
                         <i class="icon ion-key tx-16 lh-0 op-6"></i>
                     </span>
-                    <input type="password" name="password" class="form-control" placeholder="Enter your password">
+                    <input type="password" name="password" class="form-control" required placeholder="Enter your password">
 
                 </div><!-- form-group -->
                 <button type="submit" class="btn btn-info btn-block">Sign In</button>
@@ -42,8 +40,8 @@
                     bottom: 30px;
                     font-size: 17px;
                 }
-                    #snackbarb.show {
 
+                    #snackbarb.show {
                         visibility: visible;
                         -webkit-animation: fadein 0.5s, fadeout 0.5s 2.5s;
                         animation: fadein 0.5s, fadeout 0.5s 2.5s;
@@ -262,7 +260,7 @@
             <script src="https://ajax.googleapis.com/ajax/libs/jquery/2.1.1/jquery.min.js"></script>
             @*<a type="hidden" onclick="snackBar()">@TempData["error"]</a>*@
             @*<a type="hidden" onclick="snackBarb()"> @TempData["flash"]</a>
-            <a type="hidden" onclick="snackBarc()">@TempData["message"]</a>*@
+                <a type="hidden" onclick="snackBarc()">@TempData["message"]</a>*@
 
             <div id="snackbar">@TempData["error"].</div>
             <div id="snackbarb">@TempData["error"]</div>
@@ -275,75 +273,72 @@
             @{ var fail = "1";}
             @if (TempData["flash"] == "1")
             {
-                <script>
+<script>
 
-                    $(document).ready(function () {
-                        setTimeout(function () {
-                            var x = document.getElementById("snackbarb");
-                            x.className = "show";
-                            setTimeout(function () { x.className = x.className.replace("show", ""); }, 3000);
-                        }, 500)
-                    });
+    $(document).ready(function () {
+        setTimeout(function () {
+            var x = document.getElementById("snackbarb");
+            x.className = "show";
+            setTimeout(function () { x.className = x.className.replace("show", ""); }, 3000);
+        }, 500)
+    });
 
-                </script>
-            }
+</script> }
             else if (TempData["flash"] == "2")
             {
 
-                <script>
+<script>
 
-                    $(document).ready(function () {
-                        setTimeout(function () {
-                            var x = document.getElementById("snackbar");
-                            x.className = "show";
-                            setTimeout(function () { x.className = x.className.replace("show", ""); }, 3000);
-                        }, 500)
-                    });
+    $(document).ready(function () {
+        setTimeout(function () {
+            var x = document.getElementById("snackbar");
+            x.className = "show";
+            setTimeout(function () { x.className = x.className.replace("show", ""); }, 3000);
+        }, 500)
+    });
 
-                </script>
-            }
+</script> }
             else if (TempData["Message"] == "welcome")
             {
 
-                <script>
+<script>
 
-                    $(document).ready(function () {
-                        setTimeout(function () {
-                            var x = document.getElementById("snackbarc");
-                            x.className = "show";
-                            setTimeout(function () { x.className = x.className.replace("show", ""); }, 3000);
-                        }, 500)
-                    });
+    $(document).ready(function () {
+        setTimeout(function () {
+            var x = document.getElementById("snackbarc");
+            x.className = "show";
+            setTimeout(function () { x.className = x.className.replace("show", ""); }, 3000);
+        }, 500)
+    });
 
-                </script>
-            }
+</script> }
             else
             {
 
-                <script>
+<script>
 
-                    $(document).ready(function () {
-                        setTimeout(function () {
-                            var x = document.getElementById("snackbarc");
-                            x.className = "show";
-                            setTimeout(function () { x.className = x.className.replace("show", ""); }, 3000);
-                        }, 500)
-                    });
+    $(document).ready(function () {
+        setTimeout(function () {
+            var x = document.getElementById("snackbarc");
+            x.className = "show";
+            setTimeout(function () { x.className = x.className.replace("show", ""); }, 3000);
+        }, 500)
+    });
 
-                </script>
-            }
+</script>}
 
 
 
             <div class="mg-t-60 tx-center">
-                Not yet a member?   <a href="#" class="btn btn-primary tx-11 tx-uppercase pd-y-12 pd-x-25 tx-mont tx-medium" data-toggle="modal" data-target="#modaldemo3">Sign Up</a>
+                Not yet a member?   <a href="#" class="btn btn-primary tx-11 tx-uppercase pd-y-12 pd-x-25 tx-mont tx-medium" data-toggle="modal" data-target="#CitizenSelector">Sign Up</a>
             </div>
         </div><!-- login-wrapper -->
     </div><!-- col -->
     <div class="col-md-6 bg-white d-flex align-items-center justify-content-center">
         <div class="wd-250 wd-xl-450 mg-y-30">
-            <div class="signin-logo tx-28 tx-bold tx-inverse"><span class="tx-normal">[</span>  <span class="tx-info">DCIP</span> <span class="tx-normal">]</span></div>
-            <div class="tx-gray-600 mg-b-60">DEPARTMENT OF DEEDS, COMPANIES AND INTELLECTUAL PROPERTIES</div>
+            <br />
+            <div class="signin-logo tx-28 tx-bold tx-inverse"><span class="tx-normal"></span>  <span class="tx-info ml-5">COMPANIES OFFICE ZIMBABWE</span> <span class="tx-normal"></span></div>
+            <div class="tx-gray-600 mg-b-60"></div>
 
 
             <img src="~/landing/img/logo.png" style="width:100%">
@@ -355,6 +350,30 @@
 <script>
     $("#f1").validate();
 </script>
+
+@*Citizen Selection Modal*@
+
+<div id="CitizenSelector" class="modal fade">
+    <div class="modal-dialog modal-lg" role="document">
+        <div class="modal-content" style="width:640px;">
+
+            <button type="button" class="close ml-auto" data-dismiss="modal" aria-label="Close">
+                <span aria-hidden="true">&times;</span>
+            </button>
+
+            <div class="modal-body">
+                <button class="btn btn-success btn-lg" style="width:300px;" data-toggle="modal" href="#modaldemo3">Citizen</button>
+                <button class="btn btn-primary btn-lg" style="width:300px;" data-toggle="modal" href="#modalforeigner">Foreigner</button>
+            </div>
+            @*<div class="modal-footer">
+                    <button type="button" class="btn btn-primary">Save changes</button>
+                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                </div>*@
+        </div>
+    </div>
+</div>
+
+
 
 <!-- LARGE MODAL -->
 <div id="modaldemo3" class="modal fade">
@@ -370,29 +389,44 @@
                 <form action="/Auth/Register" method="post">
                     <div class="form-layout form-layout-1">
                         <div class="row mg-b-25">
+                            @*<div class="col-lg-6">
+                                    <div class="form-group d-inline">
+                                        <label class="form-control-label">Foreigner <span class="tx-danger">*</span></label>
+                                        <input class="form-control" type="checkbox" id="foreignerCheck">
+
+                                    </div>
+                                </div>
+                                <div class="col-lg-6">
+                                    <div class="form-group d-inline">
+                                        <label class="form-control-label">Citizen <span class="tx-danger">*</span></label>
+                                        <input class="form-control" type="checkbox" id="citizenCheck">
+                                    </div>
+                                </div>*@
+
                             <div class="col-lg-6">
                                 <div class="form-group">
                                     <label class="form-control-label">Firstname: <span class="tx-danger">*</span></label>
-                                    <input class="form-control" type="text" name="firstname" placeholder="Firstname">
+                                    <input class="form-control" type="text" name="firstname" required placeholder="Firstname">
                                 </div>
                             </div><!-- col-4 -->
                             <div class="col-lg-6">
                                 <div class="form-group">
                                     <label class="form-control-label">Lastname: <span class="tx-danger">*</span></label>
-                                    <input class="form-control" type="text" name="lastname" placeholder="Lastname">
+                                    <input class="form-control" type="text" name="lastname" required placeholder="Lastname">
                                     <input class="form-control" type="hidden" name="role" value="3" placeholder="Enter lastname"> @*role*@
                                 </div>
                             </div><!-- col-4 -->
                             <div class="col-lg-4">
                                 <div class="form-group">
-                                    <label class="form-control-label">National ID/ Passport Number: <span class="tx-danger">*</span></label>
-                                    <input class="form-control" type="text" name="natid" placeholder="National ID / Passport Number">
+                                    <label class="form-control-label">National ID: <span class="tx-danger">*</span></label>
+                                  
+                                    <input class="form-control" type="text" required pattern="(^\d{2}) (\d{4,7}) ([A-Z-a-z]{1} (\d{2}$))|(^\d{2})-(\d{4,7})-([A-Z-a-z]{1}-(\d{2}$))" title="69-235489-C-67" name="natid" placeholder="National ID ">
                                 </div>
                             </div><!-- col-4 -->
                             <div class="col-lg-8">
                                 <div class="form-group mg-b-10-force">
                                     <label class="form-control-label">Email Address: <span class="tx-danger">*</span></label>
-                                    <input class="form-control" type="email" name="email" placeholder="Email">
+                                    <input class="form-control" type="email" name="email"  required placeholder="Email">
                                 </div>
                             </div><!-- col-8 -->
 
@@ -400,27 +434,28 @@
                             <div class="col-lg-12">
                                 <div class="form-group mg-b-10-force">
                                     <label class="form-control-label">Residential Address: <span class="tx-danger">*</span></label>
-                                    <input class="form-control" type="text" name="address" placeholder="Residential address">
+                                    <input class="form-control" type="text" name="address" required placeholder="Residential address">
                                 </div>
                             </div><!-- col-8 -->
 
                             <div class="col-lg-6">
                                 <div class="form-group mg-b-10-force">
                                     <label class="form-control-label">City: <span class="tx-danger">*</span></label>
-                                    <input class="form-control" type="text" name="city" placeholder="City">
+                                    <input class="form-control" type="text" required name="city" placeholder="City">
                                 </div>
                             </div><!-- col-8 -->
 
                             <div class="col-lg-6">
                                 <div class="form-group mg-b-10-force">
                                     <label class="form-control-label">Country: <span class="tx-danger">*</span></label>
-                                    <select class="form-control select2" name="country" data-placeholder="Choose country">
+                                    <select class="form-control select2" required name="country" data-placeholder="Choose country">
                                         <option label="Choose country"></option>
                                         <option value="Zimbabwe">Zimbabwe</option>
                                         <option value="USA">United States of America</option>
                                         <option value="UK">United Kingdom</option>
                                         <option value="China">China</option>
                                         <option value="Japan">Japan</option>
+                                        <option value="Zambia">Zambia</option>
                                     </select>
                                 </div>
                             </div><!-- col-4 -->
@@ -428,14 +463,135 @@
                             <div class="col-lg-6">
                                 <div class="form-group mg-b-10-force">
                                     <label class="form-control-label">Password: <span class="tx-danger">*</span></label>
-                                    <input class="form-control" type="password" data-toggle="tooltip" data-placement="top" title="Strong Password Recomended" name="password" placeholder="Password" id="pwd" onkeyup="validatePassword(this.value);"><span id="msg"></span>
+                                    <input class="form-control" type="password" required data-toggle="tooltip" data-placement="top" title="Strong Password Recomended" name="password" placeholder="Password" id="pwd" onkeyup="validatePassword(this.value);"><span id="msg"></span>
                                 </div>
                             </div><!-- col-8 -->
 
                             <div class="col-lg-6">
                                 <div class="form-group mg-b-10-force">
                                     <label class="form-control-label">Confirm password: <span class="tx-danger">*</span></label>
-                                    <input class="form-control" type="password" name="passwordb" placeholder="Password">
+                                    <input class="form-control" type="password" required name="passwordb" placeholder="Password">
+                                </div>
+                            </div><!-- col-8 -->
+
+                        </div><!-- row -->
+                        <div class="form-layout-footer">
+                            <button class="btn btn-info tx-size-xs">Submit Form</button>
+                            <button class="btn btn-secondary tx-size-xs" data-dismiss="modal">Cancel</button>
+                        </div>
+
+
+
+                    </div><!-- form-layout -->
+
+                </form>
+
+
+
+
+
+
+
+            </div><!-- modal-body -->
+
+        </div>
+    </div><!-- modal-dialog -->
+</div><!-- modal -->
+<!-- LARGE MODAL -->
+<div id="modalforeigner" class="modal fade">
+    <div class="modal-dialog modal-lg" role="document">
+        <div class="modal-content tx-size-sm">
+            <div class="modal-header pd-x-20">
+                <h6 class="tx-14 mg-b-0 tx-uppercase tx-inverse tx-bold">Sign up!!</h6>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body pd-20">
+                <form action="/Auth/Register" method="post">
+                    <div class="form-layout form-layout-1">
+                        <div class="row mg-b-25">
+                            @*<div class="col-lg-6">
+                                    <div class="form-group d-inline">
+                                        <label class="form-control-label">Foreigner <span class="tx-danger">*</span></label>
+                                        <input class="form-control" type="checkbox" id="foreignerCheck">
+
+                                    </div>
+                                </div>
+                                <div class="col-lg-6">
+                                    <div class="form-group d-inline">
+                                        <label class="form-control-label">Citizen <span class="tx-danger">*</span></label>
+                                        <input class="form-control" type="checkbox" id="citizenCheck">
+                                    </div>
+                                </div>*@
+
+                            <div class="col-lg-6">
+                                <div class="form-group">
+                                    <label class="form-control-label">Firstname: <span class="tx-danger">*</span></label>
+                                    <input class="form-control" required type="text" name="firstname" placeholder="Firstname">
+                                </div>
+                            </div><!-- col-4 -->
+                            <div class="col-lg-6">
+                                <div class="form-group">
+                                    <label class="form-control-label">Lastname: <span class="tx-danger">*</span></label>
+                                    <input class="form-control" type="text" required name="lastname" placeholder="Lastname">
+                                    <input class="form-control" type="hidden" name="role" value="3" placeholder="Enter lastname"> @*role*@
+                                </div>
+                            </div><!-- col-4 -->
+                            <div class="col-lg-4">
+                                <div class="form-group">
+                                    <label class="form-control-label">Passport Number: <span class="tx-danger">*</span></label>
+                                    <input class="form-control" required type="text" name="natid" placeholder="Passport Number">
+                                </div>
+                            </div><!-- col-4 -->
+                            <div class="col-lg-8">
+                                <div class="form-group mg-b-10-force">
+                                    <label class="form-control-label">Email Address: <span class="tx-danger">*</span></label>
+                                    <input class="form-control" type="email" required name="email" placeholder="Email">
+                                </div>
+                            </div><!-- col-8 -->
+
+
+                            <div class="col-lg-12">
+                                <div class="form-group mg-b-10-force">
+                                    <label class="form-control-label">Residential Address: <span class="tx-danger">*</span></label>
+                                    <input class="form-control" type="text"  required name="address" placeholder="Residential address">
+                                </div>
+                            </div><!-- col-8 -->
+
+                            <div class="col-lg-6">
+                                <div class="form-group mg-b-10-force">
+                                    <label class="form-control-label">City: <span class="tx-danger">*</span></label>
+                                    <input class="form-control" type="text" required name="city" placeholder="City">
+                                </div>
+                            </div><!-- col-8 -->
+
+                            <div class="col-lg-6">
+                                <div class="form-group mg-b-10-force">
+                                    <label class="form-control-label">Country: <span class="tx-danger">*</span></label>
+                                    <select class="form-control select2" required name="country" data-placeholder="Choose country">
+                                        <option label="Choose country"></option>
+                                        <option value="Zimbabwe">Zimbabwe</option>
+                                        <option value="USA">United States of America</option>
+                                        <option value="UK">United Kingdom</option>
+                                        <option value="China">China</option>
+                                        <option value="Japan">Japan</option>
+                                        <option value="Zambia">Zambia</option>
+                                    </select>
+                                </div>
+                            </div><!-- col-4 -->
+
+                            <div class="col-lg-6">
+                                <div class="form-group mg-b-10-force">
+                                    <label class="form-control-label">Password: <span class="tx-danger">*</span></label>
+                                    <input class="form-control" type="password" required data-toggle="tooltip" data-placement="top" title="Strong Password Recomended" name="password" placeholder="Password" id="pwd" onkeyup="validatePassword(this.value);"><span id="msg"></span>
+                                </div>
+                            </div><!-- col-8 -->
+
+                            <div class="col-lg-6">
+                                <div class="form-group mg-b-10-force">
+                                    <label class="form-control-label">Confirm password: <span class="tx-danger">*</span></label>
+                                    <input class="form-control" type="password" required name="passwordb" placeholder="Password">
                                 </div>
                             </div><!-- col-8 -->
 

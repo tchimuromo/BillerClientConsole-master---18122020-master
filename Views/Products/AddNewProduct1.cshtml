@@ -12,8 +12,14 @@
 
 <div class="container-fluid" style="color:#0C2A46">
 
-    <form action="/Products/AddNewProduct" method="post">
+    <form  asp-action="AddNewProduct" asp-controller="Product" method="post">
         <input type="hidden" name="billercode" value="@ViewBag.billercode" />
+        <input type="hidden" name="tempsearchID" value="@ViewBag.searchId">        <input type="hidden" name="tempSearchNameId2" value="" />
+        <input type="hidden" name="tempSearchNameId3" value="" />
+        <input type="hidden" name="tempSearchNameId4" value="" />
+        <input type="hidden" name="tempSearchNameId5" value="" />
+        <input type="hidden" name="tempSearchNameId6" value="" />
+        <input type="hidden" name="tempSearchId1" value="" />
         <div class="row">
             <div class="col-md-6 mt-3">
                 <div>
@@ -32,10 +38,9 @@
 
             @if (TempData["entityType"] != null)
             {
-                <script>
-                    $('#Search_For').val('TempData["entityType"]');
-                </script>
-            }
+    <script>
+        $('#Search_For').val('TempData["entityType"]');
+    </script>            }
 
             <div class="col-md-6 mt-3">
                 <div>
@@ -46,10 +51,9 @@
 
             @if (TempData["objective"] != null)
             {
-                <script>
-                    $('#Brief').val('TempData["objective"]');
-                </script>
-            }
+    <script>
+        $('#Brief').val('TempData["objective"]');
+    </script>            }
 
             <div class="col-md-6 mt-3">
                 <div>
@@ -74,7 +78,7 @@
                 </div>
             </div>
         </div>
-
+        <p style=" color:red;">@TempData["error"]</p>
         <div class="card mb-5 mt-4" style="font-family: 'Ubuntu Condensed', sans-serif;">
             <div class="card-header bg-white">
                 <p class="font-weight-bold" style="color:#0C2A46;font-family: 'Ubuntu Condensed', sans-serif;">Provide names in order of PRIORITY. The first available name will be reserved for the registration process of your entity.</p>
@@ -85,7 +89,7 @@
                         <div class="row">
                             <div class="col-md-8">
                                 <div>
-                                    <input type="text" class="form-control" name="name1" required onblur="checkForAvailability(1)" id="name1">
+                                    <input type="text" class="form-control" name="name1" onblur="checkForAvailability(1)" id="name1">
                                     <label style="color:#0C2A46">Preferred name 1</label>
                                 </div>
                             </div>
@@ -138,13 +142,13 @@
                         </div>
                         <div class="row">
                             @*<div class="col-md-8">
-                                    <div>
-                                        <input type="text" class="form-control" name="name6" required onblur="checkForAvailability(6)" id="name6">
-                                        <label style="color:#0C2A46">Preferred name 6</label>
-                                    </div>
+                                <div>
+                                    <input type="text" class="form-control" name="name6" required onblur="checkForAvailability(6)" id="name6">
+                                    <label style="color:#0C2A46">Preferred name 6</label>
                                 </div>
-                                <div class="col-md-4" id="availability6" style="font-family: 'Ubuntu Condensed', sans-serif;">
-                                </div>*@
+                            </div>
+                            <div class="col-md-4" id="availability6" style="font-family: 'Ubuntu Condensed', sans-serif;">
+                            </div>*@
                         </div>
                     </div>
                 </div>
@@ -155,13 +159,13 @@
             <div class="col-md-6 container-fluid ">
                 <div>
                     <label style="color:#0C2A46">Justification</label>
-                    <input type="text" class="form-control" name="Justification" placeholder="Optional"></input>
+                    <input type="text" class="form-control" name="Justification" required placeholder="Optional"></input>
                 </div>
             </div>
             <div class="col-md-6 container-fluid ">
                 <div>
                     <label style="color:#0C2A46">Processing office</label>
-                    <select class="form-control" name="sortingOffice">
+                    <select class="form-control" name="sortingOffice" required>
                         <option value="Harare" selected>Harare</option>
                         <option value="Bulawayo">Bulawayo</option>
 
@@ -171,13 +175,142 @@
         </div>
 
         <div class="fa-pull-right mb-5 mt-2">
-            <button type="submit" class="btn btn-primary">
+            <button type="submit" class="btn btn-primary" id="bton">
                 Continue
             </button>
         </div>
     </form>
 </div>
 
+
+<div class="modal"  tabindex="-1" role="dialog" id="billerproductsForm">
+    <div class="modal-dialog" style="width: 800px;" role="document">
+        <div class="modal-content" style="width: 800px;" >
+            <div class="modal-header">
+                <h5 class="modal-title">Biller Products</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body" style="width:800px;">
+                <form action="/Products/SubmitSearch/@TempData["id"]" method="post" style="width:800px;">
+                   
+
+                    <div class=" row col-md-12">
+                        <div class="col-md-6">
+                            <div class="card mb-3">
+                                <h3 class="card-header">Search Info</h3>
+                                <ul class="list-group list-group-flush">
+
+                                    <li class="list-group-item d-flex justify-content-between align-items-center">
+                                        Business Type
+                                        <span>@TempData["Search_For"]</span>
+
+                                    </li>
+
+
+                                    <li class="list-group-item d-flex justify-content-between align-items-center">
+                                        Main Objective
+                                        <span>@TempData["Purpose"]</span>
+                                    </li>
+
+                                    <li class="list-group-item d-flex justify-content-between align-items-center">
+                                        Designation
+                                        <span>@TempData["Desigination"]</span>
+                                    </li>
+
+                                    <li class="list-group-item d-flex justify-content-between align-items-center">
+                                        Justification
+                                        <span>@TempData["Justification"]</span>
+                                    </li>
+
+
+                                    <li class="list-group-item d-flex justify-content-between align-items-center">
+                                        Processing office
+                                        <span>@TempData["SortingOffice"]</span>
+                                    </li>
+
+                                    <li class="list-group-item d-flex justify-content-between align-items-center">
+                                        Reason for search
+                                        <span>@TempData["Reason_For_Search"]</span>
+                                    </li>
+
+                                </ul>
+                                <div class="card-footer text-muted">
+                                    &nbsp;
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-md-6">
+                            <div class="card mb-3">
+                                <h3 class="card-header">Proposed Names</h3>
+                                <ul class="list-group list-group-flush">
+                                    @if (TempData["name1"] != null)
+                                    {
+                                <li class="list-group-item d-flex justify-content-between align-items-center">
+                                    @TempData["name1"]
+                                </li>
+                                    }
+
+                                    @if (TempData["name2"] != null)
+                                    {
+                                <li class="list-group-item d-flex justify-content-between align-items-center">
+                                    @TempData["name2"]
+                                </li>
+}
+
+                                    @if (TempData["name3"] != null)
+                                    {
+                                <li class="list-group-item d-flex justify-content-between align-items-center">
+                                    @TempData["name3"]
+                                </li>
+}
+                                    @if (TempData["name4"] != null)
+                                    {
+                                <li class="list-group-item d-flex justify-content-between align-items-center">
+                                    @TempData["name4"]
+                                </li>}
+
+                                                @if (TempData["name5"] != null)
+                                                {
+                                <li class="list-group-item d-flex justify-content-between align-items-center">
+                                    @TempData["name5"]
+                                </li>
+                                                }
+                                                    
+
+
+
+                                                                                                                                                    </ul>
+                                <div class="card-footer text-muted">
+                                    &nbsp;
+                                </div>
+                            </div>
+                        </div>
+
+                    </div>
+                    <div class=" row col-md-12">
+                        <div class="col-md-6">
+
+                        </div>
+                        <div class="col-md-6">
+
+                            <div class="">
+                                <span style="flex: 1 1 auto"></span>
+                                <button type="submit" class="btn btn-primary fa-pull-right">
+                                    SUBMIT
+                                </button>
+                            </div>
+                        </div>
+
+                    </div>
+
+
+
+               </form>
+            </div>
+           
+        </div>
+    </div>
+</div>
 
 <style>
     #typeddl {
@@ -186,6 +319,15 @@
 </style>
 
 <script>
+    $(function () {
+        if ('@ViewBag.msg' != "") {
+            $('#billerproductsForm').modal('show');
+        }
+    });
+
+</script>
+
+<script type="text/javascript">
     function checkForAvailability(a) {
 
         var name1 = 'name';
@@ -194,7 +336,8 @@
         var name = x.value;
         name = name.trim();
 
-        if (name.length >= 4) {
+        if (name.length > 3)
+        {
             $.ajax({
                 type: "POST",
                 url: "/Products/CheckAvailbility",
@@ -229,16 +372,19 @@
                 completed: function () {
                 }
             });
+            document.getElementById('bton').disabled = false;
         } else {
             var container = document.getElementById('availability' + a);
             while (container.hasChildNodes()) {
                 container.removeChild(container.lastChild);
+
             }
 
             var msg = document.createElement('p');
             msg.style.fontFamily = '\'Ubuntu Condensed\', sans-serif';
             msg.classList.add('text-warning');
             msg.textContent = 'Name should contain four(4) or more characters';
+            document.getElementById('bton').disabled = true;
             container.appendChild(msg);
         }
         //console.log("inside if rema names rechi")
@@ -278,4 +424,25 @@
         //    }
         //});
     };
+    SubmitProducts = form => {
+        try {
+            $.ajax({
+                type: 'POST',
+                url: form.action,
+                data: new FormData(form),
+                success: function (res) {
+                    $("#billerproductsForm").modal('show');},
+                error: function (err) {
+                    console.log(err);
+                }
+            }
+            )
+
+        } catch (e) {
+            console.log(e);
+        }
+
+        return false;
+    }
+
 </script>

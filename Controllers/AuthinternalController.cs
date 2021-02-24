@@ -120,140 +120,143 @@ namespace BillerClientConsole.Controllers
 
         [AllowAnonymous]
         [HttpPost("Register")]
-        public async Task<IActionResult> Register(string email, string password, string natid, string passwordb, string firstname, string lastname, int role, string address, string city, string country)
+        public async Task<IActionResult> Register(RegisterVM model)
         {
-            var user = db.AspNetUsers.Where(i => i.Email == email).FirstOrDefault();
-            //var user = db.AspNetUsers.Where(i => i.Id == email).FirstOrDefault();
-            var client = new HttpClient();
-
-            if (user == null)
+            if (ModelState.IsValid)
             {
-                var nuser = new IdentityUser { Email = email, UserName = email, PasswordHash = password };
+                var user = db.AspNetUsers.Where(i => i.Email == model.email).FirstOrDefault();
+                //var user = db.AspNetUsers.Where(i => i.Id == email).FirstOrDefault();
+                var client = new HttpClient();
 
-                var userid = nuser.Id;
-                IdentityResult result = await userManager.CreateAsync(nuser, nuser.PasswordHash);
-                if (result.Succeeded)
+                if (user == null)
                 {
-                    // Change Role in created ID
+                    var nuser = new IdentityUser { Email = model.email, UserName = model.email, PasswordHash = model.password };
 
-                     //"UPDATE Inventory SET Inventorynumber='"+ num +"',Inventory_Name='"+name+"', Quantity ='"+ quant+"',Location ='"+ location+"' Category ='"+ category+"' WHERE Inventorynumber ='"+ numquery +"';";
-                   // string query = "UPDATE Inventory SET Inventorynumber=@Inventorynumber,Inventory_Name=@Inventory_Name, Quantity =@Quantity ,Location =@Location,Category =@Category WHERE Inventorynumber =@Inventorynumber";
-                    try
+                    var userid = nuser.Id;
+                    IdentityResult result = await userManager.CreateAsync(nuser, nuser.PasswordHash);
+                    if (result.Succeeded)
                     {
-                        //This is my connection string i have assigned the database file address path  
-                       // string MyConnection2 = "Server=O-Chimuka\\COMPANIES;Database=stanchart_simba_biller_console;User Id=sa;Password=password123;";
-                        string MyConnection2 = "Server=DEEDSAPP\\SQLEXPRESS2;;Database=stanchart_simba_biller_console;User Id=sa;Password=Password123;";
-                        //This is my insert query in which i am taking input from the user through windows forms  
-                        //string Query = "insert into student.studentinfo(idStudentInfo,Name,Father_Name,Age,Semester) values('" + this.IdTextBox.Text + "','" + this.NameTextBox.Text + "','" + this.FnameTextBox.Text + "','" + this.AgeTextBox.Text + "','" + this.SemesterTextBox.Text + "');";
-                        string Query = "UPDATE AspNetUsers SET Role ='"+ role +"' WHERE Id = '" + userid +"'";
+                        // Change Role in created ID
 
-                        //This is  MySqlConnection here i have created the object and pass my connection string.  
-                        SqlConnection MyConn2 = new SqlConnection(MyConnection2);
-                        //This is command class which will handle the query and connection object.  
-                        SqlCommand MyCommand2 = new SqlCommand(Query, MyConn2);
-                       // MySqlDataReader MyReader2;
-
-                        MyConn2.Open();
-
-                        using (SqlDataReader reader = MyCommand2.ExecuteReader())
+                        //"UPDATE Inventory SET Inventorynumber='"+ num +"',Inventory_Name='"+name+"', Quantity ='"+ quant+"',Location ='"+ location+"' Category ='"+ category+"' WHERE Inventorynumber ='"+ numquery +"';";
+                        // string query = "UPDATE Inventory SET Inventorynumber=@Inventorynumber,Inventory_Name=@Inventory_Name, Quantity =@Quantity ,Location =@Location,Category =@Category WHERE Inventorynumber =@Inventorynumber";
+                        try
                         {
-                            ViewBag.error = "Save data";
-                            while (reader.Read())
-                            {
-                                // listBox2.Items.Add(reader.GetString(0) + " " + reader.GetString(1) + "  (" + reader.GetInt16(2) + ")");
-                            }
-                        }
-                        MyConn2.Close();
-                        if (role == 3)
-                        {
-                            try
-                            {
-                                string roleName;
-                                roleName = "Client";
-                                var detail = new AspNetUsersDetails { UserId = userid, email = email, natid = natid, firstname = firstname, lastname = lastname, address = address, city = city, country = country, role = role, roleName = roleName };
+                            //This is my connection string i have assigned the database file address path  
+                            // string MyConnection2 = "Server=O-Chimuka\\COMPANIES;Database=stanchart_simba_biller_console;User Id=sa;Password=password123;";
+                            string MyConnection2 = "Server=DEEDSAPP\\SQLEXPRESS2;;Database=stanchart_simba_biller_console;User Id=sa;Password=Password123;";
+                            //This is my insert query in which i am taking input from the user through windows forms  
+                            //string Query = "insert into student.studentinfo(idStudentInfo,Name,Father_Name,Age,Semester) values('" + this.IdTextBox.Text + "','" + this.NameTextBox.Text + "','" + this.FnameTextBox.Text + "','" + this.AgeTextBox.Text + "','" + this.SemesterTextBox.Text + "');";
+                            string Query = "UPDATE AspNetUsers SET Role ='" + model.role + "' WHERE Id = '" + userid + "'";
 
-                                // IdentityResult result = await userManager.CreateAsync(detail);
-                                db.AspNetUsersDetails.Add(detail);
-                                var resultb = db.SaveChanges();
+                            //This is  MySqlConnection here i have created the object and pass my connection string.  
+                            SqlConnection MyConn2 = new SqlConnection(MyConnection2);
+                            //This is command class which will handle the query and connection object.  
+                            SqlCommand MyCommand2 = new SqlCommand(Query, MyConn2);
+                            // MySqlDataReader MyReader2;
+
+                            MyConn2.Open();
+
+                            using (SqlDataReader reader = MyCommand2.ExecuteReader())
+                            {
+                                ViewBag.error = "Save data";
+                                while (reader.Read())
+                                {
+                                    // listBox2.Items.Add(reader.GetString(0) + " " + reader.GetString(1) + "  (" + reader.GetInt16(2) + ")");
+                                }
+                            }
+                            MyConn2.Close();
+                            if (model.role == 3)
+                            {
+                                try
+                                {
+                                    string roleName;
+                                    roleName = "Client";
+                                    var detail = new AspNetUsersDetails { UserId = userid, email = model.email, natid = model.natid, firstname = model.firstname, lastname = model.lastname, address = model.address, city = model.city, country = model.country, role = model.role, roleName = roleName };
+
+                                    // IdentityResult result = await userManager.CreateAsync(detail);
+                                    db.AspNetUsersDetails.Add(detail);
+                                    var resultb = db.SaveChanges();
+
+                                }
+                                catch
+                                {
+                                    ViewBag.title = "Login";
+                                    return View();
+                                }
 
                             }
-                            catch
+                            else if (model.role == 2)
+                            {
+                                try
+                                {
+                                    string roleName;
+                                    roleName = "Examiner";
+                                    var detail = new AspNetUsersInternal { email = model.email, natid = model.natid, firstname = model.firstname, lastname = model.lastname, address = model.address, city = model.city, country = model.country, role = model.role, roleName = roleName };
+
+                                    // IdentityResult result = await userManager.CreateAsync(detail);
+                                    db.AspNetUsersInternal.Add(detail);
+                                    var resultb = db.SaveChanges();
+
+                                }
+                                catch (Exception e)
+                                {
+                                    var ex = e;
+                                    ViewBag.title = "Login";
+                                    return View();
+                                }
+
+                            }
+
+                            else if (model.role == 1)
+                            {
+                                try
+                                {
+                                    string roleName;
+                                    roleName = "Principal";
+                                    var detail = new AspNetUsersInternal { email = model.email, natid = model.natid, firstname = model.firstname, lastname = model.lastname, address = model.address, city = model.city, country = model.country, role = model.role, roleName = roleName };
+
+                                    // IdentityResult result = await userManager.CreateAsync(detail);
+                                    db.AspNetUsersInternal.Add(detail);
+                                    var resultb = db.SaveChanges();
+
+                                }
+                                catch
+                                {
+                                    ViewBag.title = "Login";
+                                    return View();
+
+                                }
+                            }
+                            else
                             {
                                 ViewBag.title = "Login";
                                 return View();
+
                             }
 
                         }
-                        else if (role == 2)
+                        catch (Exception ex)
                         {
-                            try
-                            {
-                                string roleName;
-                                roleName = "Examiner";
-                                var detail = new AspNetUsersInternal {  email = email, natid = natid, firstname = firstname, lastname = lastname, address = address, city = city, country = country, role = role, roleName = roleName };
-
-                                // IdentityResult result = await userManager.CreateAsync(detail);
-                                db.AspNetUsersInternal.Add(detail);
-                                var resultb = db.SaveChanges();
-
-                            }
-                            catch(Exception e)
-                            {
-                               var ex = e;
-                                ViewBag.title = "Login";
-                                return View();
-                            }
-
+                            //  MessageBox.Show(ex.Message);
+                            ViewBag.error = ex.Message;
                         }
 
-                        else if (role == 1)
-                        {
-                            try
-                            {
-                                string roleName;
-                                roleName = "Principal";
-                                var detail = new AspNetUsersInternal {  email = email, natid = natid, firstname = firstname, lastname = lastname, address = address, city = city, country = country, role = role, roleName = roleName };
 
-                                // IdentityResult result = await userManager.CreateAsync(detail);
-                                db.AspNetUsersInternal.Add(detail);
-                                var resultb = db.SaveChanges();
 
-                            }
-                            catch
-                            {
-                                ViewBag.title = "Login";
-                                return View();
-                        
-                            }
-                        }
-                        else
-                        {
-                            ViewBag.title = "Login";
-                            return View();
-
-                        }
-
+                        return (RedirectToAction("CompleteRegistration", new { email = model.email }));
+                        // ViewBag.echo = "User has already been registered";
                     }
-                    catch (Exception ex)
+                    else
                     {
-                        //  MessageBox.Show(ex.Message);
-                        ViewBag.error = ex.Message;
+                        ViewBag.echo = "User has already been registered";
                     }
 
-
-
-                    return (RedirectToAction("CompleteRegistration", new { email = email }));
-                   // ViewBag.echo = "User has already been registered";
                 }
-                else
-                {
-                    ViewBag.echo = "User has already been registered";
-                }
-
             }
             ViewBag.title = "Login";
 
-            return View();
+            return View(model);
         }
 
        

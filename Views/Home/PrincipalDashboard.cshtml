@@ -35,7 +35,7 @@
 
                     <div class="card bg-warning">
 
-                        <a>
+                        <a href="/Products/AssignedTasks">
                             <div class="card-body text-center">
                                 <h1 style="color:white;">@ViewBag.Assigned </h1>
 
@@ -120,7 +120,7 @@
                 {
                     label: "Registrations (No# of Registrations)",
                     backgroundColor: ["#3e95cd", "#8e5ea2", "#3cba9f", "#e8c3b9"],
-                    data: [@ViewBag.Unassigned, 5, @ViewBag.TotalNameSearches , 3]
+                    data: [@ViewBag.Unassigned, @ViewBag.Assigned, @ViewBag.TotalNameSearches , @ViewBag.CompanyApps]
                 }
             ]
         },

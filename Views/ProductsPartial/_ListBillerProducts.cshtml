@@ -27,7 +27,7 @@
 </style>
 
 <form action="/Products/SubmitSearch/@ViewBag.data.search_ID" method="post" style="width:100%;">
-    <input type="hidden" name="tempsearchID" value="@ViewBag.data.search_ID">
+    <input type="hidden" name="tempsearchID" value="@ViewBag.searchId">
 
     <div class=" row col-md-12">
         <div class="col-md-6">
@@ -43,7 +43,7 @@
 
 
                     <li class="list-group-item d-flex justify-content-between align-items-center">
-                        Purpose of search
+                       Main Objective
                         <span>@ViewBag.data.Purpose</span>
                     </li>
 

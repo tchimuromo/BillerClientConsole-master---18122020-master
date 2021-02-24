@@ -1,54 +1,61 @@
 ﻿@model IEnumerable<BillerClientConsole.Models.QueryModel.Queries>
-@{ 
+@{
     ViewBag.Title = "Queries";
     Layout = "../Shared/_LayoutMain";
 }
 @if (Model.Any())
 {
-<div class="col-md-12 ml-1 mt-0">
-    <div class="card">
-        <h2 class="card-header"><strong>Queries</strong></h2>
+    <div class="col-md-12 ml-1 mt-0">
+        <div class="card">
+            <h2 class="card-header"><strong>Queries</strong></h2>
 
-        <div class="card-body">
-            <div class="table">
-                <table>
-                    <thead>
-                        <tr>
-                            <th>Reference No</th>
-                            <th>Query Comment</th>
-                            <th>Step </th>
-                            <th>Action</th>
-                        </tr>
-                    </thead>
-                    @foreach (var item in Model)
-                    {
-    <tbody>
-        <tr>
-            <td>@item.applicationID</td>
-            <td>@item.comment</td>
-            <td>@item.tableName</td>
-            <td>
-                <a class="btn btn-info" asp-action="ResolveQuery" asp-controller="Queries" asp-route-id="@item.officeid" asp-route-step="@item.tableName" asp-route-applicationRef="@item.applicationRef" asp-route-applicationID="@item.applicationID">Resolve Query</a>
-                @*<a onclick="showInPopup('@Url.Action("ResolveQuery","Queries",new {id = item.officeid, step=item.tableName, applicationRef=item.applicationRef },Context.Request.Scheme)', 'Update Information')" class="btn btn-info text-white">Resolve Query</a>*@
+            <div class="card-body">
+                <div class="table">
+                    <table>
+                        <thead>
+                            <tr>
+                                <th>Reference No</th>
+                                <th>Query Comment</th>
+                                <th>Step </th>
+                                <th>Action</th>
+                            </tr>
+                        </thead>
+                        @foreach (var item in Model)
+                        {
+                            <tbody>
+                                <tr>
+                                    <td>@item.applicationID</td>
+                                    <td>@item.comment</td>
+                                    <td>@item.tableName</td>
+                                    <td>
+                                        <a class="btn btn-info" asp-action="ResolveQuery" asp-controller="Queries" asp-route-id="@item.officeid" asp-route-step="@item.tableName" asp-route-applicationRef="@item.applicationRef" asp-route-applicationID="@item.applicationID">Resolve Query</a>
+                                        @*<a onclick="showInPopup('@Url.Action("ResolveQuery","Queries",new {id = item.officeid, step=item.tableName, applicationRef=item.applicationRef },Context.Request.Scheme)', 'Update Information')" class="btn btn-info text-white">Resolve Query</a>*@
 
-            </td>
+                                    </td>
 
-        </tr>
-    </tbody>}
-                </table>
-                <a class="btn btn-success" onclick="ApplicationResubmission('@ViewBag.ApplicationID')">Resubmit Application</a>
+                                </tr>
+                            </tbody>
+                        }
+                    </table>
+
+                </div>
             </div>
         </div>
-    </div>
-</div>}
+    </div>}
+else
+{
+<div class="mt-2 ml-4">
+    <a class="btn btn-success" onclick="ApplicationResubmission('@ViewBag.ApplicationID')">Resubmit Application</a>
+</div>
+   
+}
 <script type="text/javascript">
-    function ApplicationResubmission(applicationID)
-    {
+    function ApplicationResubmission(applicationID) {
         console.log(applicationID)
         $.ajax({
             url: '/Queries/ApplicationResubmission/' + applicationID,
             type: "GET", //send it through get method
-           
+
             success: function (data) {
                 //Do Something
                 alert("Application Successfully resubmitted")

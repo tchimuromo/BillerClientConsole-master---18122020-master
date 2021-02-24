@@ -9,7 +9,7 @@ namespace BillerClientConsole.Globals
 {
     public class Globals
     {
-        public static string service_end_point =  "http://localhost:4430";//"http://localhost/company"  ;; http://localhost:4430/"https://localhost:44380";//
+        public static string service_end_point = "https://localhost:44380";//"http://localhost/company"  ;; http://localhost:4430/"https://localhost:44380";//"https://localhost:44380";//
         public static string searchApplicationID = "";
 
         public static string tempSearchNameId1 = "";

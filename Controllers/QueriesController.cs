@@ -1,23 +1,37 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Net.Http;
-using System.Threading.Tasks;
-using BillerClientConsole.Globals;
-using BillerClientConsole.Data;
+﻿using BillerClientConsole.Data;
 using BillerClientConsole.Models;
 using BillerClientConsole.Models.QueryModel;
 using Microsoft.AspNetCore.Mvc;
 using Newtonsoft.Json;
-using Webdev.Http;
 using Syncfusion.EJ2.Base;
+using System;
 using System.Collections;
+using System.Collections.Generic;
+using System.Linq;
+using System.Net.Http;
+using System.Threading.Tasks;
 
 namespace BillerClientConsole.Controllers
 {
     [Route("Queries")]
     public class QueriesController : Controller
     {
+        //private dbContext db = new dbContext();
+        //public static List<mmainClause> objects = new List<mmainClause>();
+        //private static List<ShareClauseExaminerDto> shareClause = new List<ShareClauseExaminerDto>();
+        //private static List<LiabilityClauseExaminerDto> liabilityClause = new List<LiabilityClauseExaminerDto>();
+        //private static List<MemorandumExaminerDto> memoObjects = new List<MemorandumExaminerDto>();
+        //private static List<ArticlesExaminerDto> selectedModel = new List<ArticlesExaminerDto>();
+        //public static List<MemberDto> entityMember = new List<MemberDto>();
+        //private static List<AmmendedArticlesExaminerDto> ammendedArticles = new List<AmmendedArticlesExaminerDto>();
+        //public static List<MemberExaminerDto> members = new List<MemberExaminerDto>();
+        //private static List<EntityExaminerDto> memberEntities1 = new List<EntityExaminerDto>();
+        //private static List<MemberDto> memberEntities = new List<MemberDto>();
+        //public static List<mCompanyResponse> companyResponses = new List<mCompanyResponse>();
+        //private readonly QueryDbContext context;
+
+        // private readonly QueryDbContext context;
+
         private dbContext db = new dbContext();
         public static List<mmainClause> objects = new List<mmainClause>();
         private static List<ShareClauseExaminerDto> shareClause = new List<ShareClauseExaminerDto>();
@@ -27,13 +41,10 @@ namespace BillerClientConsole.Controllers
         public static List<MemberDto> entityMember = new List<MemberDto>();
         private static List<AmmendedArticlesExaminerDto> ammendedArticles = new List<AmmendedArticlesExaminerDto>();
         public static List<MemberExaminerDto> members = new List<MemberExaminerDto>();
-        private static List<EntityExaminerDto> memberEntities1 = new List<EntityExaminerDto>();
+        // private static List<MemberDto> memberEntities1 = new List<MemberDto>();
         private static List<MemberDto> memberEntities = new List<MemberDto>();
         public static List<mCompanyResponse> companyResponses = new List<mCompanyResponse>();
         private readonly QueryDbContext context;
-
-        // private readonly QueryDbContext context;
-
 
 
         [HttpPost("MemberUrlDataSource")]
@@ -86,7 +97,11 @@ namespace BillerClientConsole.Controllers
                 members.Insert(0, value.Value);
             return Json(value);
         }
-
+        /// <summary>
+        /// ResolveShareClauseQuery
+        /// </summary>
+        /// <param name="product"></param>
+        /// <returns></returns>
         [HttpPost("AddNewProduct")]
         public async Task<IActionResult> AddProduct(postSearch product)
         {
@@ -173,13 +188,13 @@ namespace BillerClientConsole.Controllers
             Globals.Globals.searchApplicationID = Globals.Globals.tempSearchId1;
             return RedirectToAction("ListBillerProducts");   //ViewBag.datasource = order;
             return View();
-            
+
         }
 
         [HttpPost("CompanyUrlDataSource")]
         public IActionResult CompanyUrlDataSource([FromBody] DataManagerRequest dm)
         {
-            IEnumerable DataSource = GetMemberEintityObjects();
+            IEnumerable DataSource = GetMemberEntityObjects();
             DataOperations operation = new DataOperations();
             if (dm.Search != null && dm.Search.Count > 0)
             {
@@ -204,7 +219,7 @@ namespace BillerClientConsole.Controllers
             }
             return dm.RequiresCounts ? Json(new { result = DataSource, count = count }) : Json(DataSource);
         }
-        private IEnumerable GetMemberEintityObjects()
+        private IEnumerable GetMemberEntityObjects()
         {
             return entityMember;
         }
@@ -248,6 +263,15 @@ namespace BillerClientConsole.Controllers
                 memberEntities = new List<MemberDto>();
             int Count = memberEntities.Count();
             return memberEntities;
+        }
+
+        [HttpPost("MemberCellEditUpdate")]
+        public IActionResult MemberCellEditUpdate([FromBody] CRUDModel<MemberExaminerDto> value)
+        {
+            if (members == null)
+                members = new List<MemberExaminerDto>();
+            //shareClause.Insert(0, value.Value);
+            return Json(value);
         }
         [HttpPost("EntityCellEditInsert")]
         public ActionResult EntityCellEditInsert([FromBody] CRUDModel<MemberDto> value)
@@ -329,7 +353,7 @@ namespace BillerClientConsole.Controllers
                 var queryExists = context.Queries.Where(query => query.applicationID == id && query.status == "Pending").ToList();
                 if (queryExists.Count > 0)
                 {
-                
+
                     return BadRequest();
 
                 }
@@ -339,10 +363,10 @@ namespace BillerClientConsole.Controllers
                     if (response.IsSuccessStatusCode)
                     {
                         return Ok();
-                       
+
                     }
                     return BadRequest();
-                    
+
                 }
 
             }
@@ -605,14 +629,14 @@ namespace BillerClientConsole.Controllers
         public IActionResult QueryCard(string applicationID)
         {
             List<Queries> query = new List<Queries>();
-           
-                var query1 = context.Queries
-                    .Where(q => q.applicationID == applicationID && q.status == "Pending")
-                    .ToList();
-                foreach (var query1item in query1)
-                {
-                    query.Add(query1item);
-                }
+
+            var query1 = context.Queries
+                .Where(q => q.applicationID == applicationID && q.status == "Pending")
+                .ToList();
+            foreach (var query1item in query1)
+            {
+                query.Add(query1item);
+            }
 
             ViewBag.applicationID = applicationID;
             return View(query);
@@ -621,7 +645,7 @@ namespace BillerClientConsole.Controllers
 
         [HttpGet("ResolveQuery/{id}")]
         [HttpGet("ResolveQuery/{applicationRef}")]
-        public async Task<IActionResult> ResolveQuery( string step, string applicationRef, string id=null, string applicationID=null)
+        public async Task<IActionResult> ResolveQuery(string step, string applicationRef, string id = null, string applicationID = null)
         {
             var client = new HttpClient();
             //Code to get Registered Office Details
@@ -635,15 +659,15 @@ namespace BillerClientConsole.Controllers
             {   //ViewBag.CompanyApplication = companyApplication;
                 // Redirecting to an another Action with the model data from database........
                 return RedirectToAction("ResolveMembersQuery", new { applicationID = applicationID });
-                
+
                 ///return ResolveMembersQuery(companyApplication);
             }
             else if (step == "Step4")
             {
-                return RedirectToAction("ResolveShareClauseQuery", new { applicationID=applicationID});
+                return RedirectToAction("ResolveShareClauseQuery", new { applicationID = applicationID });
             }
 
-                   
+
             return NotFound();
         }
 
@@ -986,11 +1010,11 @@ namespace BillerClientConsole.Controllers
         {
             var query = context.Queries.Where(e => e.applicationID == applicationID && e.status == "Pending" && e.tableName == "Step4");
             var queryObject = query.FirstOrDefault();
-           ViewBag.applicationID = queryObject.applicationID;
+            ViewBag.applicationID = queryObject.applicationID;
             queryObject.status = "Resolved";
             context.Queries.Update(queryObject);
             context.SaveChanges();
-            return Ok();  
+            return Ok();
         }
 
         [HttpGet("ResolveMembersQuery")]
@@ -1121,7 +1145,7 @@ namespace BillerClientConsole.Controllers
                     }
 
                     MemberExaminerDto memberrs = new MemberExaminerDto();
-                    EntityExaminerDto entities = new EntityExaminerDto();
+                    MemberDto entities = new MemberDto();
 
                     if (membr.memberType.Equals("Person"))
                     {
@@ -1148,11 +1172,11 @@ namespace BillerClientConsole.Controllers
                     }
                     else
                     {
-                        entities.EntityName = membr.Names;
-                        entities.EntityCountryOfOrigin = membr.Nationality;
-                        entities.EntityTotalShares = follio.number_of_shares;
+                        entities.FirstName = membr.Names;
+                        entities.Nationality = membr.Nationality;
+                        entities.TotalShares = follio.number_of_shares.ToString();
 
-                        memberEntities1.Add(entities);
+                        memberEntities.Add(entities);
                     }
                 }
             }
@@ -1236,7 +1260,7 @@ namespace BillerClientConsole.Controllers
                         }
 
                         MemberExaminerDto memberrs = new MemberExaminerDto();
-                        EntityExaminerDto entities = new EntityExaminerDto();
+                        MemberDto entities = new MemberDto();
 
                         if (membr.memberType.Equals("Person"))
                         {
@@ -1265,14 +1289,14 @@ namespace BillerClientConsole.Controllers
                         }
                         else
                         {
-                            entities.EntityName = membr.Names;
-                            entities.EntityCountryOfOrigin = membr.Nationality;
+                            entities.FirstName = membr.Names;
+                            entities.Nationality = membr.Nationality;
                             entities.EntityNumber = membr.member_id;
-                            entities.EntityPreferenceShares = follio.PreferenceShares.ToString();
-                            entities.EntityOrdinaryShares = follio.OrdinaryShares.ToString();
-                            entities.EntityTotalShares = follio.number_of_shares;
+                            entities.PreferenceShares = follio.PreferenceShares.ToString();
+                            entities.OrdinaryShares = follio.OrdinaryShares.ToString();
+                            entities.TotalShares = follio.number_of_shares.ToString();
 
-                            memberEntities1.Add(entities);
+                            memberEntities.Add(entities);
                         }
 
                         Subscriber subscriber = new Subscriber();
@@ -1323,32 +1347,63 @@ namespace BillerClientConsole.Controllers
             //Code to populate My Card
             var ApplicationQueries = context.Queries.Where(q => q.applicationRef == companyApplication.companyInfo.Application_Ref && q.status == "Pending").ToList();
             ViewBag.ApplicationQueries = ApplicationQueries;
+            string[] sex = { "Male", "Female" };
+            ViewBag.sex = sex;
+            ViewBag.applicationID = applicationID;
 
             //var order = OrdersDetails.GetAllRecords();
             //ViewBag.datasource = order;
             return View();
         }
+        [HttpGet("UpdateMembers/{applicationID}")]
+        public IActionResult UpdateMembers(string applicationID)
+        {
+            var query = context.Queries.Where(e => e.applicationID == applicationID && e.status == "Pending" && e.tableName == "Step3");
+            var queryObject = query.FirstOrDefault();
+            ViewBag.applicationID = queryObject.applicationID;
+            if (query.Count() > 0)
+            {
+                queryObject.status = "Resolved";
+                context.Queries.Update(queryObject);
+                context.SaveChanges();
+                return RedirectToAction("QueryCard","Queries", new { applicationID = applicationID });
+            }
+            return RedirectToAction("QueryCard","Queries", new { applicationID = applicationID });
+        }
 
-        [HttpPost("PostResolveQuery")]
+       // Delete the record
+       [HttpPost("CellEditDelete")]
+        public ActionResult CellEditDelete([FromBody] CRUDModel<MemberDto> value)
+        {
+            var m = value.Value;
+        MemberDto val = entityMember.Where(e => e.EntityNumber == m.EntityNumber).FirstOrDefault();
+            entityMember.Remove(val);
+       // entityMember.Remove(entityMember.Where(e => e.NationalId == m.NationalId)).FirstOrDefault();
+            return Json(value);
+    }
+
+    [HttpPost("PostResolveQuery")]
 
         public async Task<IActionResult> PostResolveQuery(RegisteredOffice model)
         {
             var client = new HttpClient();
             if (ModelState.IsValid)
             {
-               var result= await client.PostAsJsonAsync($"{Globals.Globals.service_end_point}/UpdateRegisteredOffice", model);
+                var result = await client.PostAsJsonAsync($"{Globals.Globals.service_end_point}/UpdateRegisteredOffice", model);
                 if (result.IsSuccessStatusCode)
                 {
-                    var query = context.Queries.Where(e => e.officeid == model.OfficeId && e.status == "Pending" && e.tableName=="Step2");
+                    var query = context.Queries.Where(e => e.officeid == model.OfficeId && e.status == "Pending" && e.tableName == "Step2");
                     var queryObject = query.FirstOrDefault();
                     var applicationID = queryObject.applicationID;
                     queryObject.status = "Resolved";
                     context.Queries.Update(queryObject);
                     context.SaveChanges();
-                    return RedirectToAction("QueryCard","QueryCard",new {applicationID=applicationID });
-                }   
+                    return RedirectToAction("QueryCard", new { applicationID = applicationID });
+                }
             }
             return View(model);
         }
+
+
     }
 }

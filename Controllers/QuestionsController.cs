@@ -171,6 +171,16 @@ namespace BillerClientConsole.Controllers
             return View();
         }
 
+
+        public ActionResult CellEditDelete([FromBody] CRUDModel<MemberDto> value)
+        {
+            var m = value.Value;
+            MemberDto val = member.Where(e => e.EntityNumber == m.EntityNumber).FirstOrDefault();
+            entityMember.Remove(val);
+            // entityMember.Remove(entityMember.Where(e => e.NationalId == m.NationalId)).FirstOrDefault();
+            return Json(value);
+        }
+
         /// <summary>
         /// allows the user to create a new product and upload it to the server
         /// </summary>
@@ -1137,19 +1147,27 @@ namespace BillerClientConsole.Controllers
             }
             return dm.RequiresCounts ? Json(new { result = DataSource, count = count }) : Json(DataSource);
         }
-        //public ActionResult CellEditUpdate([FromBody] CRUDModel<Orders> value)
-        //{
-        //    var ord = value.Value;
-        //    Orders val = order.Where(or => or.OrderID == ord.OrderID).FirstOrDefault();
-        //    val.OrderID = ord.OrderID;
-        //    val.EmployeeID = ord.EmployeeID;
-        //    val.CustomerID = ord.CustomerID;
-        //    val.Freight = ord.Freight;
-        //    val.OrderDate = ord.OrderDate;
-        //    val.ShipCity = ord.ShipCity;
-        //    return Json(value.Value);
-        //}
-        
+        [HttpPost("MemberCellEditUpdate")]
+        public ActionResult MemberCellEditUpdate([FromBody] CRUDModel<MemberDto> value)
+        {
+            var m = value.Value;
+            MemberDto val = member.Where(e => e.EntityNumber == m.EntityNumber).FirstOrDefault();
+            val.EntityNumber = m.EntityNumber;
+            val.FirstName = m.FirstName;
+            val.Gender = m.Gender;
+            val.IsADirector = m.IsADirector;
+            val.IsAMember = m.IsAMember;
+            val.IsCompanySecretary = m.IsCompanySecretary;
+            val.NationalId = m.NationalId;
+            val.Nationality = m.Nationality;
+            val.OrdinaryShares = m.OrdinaryShares;
+            val.PhyicalAddress = m.PhyicalAddress;
+            val.PreferenceShares = m.PreferenceShares;
+            val.Surname = m.Surname;
+            val.TotalShares = m.TotalShares;
+            return Json(value.Value); 
+        }
+
         public List<mmainClause> GetObjects()
         {
             if(objects==null)
@@ -1196,8 +1214,7 @@ namespace BillerClientConsole.Controllers
             //liabilityClause.description = liab;
             //memorandum.LiabilityClause.Add(liabilityClause);
             //memorandum.liabilityClause = liab;
-            //sharesClause sharesClause = new sharesClause();
-            //sharesClause.description = shareClo;
+            //sharesClause sharesClause = new sharesClause();CellEditUpdate
             //memorandum.SharesClause.Add(sharesClause);
             //memorandum.sharesClause = shareClo;
 
@@ -1479,7 +1496,7 @@ namespace BillerClientConsole.Controllers
 
 
         [HttpPost("/{applicationId}/Approve")]
-        public async Task<IActionResult> ApprovePvtEntityApplication(string applicationId)
+        public async Task<IActionResult> ApprovePvtEntityApplication(string applicationId, string emailAddress=null)
         {
             //var db = new db();
             
@@ -1503,7 +1520,7 @@ namespace BillerClientConsole.Controllers
                 if (update.IsSuccessStatusCode)
                 {
                     //Code to Send email to user
-                    var email1 = "email2";// user.Email;
+                    var email1 = emailAddress;// user.Email;
                     SmtpClient emailclient1 = new SmtpClient("mail.ttcsglobal.com");
                     emailclient1.UseDefaultCredentials = false;
                     emailclient1.Credentials = new NetworkCredential("companiesonlinezw", "N3wPr0ducts@1");
@@ -1521,7 +1538,7 @@ namespace BillerClientConsole.Controllers
                         "<body style=\"font-family:'Century Gothic'\">" +
                         "<p><b>Hi Dear valued Customer</b></p>" +
 
-                        "<p>You have a query in you company application, please go and review the process.</p>" +
+                        "<p>You have Queries in you company application, please go and resolve the Queries.</p>" +
 
                         "<a>https://deedsapp.ttcsglobal.com:6868/Auth/Login </a>" +
                         "<p>Please login and correct issues/p>" +
@@ -1537,7 +1554,7 @@ namespace BillerClientConsole.Controllers
                     emailclient1.Send(mailMessage1);
                     // return RedirectToAction("Queries");
                     // return Json(new { });
-                    return Ok();
+                    return BadRequest();
                 }
                 else
                 {
@@ -1550,7 +1567,7 @@ namespace BillerClientConsole.Controllers
                 var resolve = await client.GetAsync($"{Globals.Globals.end_point_resolveQuery_companyinfo}/{applicationId}");
                 if (resolve.IsSuccessStatusCode)
                 {
-                    var email ="email2";// user.Email;
+                    var email = emailAddress;// user.Email;
                     SmtpClient emailclient = new SmtpClient("mail.ttcsglobal.com");
                     emailclient.UseDefaultCredentials = false;
                     emailclient.Credentials = new NetworkCredential("companiesonlinezw", "N3wPr0ducts@1");

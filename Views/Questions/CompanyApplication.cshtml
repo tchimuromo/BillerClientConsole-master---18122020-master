@@ -302,7 +302,7 @@
                                 <div class="form-group">
                                     @*<label>Company Members</label>*@
                                     <ejs-grid id="Grid" toolbar="@(new List<string>() { "Add","Edit" ,"Delete" })">
-                                        <e-grid-editSettings allowAdding="true" allowDeleting="true" mode="Dialog"></e-grid-editSettings>
+                                        <e-grid-editSettings allowAdding="true" allowEditing="true" allowDeleting="true" mode="Dialog"></e-grid-editSettings>
                                         <e-data-manager url="/Company/UrlDataSource" updateUrl="/Company/CellEditUpdate" insertUrl="/Company/CellEditInsert" removeUrl="/Company/CellEditDelete" adaptor="UrlAdaptor"></e-data-manager>
 
                                         <e-grid-columns>                                            

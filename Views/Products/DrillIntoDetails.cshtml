@@ -221,7 +221,7 @@ else
                             </form>
 
                             <div class="tab-pane" id="messages">
-                                <table class="table  table-mb table-hover">
+                                <table class="table  table-mb table-hover"  >
                                     <thead mt-5 mb-5>
                                         <tr>
                                             <th style="color:#0C2A46">Name</th>
@@ -230,11 +230,11 @@ else
                                             <th style="color:#0C2A46">Name Id</th>
                                         </tr>
                                     </thead>
-                                    <tbody id="youdividb"></tbody>
+                                    <tbody id="yourdivid"></tbody>
                                 </table>
                             </div>
 
-                            <div id="yourdivid"></div>
+                            
 
 
                             
@@ -250,6 +250,8 @@ else
                 function myFunction() {
                    // alert("I am an alert box!");
                     var minlength = 3;
+                    //clear data
+                    $("#yourdivid").empty();
 
                     $("#myInput").keyup(function () {
                         var that = this,
@@ -269,18 +271,26 @@ else
                                 dataType: "json",
                                 success: function (data) {
                                     var html_to_append = '';
-                                    $.each(data.data, function (i, item) {
-                                        html_to_append +=
-                                            console.log(data);
-                                        data.data.forEach(name => addToRow(name));
 
-                                        $("#yourdivid").append(document.createTextNode(item.name));
+                                    console.log(data);
+                                    //data.data.forEach(name => addToRow(name));
+                                    $.each(data.data, function (i, item) {
+                                        html_to_append += '<tr>';
+
+                                        html_to_append += '<td>' + item.name + '</td>';
+                                        html_to_append += '<td>' + item.search_ID + '</td>';  
+                                        html_to_append += '<td>' + item.status + '</td>';  
+                                        html_to_append += '<td>' + item.name_ID + '</td>';  
+                                      //  $("#yourdivid").append(document.createTextNode(item.name));
+                                        html_to_append += '</tr>';
                                         //
                                        // $("#resultstat").append(document.html_to_append("<br>"));
                                        
                                         
                                     });
+                                    $('#yourdivid').append(html_to_append);
 
+                                    data.data.forEach(name => addToRow(name));
 
                                    /* $.each(data, function (key, value) {
                                         html += '<tr>';
@@ -392,6 +402,7 @@ else
         var registeredTableContainer = document.getElementById('registeredTable');
         var reservedTableContainer = document.getElementById('reservedTable');
         var pendingTableContainer = document.getElementById('pendingTable');
+        var allTableContainer = document.getElementById('youdividb');
 
         var row = document.createElement('tr');
         var nameColumn = document.createElement('td');
@@ -412,8 +423,13 @@ else
             row.appendChild(nameColumn);
             row.appendChild(anotherColumn);
             row.appendChild(dateColumn);
-            row.appendChild(anotherNotherColumn);
-            if (name.status === 'Registered') {
+        row.appendChild(anotherNotherColumn);
+        if (name.status === 'Registered') {
+
+            clearTable(pendingTableContainer);
+            allTableContainer.appendChild(row);
+        }
+           else if (name.status === 'Registered') {
                 console.log('registered not emplimented');
             } else if (name.status === 'Reserved') {
                 clearTable(pendingTableContainer);

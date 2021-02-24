@@ -1,4 +1,5 @@
-﻿@{
+﻿@model BillerClientConsole.Models.RegisterVM
+@{
     Layout = "../Shared/_LayoutMain";
 }
 
@@ -20,31 +21,35 @@
             </div>
             <div class="modal-body pd-20">
                 <form action="/Authinternal/Register" method="post">
+                    
                     <div class="form-layout form-layout-1">
                         <div class="row mg-b-25">
                             <div class="col-lg-6">
                                 <div class="form-group">
                                     <label class="form-control-label">Firstname: <span class="tx-danger">*</span></label>
-                                    <input class="form-control" type="text" name="firstname" placeholder="Firstname">
+                                    <input class="form-control" asp-for="firstname" type="text" name="firstname" placeholder="Firstname">
                                 </div>
                             </div><!-- col-4 -->
                             <div class="col-lg-6">
                                 <div class="form-group">
                                     <label class="form-control-label">Lastname: <span class="tx-danger">*</span></label>
-                                    <input class="form-control" type="text" name="lastname" placeholder="Lastname">
+                                    <input class="form-control" asp-for="lastname" type="text" name="lastname" placeholder="Lastname">
 
                                 </div>
                             </div><!-- col-4 -->
                             <div class="col-lg-4">
                                 <div class="form-group">
                                     <label class="form-control-label">National ID/ Passport Number: <span class="tx-danger">*</span></label>
-                                    <input class="form-control" type="text" name="natid" placeholder="National ID / Passport Number">
+                                    <input class="form-control" type="text" asp-for="natid" id="nationalId" name="natid" placeholder="63-123456-X-40">
+                                    @*<span id="lblError" style="color:red"></span>*@
+                                    <span asp-validation-for="natid" class="text-danger"></span>
                                 </div>
                             </div><!-- col-4 -->
                             <div class="col-lg-8">
                                 <div class="form-group mg-b-10-force">
                                     <label class="form-control-label">Email Address: <span class="tx-danger">*</span></label>
-                                    <input class="form-control" type="email" name="email" placeholder="Email">
+                                    <input class="form-control" asp-for="email" type="email" name="email" placeholder="Email">
+                                    <span asp-validation-for="email" class="text-danger"></span>
                                 </div>
                             </div><!-- col-8 -->
 
@@ -68,26 +73,27 @@
                             <div class="col-lg-12">
                                 <div class="form-group mg-b-10-force">
                                     <label class="form-control-label">Residential Address: <span class="tx-danger">*</span></label>
-                                    <input class="form-control" type="text" name="address" placeholder="Residential address">
+                                    <input class="form-control" asp-for="address" type="text" name="address" placeholder="Residential address">
                                 </div>
                             </div><!-- col-8 -->
 
                             <div class="col-lg-6">
                                 <div class="form-group mg-b-10-force">
                                     <label class="form-control-label">City: <span class="tx-danger">*</span></label>
-                                    <input class="form-control" type="text" name="city" placeholder="City">
+                                    <input class="form-control" asp-for="city" type="text" name="city" placeholder="City">
                                 </div>
                             </div><!-- col-8 -->
 
                             <div class="col-lg-6">
                                 <div class="form-group mg-b-10-force">
                                     <label class="form-control-label">Country: <span class="tx-danger">*</span></label>
-                                    <select class="form-control select2" name="country" data-placeholder="Choose country">
+                                    <select class="form-control select2" asp-for="country" name="country" data-placeholder="Choose country">
                                         <option label="Choose country"></option>
                                         <option value="USA">United States of America</option>
                                         <option value="UK">United Kingdom</option>
                                         <option value="China">China</option>
                                         <option value="Japan">Japan</option>
+                                        <option value="Zimbabwe">Zimbabwe</option>
                                     </select>
                                 </div>
                             </div><!-- col-4 -->
@@ -95,22 +101,22 @@
                             <div class="col-lg-6">
                                 <div class="form-group mg-b-10-force">
                                     <label class="form-control-label">Password: <span class="tx-danger">*</span></label>
-                                    <input class="form-control" type="text" name="password" placeholder="City">
+                                    <input class="form-control" asp-for="password" type="text" name="password" placeholder="Password">
                                 </div>
                             </div><!-- col-8 -->
 
                             <div class="col-lg-6">
                                 <div class="form-group mg-b-10-force">
                                     <label class="form-control-label">Confirm password: <span class="tx-danger">*</span></label>
-                                    <input class="form-control" type="text" name="passwordb" placeholder="City">
+                                    <input class="form-control" asp-for="passwordb" type="text" name="passwordb" placeholder="Password">
                                 </div>
                             </div><!-- col-8 -->
 
                         </div><!-- row -->
-                            <div class="form-layout-footer">
-                                <button class="btn btn-info tx-size-xs">Submit Form</button>
-                                <button class="btn btn-secondary tx-size-xs">Cancel</button>
-                            </div>
+                        <div class="form-layout-footer">
+                            <button class="btn btn-info tx-size-xs">Submit Form</button> @*onclick="ValidateID()"*@
+                            <button class="btn btn-secondary tx-size-xs">Cancel</button>
+                        </div>
 
 
 
@@ -129,3 +135,15 @@
         </div>
     </div><!-- modal-dialog -->
 </div><!-- modal -->
+
+<script type="text/javascript">
+    function ValidateID() {
+        var nId = document.getElementById("nationalId").value;
+        var lblError = document.getElementById("lblError");
+        lblError.innerHTML = "";
+        var expr = '(^\d{2}) (\d{4,7}) ([A-Z-a-z]{1} (\d{2}$))|(^\d{2})-(\d{4,7})-([A-Z-a-z]{1}-(\d{2}$))';
+        if (!expr.test(nId)) {
+            lblError.innerHTML = "Invalid National ID format.";
+        }
+    }
+</script>

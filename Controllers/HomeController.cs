@@ -141,7 +141,7 @@ namespace BillerClientConsole.Controllers
            
 
 
-            ViewBag.Balance = response.AccountBalance;
+              ViewBag.Balance = response.AccountBalance;
             ViewBag.Payments = response.Payments;
             ViewBag.credits = credits;
             if(entitiesSummary.Count > 0)

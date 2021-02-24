@@ -44,12 +44,12 @@ namespace BillerClientConsole.Controllers
         {
             ViewBag.title = "New Search";
             List<mSearchNames> sn = new List<mSearchNames>();
-          
+            //  TempData["id"] = Guid.NewGuid().ToString(); 
             var data = sn;
             ViewBag.dataSource = data;
 
             return View();
-        }
+        } 
 
         [HttpGet("GetApplicationFromExaminer")]
         public IActionResult ApplicationFromExaminer(string ApplicationID)
@@ -57,6 +57,62 @@ namespace BillerClientConsole.Controllers
             return View();
         }
 
+        [HttpGet("AssignedTasks")]
+        public IActionResult AssignedTasks(string ToDisplay)
+        {
+            ViewBag.title = "About";
+            var client = new HttpClient();
+            if (!string.IsNullOrEmpty(ToDisplay))
+            {
+                if (ToDisplay.Equals("CompanyApplications"))
+                {
+                    var user = db.AspNetUsers.Where(i => i.Email == User.Identity.Name).FirstOrDefault();
+                    var resp = client.GetAsync($"{Globals.Globals.end_point_get_company_application}").Result.Content.ReadAsStringAsync().Result;
+                    dynamic dataa_j = JsonConvert.DeserializeObject(resp);
+                    var companies = dataa_j.data.value;
+                    List<mCompanyResponse> companyApplications = JsonConvert.DeserializeObject<List<mCompanyResponse>>(companies.ToString());
+                    List<mCompanyResponse> assignedApplications = companyApplications.Where(s => !string.IsNullOrEmpty(s.companyInfo.Examiner) && string.IsNullOrEmpty(s.companyInfo.Payment) && string.IsNullOrEmpty(s.companyInfo.Search_Ref)).ToList(); //!string.IsNullOrEmpty(s.companyInfo.Payment) && 
+                    ViewBag.Applications = assignedApplications;
+                    ViewBag.ToDisplay = ToDisplay;
+                    //ViewBag.ToDisplay = ToDisplay;
+                    //ViewBag.CompanyApplications = companyApplications.Count;
+                    //return RedirectToAction("AssignTasks", new { onDisplay = "CompanyApplication" });
+                }
+            }
+            else
+            {
+                var user = db.AspNetUsers.Where(i => i.Email == User.Identity.Name).FirstOrDefault();
+                var resp = client.GetAsync($"{Globals.Globals.end_point_get_company_application}").Result.Content.ReadAsStringAsync().Result;
+                dynamic dataa_j = JsonConvert.DeserializeObject(resp);
+                var companies = dataa_j.data.value;
+                List<mCompanyResponse> companyApplications = JsonConvert.DeserializeObject<List<mCompanyResponse>>(companies.ToString());
+                List<mCompanyResponse> assignedApplications = companyApplications.Where(s => !string.IsNullOrEmpty(s.companyInfo.Examiner) && string.IsNullOrEmpty(s.companyInfo.Payment) && string.IsNullOrEmpty(s.companyInfo.Search_Ref)).ToList(); //
+                ViewBag.CompanyApplications = assignedApplications.Count;
+
+
+                var res = client.GetAsync($"{Globals.Globals.end_point_get_name_searches}").Result.Content.ReadAsStringAsync().Result;
+                dynamic data_j = JsonConvert.DeserializeObject(res);
+                var searchNames = data_j.data.value;
+                List<mSearch> names = JsonConvert.DeserializeObject<List<mSearch>>(searchNames.ToString());
+                names = names.Where(z => z.searchInfo.Satus == "Assigned" && z.searchInfo.Payment == "Paid").ToList();
+                List<mSearch> harare = names.Where(z => z.searchInfo.SortingOffice == "HARARE").ToList();
+                List<mSearch> bulawyo = names.Where(z => z.searchInfo.SortingOffice == "BULAWAYO").ToList();
+                ViewBag.Count = names.Count;
+
+                ViewBag.HarareCount = harare.Count;
+                ViewBag.Bulawayo = bulawyo.Count;
+                int disp = 0;
+                if (names.Count > 0 || harare.Count > 0 || bulawyo.Count > 0 || assignedApplications.Count > 0)
+                {
+                    disp = 1;
+                }
+
+                ViewBag.Display = disp;
+            }
+
+
+            return View();
+        }
 
         [HttpGet("UnassignedTasks")]
         public IActionResult UnassignedTasks(string ToDisplay)
@@ -224,6 +280,7 @@ namespace BillerClientConsole.Controllers
             
             var searchInfo = namess.searchInfo;
             var searchNames = namess.SearchNames;
+            TempData["Searchnames"] = namess.SearchNames;
             ViewBag.TaskID = taskId;
             ViewBag.dateSubmitted = searchInfo.SearchDate;
             ViewBag.purpose = searchInfo.Purpose;
@@ -239,7 +296,7 @@ namespace BillerClientConsole.Controllers
             
 
             ViewBag.names = searchNames;
-            
+            TempData["names"] = searchNames;
             return View();
         }
 
@@ -798,97 +855,155 @@ namespace BillerClientConsole.Controllers
             //Code to populate My Card
             var ApplicationQueries = context.Queries.Where(q => q.applicationRef == companyApplication.companyInfo.Application_Ref && q.status == "Pending").ToList();
             ViewBag.ApplicationQueries = ApplicationQueries;
-          
+            ViewBag.email = companyApplication.companyInfo.Email;
             //var order = OrdersDetails.GetAllRecords();
             //ViewBag.datasource = order;
             return View();
         }
 
         [HttpPost("AddNewProduct")]
-        public async Task<IActionResult> AddProduct(postSearch product)
+        public async Task<IActionResult> AddNewProduct1(postSearch product)
         {
-
+            // return Ok(product);
             mSearch ms = new mSearch();
             mSearchInfo ms1 = new mSearchInfo();
             ms1.Payment = "Not paid";
             ms1.Search_For = product.Search_For.ToString().ToUpper();
+
             ms1.Justification = product.Justification.ToUpper();
             ms1.Purpose = product.Brief.ToUpper();
             ms1.Searcher_ID = User.Identity.Name;
             ms1.SortingOffice = product.sortingOffice.ToUpper();
             ms1.Desigination = product.Desigination.ToUpper();
             ms1.Reason_For_Search = product.Reason.ToUpper();
+            TempData["Search_For"] = product.Search_For.ToString().ToUpper();
+            TempData["Justification"] = product.Justification.ToUpper();
+            TempData["Purpose"] = product.Brief.ToUpper();
+            TempData["SortingOffice"] = product.sortingOffice.ToUpper();
+            TempData["Desigination"] = product.Desigination.ToUpper();
+            TempData["Reason_For_Search"] = product.Desigination.ToUpper();
 
-           
-                Globals.Globals.tempSearchId1 = Guid.NewGuid().ToString();
-                Globals.Globals.tempSearchNameId1 = Guid.NewGuid().ToString();
-                Globals.Globals.tempSearchNameId2 = Guid.NewGuid().ToString();
-                Globals.Globals.tempSearchNameId3 = Guid.NewGuid().ToString();
-                Globals.Globals.tempSearchNameId4 = Guid.NewGuid().ToString();
-                Globals.Globals.tempSearchNameId5 = Guid.NewGuid().ToString();
-                Globals.Globals.tempSearchNameId6 = Guid.NewGuid().ToString();
-           
 
-            ms1.search_ID = Globals.Globals.tempSearchId1;
-           
-           
+            if (ms.searchInfo.search_ID == "")
+            {
+                TempData["id"] = Guid.NewGuid().ToString();
+              //  Globals.Globals.tempSearchId1 = product.search_id;
+            }
+            if (product.tempSearchNameId2 == null)
+            {
+                product.tempSearchNameId2 = Guid.NewGuid().ToString();
+            }
+            if (product.tempSearchNameId1 == null)
+            {
+                product.tempSearchNameId1 = Guid.NewGuid().ToString();
+            }
+            if (product.tempSearchNameId3 == null)
+            {
+                product.tempSearchNameId3 = Guid.NewGuid().ToString();
+            }
+            if (product.tempSearchNameId4 == null)
+            {
+                product.tempSearchNameId4 = Guid.NewGuid().ToString();
+            }
+            if (product.tempSearchNameId5 == null)
+            {
+                product.tempSearchNameId5 = Guid.NewGuid().ToString();
+            }
+            if (product.tempSearchNameId6 == null)
+            {
+                product.tempSearchNameId6 = Guid.NewGuid().ToString();
+            }
+
+            if (product.tempSearchNameId6 == null)
+            {
+                product.tempSearchNameId6 = Guid.NewGuid().ToString();
+            }
+
+
+            ms1.search_ID = TempData["id"];
+            //if (string.IsNullOrEmpty(product.name1) && string.IsNullOrEmpty(product.name2) && string.IsNullOrEmpty(product.name3) && string.IsNullOrEmpty(product.name4) && string.IsNullOrEmpty(product.name5) {
+
+            //    TempData["error"] = "The name search is null";
+            //    ViewBag.title = "New Search";
+            //    return View()
+            //    // return RedirectToAction("Products/AddNewProduct");
+            //}
+
             List<mSearchNames> snames = new List<mSearchNames>();
-            if (!string.IsNullOrEmpty(product.name1))
+            if (!string.IsNullOrEmpty(product.name1) && product.name1.Length > 3)
                 snames.Add(new mSearchNames
                 {
                     Name = product.name1.ToUpper(),
-                    Name_ID = Globals.Globals.tempSearchNameId1,
+                    Name_ID = product.tempSearchNameId1,
                     Status = "Pending",
                     Search_ID = ms1.search_ID
                 });
-            if (!string.IsNullOrEmpty(product.name2))
+            if (!string.IsNullOrEmpty(product.name2) && product.name2.Length > 3)
                 snames.Add(new mSearchNames
                 {
                     Name = product.name2.ToUpper(),
-                    Name_ID = Globals.Globals.tempSearchNameId2,
+                    Name_ID = product.tempSearchNameId2,
                     Status = "Pending",
                     Search_ID = ms1.search_ID
                 });
-            if (!string.IsNullOrEmpty(product.name3))
+            if (!string.IsNullOrEmpty(product.name3) && product.name3.Length > 3)
                 snames.Add(new mSearchNames
                 {
                     Name = product.name3.ToUpper(),
-                    Name_ID = Globals.Globals.tempSearchNameId3,
+                    Name_ID = product.tempSearchNameId3,
                     Status = "Pending",
                     Search_ID = ms1.search_ID
                 });
-            if (!string.IsNullOrEmpty(product.name4))
+            if (!string.IsNullOrEmpty(product.name4) && product.name4.Length > 3)
                 snames.Add(new mSearchNames
                 {
                     Name = product.name4.ToUpper(),
-                    Name_ID = Globals.Globals.tempSearchNameId4,
+                    Name_ID = product.tempSearchNameId4,
                     Status = "Pending",
                     Search_ID = ms1.search_ID
                 });
-            if (!string.IsNullOrEmpty(product.name5))
+            if (!string.IsNullOrEmpty(product.name5) && product.name5.Length > 3)
                 snames.Add(new mSearchNames
                 {
                     Name = product.name5.ToUpper(),
-                    Name_ID = Globals.Globals.tempSearchNameId5,
+                    Name_ID = product.tempSearchNameId5,
                     Status = "Pending",
                     Search_ID = ms1.search_ID
                 });
             //if (!string.IsNullOrEmpty(product.name6))
             //snames.Add(new mSearchNames { Name = product.name6.ToUpper(), Name_ID =Globals.Globals.tempSearchNameId6,Search_ID = ms1.search_ID });
-
+            TempData["name1"] = product.name1?.ToUpper();
+            TempData["name2"] = product.name2?.ToUpper();
+            TempData["name3"] = product.name3?.ToUpper();
+            TempData["name4"] = product.name4?.ToUpper();
+            TempData["name5"] = product.name5?.ToUpper();
             ms.searchInfo = ms1;
             ms.SearchNames = snames;
 
             ViewBag.title = "New Search";
-            var client = new HttpClient();
-            var response = await client.PostAsJsonAsync<mSearch>($"{Globals.Globals.end_point_add_search}", ms).Result.Content.ReadAsStringAsync();
-            PostSearchResponse ps =  JsonConvert.DeserializeObject<PostSearchResponse>(response);
-            if (ps.res == "ok")
+            if (snames.Count > 0)
             {
+                ViewBag.msg = "Test";
 
+                ms.searchInfo.search_ID = ms1.search_ID;
+                var client = new HttpClient();
+                var response = await client.PostAsJsonAsync<mSearch>($"{Globals.Globals.end_point_add_search}", ms).Result.Content.ReadAsStringAsync();
+                PostSearchResponse ps = JsonConvert.DeserializeObject<PostSearchResponse>(response);
+                if (ps.res == "ok")
+                {
+
+                }
+                Globals.Globals.searchApplicationID = Globals.Globals.tempSearchId1;
+                // return RedirectToAction("ListBillerProducts");
+                //return PartialView("_ListBillerProducts");
+                return View();
             }
-            Globals.Globals.searchApplicationID = Globals.Globals.tempSearchId1;
-            return RedirectToAction("ListBillerProducts");
+            else
+            {
+                TempData["error"] = "The name search is null, Please fill in necessary details";
+                return RedirectToAction("AddNewProduct1");
+            }
+
         }
 
 

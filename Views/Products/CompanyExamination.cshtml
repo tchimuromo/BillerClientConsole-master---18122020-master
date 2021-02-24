@@ -9,6 +9,8 @@
 
 <div class="container-fluid mt-3">
     <input hidden id="applicationId" value="@ViewBag.Application"/>
+    <input hidden id="Email" value="@ViewBag.NameOffice.Office.EmailAddress"/>
+
     <!-- SmartWizard html -->
     <div id="smartwizard">
 
@@ -163,10 +165,10 @@
 
 
                                 <div class="form-group fa-pull-rig ht mt-5">
-                                    <button type="button" id="btnsubmit" class="btn btn-primary btn-sm">
+                                    <button type="button" id="btnsubmit" class="btn btn-danger">
 
                                         <!-- //id="submitOffice"  style="display:none" -->
-                                        Submit/Resolve Query
+                                        Submit Query
                                     </button>
                                 </div>
                             </div>
@@ -285,7 +287,7 @@
                                     </div>
                                 </div>
                                 <div class="form-group fa-pull-right">
-                                    <button type="button" id="submitMembersDirectors" class="btn btn-primary">
+                                    <button type="button" id="submitMembersDirectors" class="btn btn-danger">
                                         Submit Query
                                     </button>
                                 </div>
@@ -389,7 +391,7 @@
                                     </div>
                                 </div>
                                 <div class="form-group fa-pull-right">
-                                    <button type="button" id="submitShareAndLiabilityClause" class="btn btn-primary">
+                                    <button type="button" id="submitShareAndLiabilityClause" class="btn btn-danger">
                                         Submit Query
                                     </button>
                                 </div>
@@ -680,6 +682,9 @@
         $.ajax({
             type: 'POST',
             url: '/' + document.getElementById('applicationId').value + '/Approve',
+            data: {
+                emailAddress: document.getElementById('Email').value
+            },
             success: function (data) {
                 alert('Application Approved With No Queries');
                 window.location = '/Home/Dashboard'
