@@ -38,6 +38,9 @@
 
 
   <ItemGroup>
+    <PackageReference Include="alertify" Version="0.3.11" />
+    <PackageReference Include="AlertifyJS" Version="1.13.1" />
+    <PackageReference Include="AspNetCoreHero.ToastNotification" Version="1.1.0" />
     <PackageReference Include="BarCode" Version="2020.4.0.1" />
     <PackageReference Include="EntityFramework" Version="6.3.0" />
     <PackageReference Include="IronPdf" Version="5.2.0.1" />
@@ -67,6 +70,7 @@
     <PackageReference Include="Paynow" Version="1.0.3" />
     <PackageReference Include="Syncfusion.EJ2.AspNet.Core" Version="18.1.0.42" />
     <PackageReference Include="System.IO.Compression" Version="4.3.0" />
+    <PackageReference Include="toastr" Version="2.1.1" />
     <PackageReference Include="X.PagedList.Mvc.Core" Version="7.9.1" />
   </ItemGroup>
 

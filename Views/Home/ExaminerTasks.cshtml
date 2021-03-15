@@ -9,103 +9,168 @@
         <div class="card-header">
             <h4>My tasks</h4>
         </div>
+
+        <div class="row">
+            <!-- grid column -->
+            <div class="col-xl-8">
+                <!-- .card -->
+                <div class="card card-body card-fluid">
+                    <!-- legend -->
+                    <ul class="list-inline small">
+                        <li class="list-inline-item">
+                            <i class="fa fa-fw fa-circle text-teal"></i> Assigned tasks
+                        </li>
+                        <li class="list-inline-item">
+                            <i class="fa fa-fw fa-circle text-purple"></i> Completed tasks
+                        </li>
+                    </ul><!-- /legend -->
+                    <div class="chartjs" style="height: 253px">
+                        <canvas id="canvas-achievement"></canvas>
+                    </div>
+                </div><!-- /.card -->
+            </div><!-- /grid column -->
+            <!-- grid column -->
+            <div class="col-xl-4">
+                <!-- .card -->
+                <div class="card card-fluid">
+                    <!-- .card-header -->
+                    <div class="card-header"> Overview </div><!-- /.card-header -->
+                    <!-- .card-body -->
+                    <div class="card-body">
+                        <dl class="d-flex justify-content-between">
+                            <dt class="text-left">
+                                <span class="mr-2">Revenue</span> <small class="text-success"><i class="fa fa-caret-up"></i> 87%</small>
+                            </dt>
+                            <dd class="text-right mb-0">
+                                <strong>17,400</strong> <small class="text-muted">USD</small>
+                            </dd>
+                        </dl>
+                        <dl class="d-flex justify-content-between mb-0">
+                            <dt class="text-left">
+                                <span class="mr-2">Projects</span> <small class="text-success"><i class="fa fa-caret-up"></i> 24%</small>
+                            </dt>
+                            <dd class="text-right mb-0">
+                                <strong>5</strong>
+                            </dd>
+                        </dl>
+                    </div><!-- /.card-body -->
+                    <!-- .card-body -->
+                    <div class="card-body border-top">
+                        <dl class="d-flex justify-content-between">
+                            <dt class="text-left">
+                                <span class="mr-2">Expenses</span> <small class="text-danger"><i class="fa fa-caret-down"></i> 12%</small>
+                            </dt>
+                            <dd class="text-right mb-0">
+                                <strong>1,600</strong> <small class="text-muted">USD</small>
+                            </dd>
+                        </dl>
+                    </div><!-- /.card-body -->
+                    <!-- .card-body -->
+                    <div class="card-body border-top">
+                        <div class="summary">
+                            <p class="text-left">
+                                <strong class="mr-2">Earnings</strong> <small class="text-success"><i class="fa fa-caret-up"></i> 24%</small>
+                            </p>
+                            <p class="text-center">
+                                <strong class="h3">15,800</strong> <span class="text-muted">USD</span>
+                            </p>
+                        </div>
+                    </div><!-- /.card-body -->
+                </div><!-- /.card -->
+            </div><!-- /grid column -->
+        </div><!-- /grid row -->
+        <!-- grid row -->
         @if (ViewBag.tasks != null)
         {
-            <div class="card-body">
-                <div class="table-responsive mt-3 mb-3">
-                    <table class="table  table-mb table-hover">
-                        <thead mt-5 mb-5>
-                            <tr>
-                                <th style="color:#0C2A46">Service</th>
-                                <th style="color:#0C2A46">AssignedBy</th>
-                                <th style="color:#0C2A46">Status</th>
-                                <th style="color:#0C2A46">Deadline</th>
-                                <th style="color:#0C2A46">Number of records</th>
-                                <th style="color:#0C2A46">Action</th>
-                            </tr>
-                        </thead>
-                        <tbody>
-                            @if (ViewBag.tasks != null)
-                            {
-                                @foreach (var task in ViewBag.tasks)
-                                {
-                                    <tr>
-                                        <td> @task.Service </td>
-                                        <td> Principal Examiner 1 </td>
-                                        <td> @task.Status </td>
-                                        <td> @task.ExpDateofComp </td>
-                                        <td> @task.NoOfRecords </td>
-                                        @if (task.Service == "Name Search")
-                                        {
-                                            <td>
-                                                <div class="btn-group">
-                                                    <a href="/Products/GetNameSearchesByUserByTaskID?TaskId=@task._id" style="color:#0C2A46;text-decoration:underline">View More</a>
-                                                </div>
-                                            </td>
-                                        }
-                                        else if (task.Service == "Private Company Registration")
-                                        {
-                                            <td>
-                                                <div class="btn-group">
-                                                    <a href="/Products/GetCompantTask?TaskId=@task._id" style="color:#0C2A46;text-decoration:underline">View More</a>
-                                                </div>
-                                            </td>
-                                        }
-                                    </tr>
-                                }
-                            }
-                        </tbody>
-                    </table>
-                </div>
-            </div>
-                                }
-        else if (ViewBag.Display == "CompanyApplications")
+    <div class="card-body">
+        <div class="table-responsive mt-3 mb-3">
+            <table class="table  table-mb table-hover">
+                <thead mt-5 mb-5>
+                    <tr>
+                        <th style="color:#0C2A46">Service</th>
+                        <th style="color:#0C2A46">AssignedBy</th>
+                        <th style="color:#0C2A46">Status</th>
+                        <th style="color:#0C2A46">Deadline</th>
+                        <th style="color:#0C2A46">Number of records</th>
+                        <th style="color:#0C2A46">Action</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @if (ViewBag.tasks != null)
+                    {
+    @foreach (var task in ViewBag.tasks)
+    {
+    <tr>
+        <td> @task.Service </td>
+        <td> Principal Examiner 1 </td>
+        <td> @task.Status </td>
+        <td> @task.ExpDateofComp </td>
+        <td> @task.NoOfRecords </td>
+        @if (task.Service == "Name Search")
         {
-            <div class="card-body">
-                <div class="table-responsive mt-3 mb-3">
-                    <table class="table  table-mb table-hover">
-                        <thead mt-5 mb-5>
-                            <tr>
-                                <th style="color:#0C2A46">Application Ref</th>
-                                <th style="color:#0C2A46">Search Ref</th>
-                                <th style="color:#0C2A46">Date submitted</th>
-                                <th style="color:#0C2A46">Name</th>
-                                <th style="color:#0C2A46">Type</th>
-                                <th style="color:#0C2A46">Payment</th>
-                                <th style="color:#0C2A46">Action</th>
-                            </tr>
-                        </thead>
+    <td>
+        <div class="btn-group">
+            @*DrillIntoDetails*@
+            <a href="/Products/GetNameSearchesByUserByTaskID?TaskId=@task._id" style="color:#0C2A46;text-decoration:underline">View More</a>
+        </div>
+    </td>
+ }
+else if (task.Service == "Private Company Registration")
+{
+    <td>
+        <div class="btn-group">
+            <a href="/Products/GetCompantTask?TaskId=@task._id" style="color:#0C2A46;text-decoration:underline">View More</a>
+        </div>
+    </td>
+}
+    </tr>
+}}
+                </tbody>
+            </table>
+        </div>
+    </div> }
+else if (ViewBag.Display == "CompanyApplications")
+{
+    <div class="card-body">
+        <div class="table-responsive mt-3 mb-3">
+            <table class="table  table-mb table-hover">
+                <thead mt-5 mb-5>
+                    <tr>
+                        <th style="color:#0C2A46">Application Ref</th>
+                        <th style="color:#0C2A46">Search Ref</th>
+                        <th style="color:#0C2A46">Date submitted</th>
+                        <th style="color:#0C2A46">Name</th>
+                        <th style="color:#0C2A46">Type</th>
+                        <th style="color:#0C2A46">Payment</th>
+                        <th style="color:#0C2A46">Action</th>
+                    </tr>
+                </thead>
 
-                        <tbody>
-                            @if (ViewBag.CompanyApplications != null)
-                            {
-                                @foreach (var application in ViewBag.CompanyApplications)
-                                {
-                                    <tr>
-                                        <td> @application.companyInfo.Application_Ref</td>
-                                        <td> @application.companyInfo.Search_Ref</td>
-                                        <td> @application.companyInfo.Date_Of_Application </td>
-                                        <td> @application.companyInfo.Name </td>
-                                        <td> @application.companyInfo.Type </td>
-                                        <td> @application.companyInfo.Payment </td>
-                                        <td>
-                                            <div class="btn-group">
-                                                <a href="/Products/Detail?reference=@application.companyInfo.Search_Ref" style="color:#0C2A46;text-decoration:underline">Examine</a>
-                                            </div>
-                                        </td>
-                                    </tr>
-                                }
-                            }
-                        </tbody>
-                    </table>
-                </div>
+                <tbody>
+                    @if (ViewBag.CompanyApplications != null)
+                    {
+    @foreach (var application in ViewBag.CompanyApplications)
+    {
+    <tr>
+        <td> @application.companyInfo.Application_Ref</td>
+        <td> @application.companyInfo.Search_Ref</td>
+        <td> @application.companyInfo.Date_Of_Application </td>
+        <td> @application.companyInfo.Name </td>
+        <td> @application.companyInfo.Type </td>
+        <td> @application.companyInfo.Payment </td>
+        <td>
+            <div class="btn-group">
+                <a href="/Products/Detail?reference=@application.companyInfo.Search_Ref" style="color:#0C2A46;text-decoration:underline">Examine</a>
             </div>
+        </td>
+    </tr>
+}}
+                </tbody>
+            </table>
+        </div>
+    </div> } @*<div class="card-footer">
 
-        }
-
-        @*<div class="card-footer">
-
-        </div>*@
+    </div>*@
     </div>
 
     @*Completed tasks*@

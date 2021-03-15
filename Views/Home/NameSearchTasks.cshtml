@@ -1,0 +1,51 @@
+﻿@model IEnumerable<mTasks>
+@{ 
+    Layout = "../Shared/_LayoutMain";
+    ViewBag.Title = "Name Search Pending Tasks";
+} 
+
+@if (Model.Any())
+{
+    <div class="card">
+        <div class="card-body">
+            <table class="table table-responsive">
+                <thead>
+                    <tr>
+
+                        <th>Task Id</th>
+                        <th>Assigner</th>
+                        <th>Status</th>
+                        <th>Examiner</th>
+                        <th>Date</th>
+                        <th>Reassign Task</th>
+
+                    </tr>
+                </thead>
+
+                @foreach (mTasks item in Model)
+                {
+                    <tbody>
+                        <tr>
+                            <td>@item._id</td>
+                            <td>@item.Assigner</td>
+                            <td>@item.Status</td>
+                            <td>@item.AssignTo</td>
+                            <td>@item.Date</td>
+                            <td><a class="btn btn-warning" asp-controller="Home" asp-action="ReassignNamesearchTask" asp-route-taskId="@item._id">Reassign Task</a></td>
+                        </tr>
+                    </tbody>
+
+                }
+            </table>
+        </div>
+    </div>
+
+   
+}
+else
+{
+    <p class="ml-4"><h4>There are no Assigned Name Search Tasks</h4> </p>
+    <a href="/Home/PrincipalExaminer" class="btn btn-primary">Home</a>
+
+    
+}

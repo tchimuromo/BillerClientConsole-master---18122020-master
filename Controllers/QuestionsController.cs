@@ -1496,7 +1496,7 @@ namespace BillerClientConsole.Controllers
 
 
         [HttpPost("/{applicationId}/Approve")]
-        public async Task<IActionResult> ApprovePvtEntityApplication(string applicationId, string emailAddress=null)
+        public async Task<IActionResult> ApprovePvtEntityApplication(string applicationId, helpermodel model)
         {
             //var db = new db();
             
@@ -1506,10 +1506,18 @@ namespace BillerClientConsole.Controllers
             var res1 = JsonConvert.DeserializeObject(companyApplication);
             ///var CompInfo = res1.data.value[0].companyInfo;
 
-           //// var DeCompInfo = JsonConvert.DeserializeObject<mCompanyInfo>(CompInfo.ToString());
-           // var email2 = DeCompInfo.AppliedBy;
+            //// var DeCompInfo = JsonConvert.DeserializeObject<mCompanyInfo>(CompInfo.ToString());
+            // var email2 = DeCompInfo.AppliedBy;
+            //Functionality to reduce number of records on a given task by 1 
+          
+            //Get all the Tasks Including Company Applications
+            var response = client.GetAsync($"{Globals.Globals.end_point_ReduceNumOfRecords}/{model.taskid}").Result;
+            //if (response.IsSuccessStatusCode)
+            //{
+            //    return Ok();
+            //}
+            // Functionality to check if there are still pending Applications in the given
 
-            
             //Code to See if there are pending Queries on the Application 
             var ApplicationQueries = queryDb.Queries.Where(q => q.applicationRef == applicationId && q.status == "Pending").ToList();
             if (ApplicationQueries.Count > 0)
@@ -1520,7 +1528,7 @@ namespace BillerClientConsole.Controllers
                 if (update.IsSuccessStatusCode)
                 {
                     //Code to Send email to user
-                    var email1 = emailAddress;// user.Email;
+                    var email1 = model.emailAddress;// user.Email;
                     SmtpClient emailclient1 = new SmtpClient("mail.ttcsglobal.com");
                     emailclient1.UseDefaultCredentials = false;
                     emailclient1.Credentials = new NetworkCredential("companiesonlinezw", "N3wPr0ducts@1");
@@ -1567,7 +1575,7 @@ namespace BillerClientConsole.Controllers
                 var resolve = await client.GetAsync($"{Globals.Globals.end_point_resolveQuery_companyinfo}/{applicationId}");
                 if (resolve.IsSuccessStatusCode)
                 {
-                    var email = emailAddress;// user.Email;
+                    var email = model.emailAddress;// user.Email;
                     SmtpClient emailclient = new SmtpClient("mail.ttcsglobal.com");
                     emailclient.UseDefaultCredentials = false;
                     emailclient.Credentials = new NetworkCredential("companiesonlinezw", "N3wPr0ducts@1");
@@ -1601,13 +1609,7 @@ namespace BillerClientConsole.Controllers
                     emailclient.Send(mailMessage);
                 }
 
-
-
-                //Code to do Query Verification on the incoming ApplicationId
-                //var result = await client.GetAsync($"{Globals.Globals.end_point_get_queries}").Result.Content.ReadAsStringAsync();
-                //// var res= result.Content.ReadAsStringAsync();
-                //var queries = JsonConvert.DeserializeObject<IEnumerable<mQuery>>(result).ToList();
-                var response = await client.PostAsJsonAsync<string>($"{Globals.Globals.service_end_point}/PvtRegistration/{applicationId}/Approve", user.Email).Result.Content.ReadAsStringAsync();
+                var response1 = await client.PostAsJsonAsync<string>($"{Globals.Globals.service_end_point}/PvtRegistration/{applicationId}/Approve", user.Email).Result.Content.ReadAsStringAsync();
                 return Ok();
             }
            

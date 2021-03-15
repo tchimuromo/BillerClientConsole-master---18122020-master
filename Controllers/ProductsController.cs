@@ -183,9 +183,12 @@ namespace BillerClientConsole.Controllers
             
             List<mCompanyResponse> companyApplications = JsonConvert.DeserializeObject<List<mCompanyResponse>>(companies.ToString());
             List<mCompanyResponse> assignedApplications = 
-                companyApplications.Where(s => !string.IsNullOrEmpty(s.companyInfo.Payment) && !string.IsNullOrEmpty(s.companyInfo.Search_Ref) && !string.IsNullOrEmpty(s.companyInfo.ExaminerTaskId) && s.companyInfo.ExaminerTaskId.Equals(TaskId)).ToList(); //
+                companyApplications.Where(s => !string.IsNullOrEmpty(s.companyInfo.Payment) 
+                && !string.IsNullOrEmpty(s.companyInfo.Search_Ref) 
+                && !string.IsNullOrEmpty(s.companyInfo.ExaminerTaskId) 
+                && s.companyInfo.ExaminerTaskId.Equals(TaskId) && s.companyInfo.Status== "Assigned").ToList(); //
             ViewBag.CompanyApplications = assignedApplications;
-
+            ViewBag.TaskId = TaskId;
             return View();
         }
 
@@ -236,7 +239,7 @@ namespace BillerClientConsole.Controllers
             catch (Exception ex)
             {
                 
-            }
+            };
 
             mCompanyResponse companyApplication = JsonConvert.DeserializeObject<mCompanyResponse>(dataa.ToString());
             companyApplication.companyInfo.Examiner = Examiner;
@@ -266,7 +269,7 @@ namespace BillerClientConsole.Controllers
         [HttpGet("GetNameSearchesByUserByTaskID")]
         public async Task<IActionResult> DrillIntoDetails(string taskId)
         {
-            var user = db.AspNetUsers.Where(i => i.Email == User.Identity.Name).First();
+            var user = db.AspNetUsers.Where(i => i.Email == User.Identity.Name).FirstOrDefault();
            
             ViewBag.title = "Name search detail";
             var client = new HttpClient();
@@ -276,11 +279,13 @@ namespace BillerClientConsole.Controllers
             dynamic json_data = JsonConvert.DeserializeObject(res);
             var searchNamess = data_j.data.value;
             List<mSearch> names = JsonConvert.DeserializeObject<List<mSearch>>(searchNamess.ToString());
-            var namess = names.Where(z => z.searchInfo.Satus == "Assigned"||z.searchInfo.Satus == "Approved"||z.searchInfo.Satus == "Rejected").Take(1).FirstOrDefault();
-            
+            var namess = names.Where(z => z.searchInfo.Satus == "Assigned" || z.searchInfo.Satus == "Approved" || z.searchInfo.Satus == "Rejected").Take(1).FirstOrDefault();
+            var pendingnames = names.Where(z => z.searchInfo.Satus == "Assigned").ToList();
+
             var searchInfo = namess.searchInfo;
             var searchNames = namess.SearchNames;
-            TempData["Searchnames"] = namess.SearchNames;
+            // TempData["Searchnames"] = namess.SearchNames;
+            ViewBag.mSearch = pendingnames;
             ViewBag.TaskID = taskId;
             ViewBag.dateSubmitted = searchInfo.SearchDate;
             ViewBag.purpose = searchInfo.Purpose;
@@ -296,11 +301,44 @@ namespace BillerClientConsole.Controllers
             
 
             ViewBag.names = searchNames;
-            TempData["names"] = searchNames;
+           // TempData["names"] = searchNames;
             return View();
         }
 
         
+        [HttpGet("ReviewNameSearch")]
+        public async Task<IActionResult> ReviewNameSearch(string taskid, string searchid)
+        {
+            var user = db.AspNetUsers.Where(i => i.Email == User.Identity.Name).First();
+
+            ViewBag.title = "Name search detail";
+            var client = new HttpClient();
+            var res = await client.GetAsync($"{Globals.Globals.end_point_get_name_search_by_user_by_task_id}?UserID={user.Email}&TaskID={taskid}").Result.Content.ReadAsStringAsync();
+
+            dynamic data_j = JsonConvert.DeserializeObject(res);
+            dynamic json_data = JsonConvert.DeserializeObject(res);
+            var searchNamess = data_j.data.value;
+            List<mSearch> names = JsonConvert.DeserializeObject<List<mSearch>>(searchNamess.ToString());
+            var namess = names.Where(z => z.searchInfo.Satus == "Assigned" || z.searchInfo.Satus == "Approved" || z.searchInfo.Satus == "Rejected").ToList();
+            var mysearchnames= names.Select(e => e.SearchNames).ToList();
+            var names1 = mysearchnames.Where(i => i.FirstOrDefault().Search_ID == searchid).ToList();
+            var searchinfo = names.FirstOrDefault().searchInfo;// Jackpot!!
+            ViewBag.dateSubmitted = searchinfo.SearchDate;
+            ViewBag.purpose = searchinfo.Purpose;
+            ViewBag.natureOfBusiness = searchinfo.Search_For;
+            ViewBag.Justification = searchinfo.Justification;
+            ViewBag.searchDate = searchinfo.SearchDate;
+            ViewBag.searchId = searchinfo.search_ID;
+            ViewBag.designation = searchinfo.Desigination;
+            ViewBag.applicant = searchinfo.Searcher_ID;
+            ViewBag.reference = searchinfo.search_ID;
+            //List<mSearchNames> namesp = JsonConvert.DeserializeObject<List<mSearchNames>>(searchNames.ToString());
+            ViewBag.TaskId = taskid;
+            ViewBag.searchId = searchid;
+            ViewBag.names = names1;
+            // TempData["names"] = searchNames;
+            return View();
+        }
 
         [HttpGet("Services")]
         public IActionResult Services()
@@ -529,7 +567,7 @@ namespace BillerClientConsole.Controllers
         /// 
 
         [HttpGet("Detail")]
-        public async Task<IActionResult> CompanyExamination(string reference)
+        public async Task<IActionResult> CompanyExamination(string reference, string taskid)
         {
             ViewBag.Title = "Customer";
 
@@ -856,6 +894,7 @@ namespace BillerClientConsole.Controllers
             var ApplicationQueries = context.Queries.Where(q => q.applicationRef == companyApplication.companyInfo.Application_Ref && q.status == "Pending").ToList();
             ViewBag.ApplicationQueries = ApplicationQueries;
             ViewBag.email = companyApplication.companyInfo.Email;
+            ViewBag.TaskId = taskid;
             //var order = OrdersDetails.GetAllRecords();
             //ViewBag.datasource = order;
             return View();
@@ -881,18 +920,22 @@ namespace BillerClientConsole.Controllers
             TempData["Purpose"] = product.Brief.ToUpper();
             TempData["SortingOffice"] = product.sortingOffice.ToUpper();
             TempData["Desigination"] = product.Desigination.ToUpper();
-            TempData["Reason_For_Search"] = product.Desigination.ToUpper();
+            TempData["Reason_For_Search"] = product.Reason.ToUpper();
 
-
-            if (ms.searchInfo.search_ID == "")
+            if (product.search_id == null)
             {
-                TempData["id"] = Guid.NewGuid().ToString();
-              //  Globals.Globals.tempSearchId1 = product.search_id;
+                ms1.search_ID = Guid.NewGuid().ToString();
+                //  Globals.Globals.tempSearchId1 = product.search_id;
+            }
+            else
+            {
+                ms1.search_ID = product.search_id;
             }
             if (product.tempSearchNameId2 == null)
             {
                 product.tempSearchNameId2 = Guid.NewGuid().ToString();
             }
+           
             if (product.tempSearchNameId1 == null)
             {
                 product.tempSearchNameId1 = Guid.NewGuid().ToString();
@@ -919,15 +962,14 @@ namespace BillerClientConsole.Controllers
                 product.tempSearchNameId6 = Guid.NewGuid().ToString();
             }
 
-
-            ms1.search_ID = TempData["id"];
-            //if (string.IsNullOrEmpty(product.name1) && string.IsNullOrEmpty(product.name2) && string.IsNullOrEmpty(product.name3) && string.IsNullOrEmpty(product.name4) && string.IsNullOrEmpty(product.name5) {
-
-            //    TempData["error"] = "The name search is null";
-            //    ViewBag.title = "New Search";
-            //    return View()
-            //    // return RedirectToAction("Products/AddNewProduct");
-            //}
+          TempData["id"]=ms1.search_ID;
+            ViewBag.searchId = ms1.search_ID;
+            ViewBag.tempSearchNameId1 = product.tempSearchNameId1;
+            ViewBag.tempSearchNameId2 = product.tempSearchNameId2;
+            ViewBag.tempSearchNameId3 = product.tempSearchNameId3;
+            ViewBag.tempSearchNameId4 = product.tempSearchNameId4;
+            ViewBag.tempSearchNameId5 = product.tempSearchNameId5;
+            ViewBag.tempSearchNameId6 = product.tempSearchNameId6;
 
             List<mSearchNames> snames = new List<mSearchNames>();
             if (!string.IsNullOrEmpty(product.name1) && product.name1.Length > 3)
@@ -977,6 +1019,7 @@ namespace BillerClientConsole.Controllers
             TempData["name3"] = product.name3?.ToUpper();
             TempData["name4"] = product.name4?.ToUpper();
             TempData["name5"] = product.name5?.ToUpper();
+            TempData["name6"] = product.name6?.ToUpper();
             ms.searchInfo = ms1;
             ms.SearchNames = snames;
 
@@ -984,6 +1027,18 @@ namespace BillerClientConsole.Controllers
             if (snames.Count > 0)
             {
                 ViewBag.msg = "Test";
+                ViewBag.mainObjective = product.Brief;
+                ViewBag.Desigination=product.Desigination;
+                ViewBag.Justification=product.Justification;
+                ViewBag.Reason= product.Reason;
+                ViewBag.sortingOffice= product.sortingOffice;
+                ViewBag.Search_For = product.Search_For;
+                ViewBag.name1 = product.name1;
+                ViewBag.name2 = product.name2;
+                ViewBag.name3 = product.name3;
+                ViewBag.name4 = product.name4;
+                ViewBag.name5 = product.name5;
+                ViewBag.name6 = product.name6;
 
                 ms.searchInfo.search_ID = ms1.search_ID;
                 var client = new HttpClient();

@@ -10,6 +10,7 @@
 <div class="container-fluid mt-3">
     <input hidden id="applicationId" value="@ViewBag.Application"/>
     <input hidden id="Email" value="@ViewBag.NameOffice.Office.EmailAddress"/>
+    <input hidden id="TaskId" value="@ViewBag.TaskId"/>
 
     <!-- SmartWizard html -->
     <div id="smartwizard">
@@ -343,9 +344,9 @@
                         @* form to submit share clause and liability clause *@
                         <form style="width:100%;" id="shareClauseForm" method="post">
                             <input type="hidden" name="billercode" value="@ViewBag.billercode" />
-                            <input type="hidden" name="billercode" value="@ViewBag.billercode" />
+                            @*<input type="hidden" name="billercode" value="@ViewBag.billercode" />
                             <input type="hidden" id="objectivesss" name="otherObjectives" />
-                            <input type="hidden" name="billercode" value="@ViewBag.billercode" />
+                            <input type="hidden" name="billercode" value="@ViewBag.billercode" />*@
 
                             <div class="form-group">
                                 @*<label>Company Members</label>*@
@@ -683,7 +684,8 @@
             type: 'POST',
             url: '/' + document.getElementById('applicationId').value + '/Approve',
             data: {
-                emailAddress: document.getElementById('Email').value
+                emailAddress: document.getElementById('Email').value,
+                taskid: document.getElementById('TaskId').value,
             },
             success: function (data) {
                 alert('Application Approved With No Queries');

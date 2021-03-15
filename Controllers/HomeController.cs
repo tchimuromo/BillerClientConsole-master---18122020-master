@@ -168,10 +168,11 @@ namespace BillerClientConsole.Controllers
             //ViewBag.Unassigned = names.Count;
 
 
+
             // Count for number of assigned tasks
             List<mSearch> namesb = JsonConvert.DeserializeObject<List<mSearch>>(searchNames.ToString());
             namesb = namesb.Where(z => z.searchInfo.Satus == "Assigned").ToList();
-            ViewBag.Assigned = namesb.Count;
+            ViewBag.Assigned = namesb.Count;//Assigned Company Applications 
 
             // Count for Namesearches Paid for
             //List<mSearch> namesc = JsonConvert.DeserializeObject<List<mSearch>>(searchNames.ToString());
@@ -187,6 +188,10 @@ namespace BillerClientConsole.Controllers
             List<mCompanyResponse> unassignedApplications = companyApplications.Where(s => string.IsNullOrEmpty(s.companyInfo.Examiner) && !string.IsNullOrEmpty(s.companyInfo.Payment) && !string.IsNullOrEmpty(s.companyInfo.Search_Ref)).ToList(); //!string.IsNullOrEmpty(s.companyInfo.Payment) && 
             ViewBag.Applications = unassignedApplications;
 
+            //Company Applications with Examiner's and Pending Status
+            List<mCompanyResponse> AssignedCompanyApplications = companyApplications.Where(s => !string.IsNullOrEmpty(s.companyInfo.Examiner) && s.companyInfo.Status=="Assigned").ToList();
+            ViewBag.AssignedCompanyApplications = AssignedCompanyApplications.Count;
+
             //var paidApplications = companyApplications.Where(z => z.companyInfo.Payment.Equals("Paid")).ToList();
             ViewBag.CompanyApps = companyApplications.Count;
             ViewBag.Unassigned = names.Count + unassignedApplications.Count;
@@ -195,10 +200,42 @@ namespace BillerClientConsole.Controllers
             List<mSearch> namesd = JsonConvert.DeserializeObject<List<mSearch>>(searchNames.ToString());
             ViewBag.TotalNameSearches = namesd.Count;
 
+            var response = client.GetAsync($"{Globals.Globals.end_point_getalltasks}").Result.Content.ReadAsStringAsync().Result;
+            dynamic task = JsonConvert.DeserializeObject(response);
+            var tasks = task.data.value;
+            List<mTasks> AllTask = JsonConvert.DeserializeObject<List<mTasks>>(tasks.ToString());
+
+
+            //Filter NameSearch Task and Select Pending Task 
+            var SearchNameTasks = AllTask.Where(e => e.Service == "Name Search" && (e.Status == "Pending" || e.Status == "Assigned")).ToList();
+            ViewBag.SearchNameTasks = SearchNameTasks.Count;
             ViewBag.title = "Principal Dashboard";
             return View();
         }
 
+        //[HttpGet("ReassignCompanyApplicationTask")]
+        //public IActionResult ReassignCompanyApplicationTask(string taskid)
+        //{
+
+        //}
+        
+        [HttpGet("AssignedCompanyApplications")]
+        public IActionResult AssignedCompanyApplications()
+        {
+            HttpClient client = new HttpClient();
+            //Get all the Tasks Including Company Applications
+            var response = client.GetAsync($"{Globals.Globals.end_point_getalltasks}").Result.Content.ReadAsStringAsync().Result;
+            dynamic task = JsonConvert.DeserializeObject(response);
+            var tasks = task.data.value;
+            List<mTasks> AllTask = JsonConvert.DeserializeObject<List<mTasks>>(tasks.ToString());
+
+
+            //Filter NameSearch Task and Select Pending Task 
+            var SearchNameTasks = AllTask.Where(e => e.Service == "Private Company Registration" && e.Status == "Pending").ToList();
+            //Return a list of Pending NameSeraches
+            return View(SearchNameTasks);
+
+        }
 
         [HttpGet("ExaminerTasks")]
         public async Task<IActionResult> ExaminerTasks(string display)
@@ -261,6 +298,67 @@ namespace BillerClientConsole.Controllers
             return View();
         }
 
+        [HttpGet("ReassignNamesearchTask")]
+        public IActionResult ReassignNamesearchTask(string taskId)
+        {
+            HttpClient client = new HttpClient();
+            //Get all the Tasks Including Company Applications
+            var response = client.GetAsync($"{Globals.Globals.end_point_getalltasks}").Result.Content.ReadAsStringAsync().Result;
+            dynamic task = JsonConvert.DeserializeObject(response);
+            var tasks = task.data.value;
+            List<mTasks> AllTask = JsonConvert.DeserializeObject<List<mTasks>>(tasks.ToString());
+            var GetTask = AllTask.Where(e => e._id == taskId).FirstOrDefault();
+            ViewBag.Assigner=GetTask.Assigner;
+            ViewBag.Service = GetTask.Service;
+            ViewBag.Status = GetTask.Status;
+            ViewBag.Date = GetTask.Date;
+            ViewBag.Id = GetTask._id;
+            ViewBag.AssignTo = GetTask.AssignTo;
+            ViewBag.NoOfRecords = GetTask.NoOfRecords;
+            ViewBag.ExpDateofComp = GetTask.ExpDateofComp;
+            var examiner = db.AspNetUsersInternal.Where(e => e.role == 2).ToList();
+            var num = examiner.Count;
+            ViewBag.people = examiner;
+            return View();
+        }
+
+        [HttpPost("ReassignNamesearchTask")]
+        public IActionResult ReassignNamesearchTask(mTasks model)
+        {
+           // if(model.Service)
+            HttpClient client = new HttpClient();
+            var response = client.PostAsJsonAsync($"{Globals.Globals.end_point_ReassignTask}/{model._id}", model).Result;
+            if (response.IsSuccessStatusCode)
+            {
+                if(model.Service == "Name Search")
+                {
+                    return RedirectToAction("NameSearchTasks", "Home");
+                }
+                return RedirectToAction("AssignedCompanyApplications", "Home");
+            }
+            return BadRequest();
+        }
+        [Route("NameSearchTasks")]
+        public IActionResult NameSearchTasks()
+        {
+            HttpClient client = new HttpClient();
+            //Get all the Tasks Including Company Applications
+            var response = client.GetAsync($"{Globals.Globals.end_point_getalltasks}").Result.Content.ReadAsStringAsync().Result;
+            dynamic task = JsonConvert.DeserializeObject(response);
+            var tasks = task.data.value;
+            List<mTasks> AllTask = JsonConvert.DeserializeObject<List<mTasks>>(tasks.ToString());
+
+
+            //Filter NameSearch Task and Select Pending Task 
+            var SearchNameTasks = AllTask.Where(e => e.Service == "Name Search" && (e.Status == "Pending"|| e.Status=="Assigned")).ToList();
+            //Return a list of Pending NameSeraches
+            return View(SearchNameTasks);
+        }
+
+        
+      
+           
+      
         protected override void Dispose(bool disposing)
         {
             if (disposing)

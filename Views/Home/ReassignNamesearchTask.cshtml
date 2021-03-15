@@ -1,0 +1,73 @@
+﻿@model mTasks
+
+@{ 
+    Layout = "../Shared/_LayoutMain";
+    ViewBag.Title = "Reassign Name Search Task";
+
+}
+<div class="card">
+    <div class="card-body">
+        <div class="jumbotron">
+            <form asp-action="ReassignNamesearchTask" asp-controller="Home" method="post">
+                <div class="row">
+                    
+                    @*<input type="hidden" name="" value="@ViewBag." />*@
+                    <div class="col-md-6">
+                        <div class="form-group">
+                            <label class="control-label">Task Id</label>
+                            <input asp-for="_id" type="text" class="form-control" value="@ViewBag.Id" readonly />
+                        </div>
+                    </div>
+                    <div class="col-md-6">
+                        <div class="form-group">
+                            <label class="control-label">Service</label>
+                            <input asp-for="Service" name="Service" type="text" class="form-control" value="@ViewBag.Service" readonly />
+
+                        </div>
+                    </div>
+                </div>
+                <div class="row">
+                    
+                    <div class="col-md-6">
+                        <div class="form-group">
+                            <label class="control-label">Number of Records</label>
+                            <input asp-for="NoOfRecords" name="NoOfRecords" type="text" class="form-control" value="@ViewBag.NoOfRecords" readonly />
+                        </div>
+                    </div>
+                    <div class="col-md-6">
+                        <div class="form-group">
+                            <label class="control-label">Status</label>
+                            <input asp-for="Status" name="Status"  type="text" class="form-control" value="@ViewBag.Status" readonly />
+                        </div>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-md-6">
+                        <div class="form-group">
+                            <label class="control-label">Examiner</label>
+                            <select class="form-control" name="AssignTo">
+                                <option selected>@ViewBag.AssignTo</option>
+                                =
+                                @foreach (var examiners in ViewBag.people)
+                                {
+                                    <option value="@examiners.email">@examiners.email</option>
+                                }
+
+                            </select>
+                        </div>
+                    </div>
+                    <div class="col-md-6">
+
+                        <label>Date of completion</label>
+                        <input type="date" class="form-control" name="ExpDateofComp" asp-for="ExpDateofComp" value="@ViewBag.ExpDateofComp" />
+                        <input type="hidden" name="Date" value="@ViewBag.Date" />
+
+                    </div>
+                </div>
+                <div class="form-group">
+                    <input type="submit" class="btn btn-info" value="Update" />
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
