@@ -47,29 +47,25 @@ namespace BillerClientConsole.Controllers
         }
 
 
+        //[HttpGet("Contains")]
+        //[HttpGet("")]
+        //public async Task<IActionResult> Dashboard(string name)
+        //{
+        //    name = "TA";
+        //    var client = new HttpClient();
+        //    var resp = await client.GetAsync($"{Globals.Globals.end_point_FilterNames }?name={name}").Result.Content.ReadAsStringAsync();
+        //    dynamic json_data = JsonConvert.DeserializeObject(resp);
+        //    var dattta = json_data.data.value;
+        //    List<mSearchNames> search = JsonConvert.DeserializeObject<List<mSearchNames>>(dattta.ToString());
 
-        [HttpGet("Namesearchview")]
-
-        public async Task<IActionResult> Dashboardb(string searchRef)
-        {
-            //name = "TA";
-            var client = new HttpClient();
-            var resp = await client.GetAsync($"{Globals.Globals.end_point_namesearch_by_searchref }?searchRef={searchRef}").Result.Content.ReadAsStringAsync();
-            IEnumerable<mSearchNames> json_data = JsonConvert.DeserializeObject<IEnumerable<mSearchNames>>(resp);
-            var reserved = json_data.FirstOrDefault(e => e.Status == "Reserved");
-            // mCompanyInfo companyInfo = JsonConvert.DeserializeObject<mCompanyInfo>(dattta.ToString());
-            // var dattta = json_data.value;
-            // List<mSearchNames> search = JsonConvert.DeserializeObject<mSearchNames>(dattta.ToString());
-
-            //zzzViewBag.filters = search;
-            //ViewBag.title = "Dashboard";
-            // return View();
-            return Json(new
-            {
-                //res = search,
-                datab = reserved,
-
-            }) ;
+        //    ViewBag.filters = search;
+        //    ViewBag.title = "Dashboard";
+        //    return View();          
+        //    //return Json(new
+        //    //{
+        //    //    res =search,
+        //    //    message = search
+        //    //});
 
         }
     }

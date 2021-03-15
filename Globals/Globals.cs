@@ -150,7 +150,7 @@ namespace BillerClientConsole.Globals
         public static string end_point_assign_company_for_examination = $"{service_end_point}/api/v1/AssignCompanyForExamination";
         public static string end_point_get_company_application_by_application_ref = $"{service_end_point}/api/v1/GetCompanyApplicationByApplicationRef";
 
-        //Examination endpoints..
+        //Queries endpoints..
         public static string end_point_post_address_has_query = $"{service_end_point}/api/v1/PostAddressHasQuery";
         public static string end_point_ReduceNumOfRecords = $"{service_end_point}/api/v1/ReduceNumOfRecords";
 

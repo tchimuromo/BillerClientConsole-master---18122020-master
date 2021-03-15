@@ -33,38 +33,11 @@
 
                                     </td>
 
-                                </tr>
-                            </tbody>
-                        }
-                    </table>
-
-                </div>
+        </tr>
+    </tbody>}
+                </table>
+                <a class="btn btn-success" asp-action="ApplicationResubmission" asp-controller="Queries">Resubmit Application</a>
             </div>
         </div>
-    </div>}
-else
-{
-<div class="mt-2 ml-4">
-    <a class="btn btn-success" onclick="ApplicationResubmission('@ViewBag.ApplicationID')">Resubmit Application</a>
-</div>
-   
-}
-<script type="text/javascript">
-    function ApplicationResubmission(applicationID) {
-        console.log(applicationID)
-        $.ajax({
-            url: '/Queries/ApplicationResubmission/' + applicationID,
-            type: "GET", //send it through get method
-
-            success: function (data) {
-                //Do Something
-                alert("Application Successfully resubmitted")
-                window.location = '/Home/Dashboard';
-            },
-            error: function (err) {
-                //Do Something to handle error
-                alert("Application still has Pending Queries")
-            }
-        });
-    }
-</script>
+    </div>
+</div>}

@@ -6,37 +6,425 @@
     @*<div class="row mt-3">
         <button class="ml-3 btn btn-success ">Prev</button>
         <button href="/Products/GetNameSearchesByUserByTaskID?@ViewBag.TaskID" class="mr-3 ml-auto btn btn-success">Next</button>
-    </div>*@
-    
-    @if (ViewBag.mSearch.Count >0)
+    </div>
+    <div class="card mt-3 mb-5">
+        <div class="card-header">
+            <h3>Name search details</h3>
+        </div>
+        <div class="card-body">
+
+            <div class="row">
+                <div class="col-md-4">
+                    <label>Date submitted   : @ViewBag.dateSubmitted</label>
+                </div>
+                <div class="col-md-4">
+                    <label>Objective        : @ViewBag.purpose</label>
+                </div>
+                <div class="col-md-4">
+                    <label>Business Type    : @ViewBag.natureOfBusiness</label>
+                </div>
+                <div class="col-md-4">
+                    <label>Designation      : @ViewBag.designation</label>
+                </div>
+                <div class="col-md-4">
+                    <label>Applicant        : @ViewBag.applicant</label>
+                </div>
+                <div class="col-md-4">
+                    <label>Search reference : @ViewBag.reference</label>
+                </div>
+            </div>
+            @*<div class="row">
+                    <div class="col-md-4">
+                        <label>Justification</label>
+                    </div>
+                    <div class="col-md-4"></div>
+                    <div class="col-md-4"></div>
+                </div>*@
+        </div>
+    </div>
+
+    <div class="card mb-5">
+        <div class="card-header">
+            <h3>Names</h3>
+        </div>
+        <div class="card-body">
+            <div class="container-fluid">
+                <div class="table-responsive">
+                    <table class="table  table-mb table-hover">
+                        <thead mt-5 mb-5>
+                            <tr>
+                                <th style="color:#0C2A46">Name</th>
+                                <th style="color:#0C2A46">Status</th>
+                                <th style="color:#0C2A46">Action</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            @if (ViewBag.names != null)
+                            {
+                @foreach (var name in ViewBag.names)
+                {
+<tr>
+    <td> @name.Name </td>
+    @if (name.Status == "Rejected")
     {
-        <table class="table">
-            <thead>
-                <tr>
-                    <th>Task Id</th>
-                    <th>Search Id</th>
-                    <th>Status</th>
-                    <th>Action</th>
-                </tr>
-               
-            </thead>
-            @foreach (mSearch item in ViewBag.mSearch)// List of mSearch contains SearchInfo and List<SearchNames
-            {
-                var searchid = item.SearchNames.FirstOrDefault().Search_ID;
-                <tbody>
-                    <tr>
-                        <td>@item.searchInfo.ExamanerTaskID</td>
-                        <td>@searchid</td>
-                        <td>@item.searchInfo.Satus</td>
-                        <td><a asp-action="ReviewNameSearch" asp-controller="Products" asp-route-taskid="@ViewBag.TaskID" asp-route-searchid="@searchid" class="nav-link">Review</a></td>     @*href="/Products/ReviewNameSearch?@searchid"*@
-                    </tr>
-                </tbody>
+<td class="text-danger"> @name.Status</td>
+ }
+else if (name.Status == "Blacklisted")
+{
+<td class="text-black"> @name.Status</td>
+ }
+else if (name.Status == "Not Considered")
+{
+<td class="text-warning"> @name.Status</td>
+ }
+else
+{
+<td class="text-success"> @name.Status</td>
+}
+
+
+
+    <td>
+        <div class="btn-group">
+            <a href="#"
+               style="color:#0C2A46;text-decoration:underline"
+               data-toggle="modal"
+               data-target="#name-search-modal"
+               onclick="setNameAndSearchIdAndPopulate('@name.Name')">Review</a>
+        </div>
+    </td>
+</tr>
+}}
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="container-fluid mb-5 pull-right row">
+        <span style="flex: 1 1 auto"></span>
+        <a href="/Home/Dashboard">
+            <button class="btn btn-primary pull-right">
+                Finish
+            </button>
+        </a>
+    </div>
+</div>
+
+<div class="modal fade" id="name-search-modal" tabindex="-9" role="dialog" aria-labelledby="addContactLabel" aria-hidden="true" style="color:#0C2A46">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content card ;width:80%">
+            <div class="card-header bg-white">
+                <div class="" row>
+                    <div class="col-md-12">
+                        <h5 class="modal-title"
+                            id="nameOnReview"
+                            style="color:#0C2A46">
+                            NAME
+                        </h5>
+                    </div>
+                </div>
+                <div class="row mt-3">
+                    <div class="col-md-6 mb-3">
+                        <button class="btn btn-block btn-success" onclick="changeCriteria()">Show</button>
+                    </div>
+                    <div class="col-md-6">
+                        <select class="form-control" id="searchCriteria">
+                            <option>names that start with</option>
+                            <option>names that contain</option>
+                        </select>
+                    </div>
+                </div>
+                <div class="row mt-3 container-fluid">
+                    Justifcation: @ViewBag.Justification
+                </div>
+            </div>
+
+            <div class="modal-body card-body">
+                <div class="card card-nav-tabs">
+                    <div class="card-header card-header-primary">
+                        <!-- colors: "header-primary", "header-info", "header-success", "header-warning", "header-danger" -->
+                        <div class="nav-tabs-navigation">
+                            <div class="nav-tabs-wrapper">
+                                <ul class="nav nav-tabs" data-tabs="tabs">
+                                    <li class="nav-item">
+                                        <a class="nav-link active" href="#profile" data-toggle="tab">
+                                            Registered
+                                        </a>
+                                    </li>
+                                    <li class="nav-item">
+                                        <a class="nav-link" href="#messages" data-toggle="tab">
+                                            Reserved
+                                        </a>
+                                    </li>
+                                    <li class="nav-item">
+                                        <a class="nav-link" href="#settings" data-toggle="tab">
+                                            Pending
+                                        </a>
+                                    </li>
+                                    @*advanced search*@
+                                    <li class="nav-item">
+                                        <a class="nav-link" href="#advanced" data-toggle="tab">
+                                            Advanced
+                                        </a>
+                                    </li>
+                                </ul>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="card-body ">
+                        <div class="tab-content text-center">
+                            <div class="tab-pane active" id="profile">
+                                <table class="table  table-mb table-hover">
+                                    <thead mt-5 mb-5>
+                                        <tr>
+                                            <th style="color:#0C2A46">Name</th>
+                                            <th style="color:#0C2A46">Search Id</th>
+                                            <th style="color:#0C2A46">Status</th>
+                                            <th style="color:#0C2A46">Name Id</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody id="registeredTable"></tbody>
+                                </table>
+                            </div>
+                            <div class="tab-pane" id="messages">
+                                <table class="table  table-mb table-hover">
+                                    <thead mt-5 mb-5>
+                                        <tr>
+                                            <th style="color:#0C2A46">Name</th>
+                                            <th style="color:#0C2A46">Search Id</th>
+                                            <th style="color:#0C2A46">Status</th>
+                                            <th style="color:#0C2A46">Name Id</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody id="reservedTable"></tbody>
+                                </table>
+                            </div>
+                            <div class="tab-pane" id="settings">
+                                <table class="table  table-mb table-hover">
+                                    <thead mt-5 mb-5>
+                                        <tr>
+                                            <th style="color:#0C2A46">Name</th>
+                                            <th style="color:#0C2A46">Search Id</th>
+                                            <th style="color:#0C2A46">Status</th>
+                                            <th style="color:#0C2A46">Name Id</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody id="pendingTable"></tbody>
+                                </table>
+                            </div>
+                            @*advanced pane*@
+                        <div class="tab-pane" id="advanced">
+                            <form method="post" action="">
+                                <input type="text" class="form-control" id="myInput" onkeyup="myFunction()" placeholder="Search for names.." title="Type in a name">
+                            </form>
+                            <div id="response"></div>
+                        </div>
+
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <script type="text/javascript">
+
+                var searchRequest = null;
+                function myFunction() {
+                   // alert("I am an alert box!");
+                    var minlength = 3;
+
+                    $("#myInput").keyup(function () {
+                        var that = this,
+                            value = $(this).val();
+
+                        if (value.length >= minlength) {
+                            if (searchRequest != null)
+                                searchRequest.abort();
+                            searchRequest = $.ajax({
+                                type: "GET",
+                                url: "/AdvancedSearch/Contains/",
+                                data: {
+                                    'name': value
+                                },
+                                dataType: "text",
+                                success: function (res) {
+                                    $.each(data.location, function (index, element) {
+                                        $('#response').append("<p id='response_" + index + "'> ID: " + element.ID + " Name: " + element.Name + "</p>");
+                                    });
+                                    console.log(data);
+                                }
+                            });
+                        }
+                    });
                 }
-            </table>
+            </script>
+
+
+            </script>
+
+
+            <div class="modal-footer">
+                <button class="btn btn-white" data-dismiss="modal" style="color:#0C2A46">Cancel</button>
+                <button class="btn" data-dismiss="modal" style="background-color:#000;color:#fff" onclick="approveName('Blacklisted')">Blacklist</button>
+                <button class="btn btn-danger" data-dismiss="modal" onclick="approveName('Rejected','@ViewBag.TaskID')">Reject</button>
+                <button class="btn btn-success" data-dismiss="modal" onclick="approveName('Reserved','@ViewBag.TaskID')">Accept</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script>
+    var subjectName = '';
+    var searchId = '';
+    var selectedName = '';
+
+    function setNameAndSearchIdAndPopulate(name) {
+        console.log("setNameAndSearchIdAndPopulate");
+        //console.log(searchIdElement.value);
+        console.log(name);
+        subjectName = name;
+        var searchIdElement = document.getElementById('customInput');
+        searchId = searchIdElement.value;
+       // selectedName = name;
+        displayName()
+        populateTables();
     }
-    else
-    {
-        <h3><p> There are no more pending name searches to review</p></h3>
-        <a href="/Home/ExaminerTasks" class="btn btn-primary">Home</a>
+
+    function displayName() {
+        console.log("displayName");
+        var nameElement = document.getElementById('nameOnReview');
+        nameElement.textContent = subjectName;
     }
-      
+
+    function populateTables(name) {
+        console.log("populateTables");
+        var searchCriteria = document.getElementById('searchCriteria');
+        var criteria = searchCriteria.value;
+
+        if (criteria === 'names that start with') {
+            $.ajax({
+                type: "GET",
+                data: {
+                    name: subjectName,
+                    searchId: searchId
+                },
+                url: "/Products/CheckNameStartsWith",
+                success: function (data) {
+                    console.log(data);
+                    data.data.forEach(name => addToRow(name));
+                },
+                error: function () {
+                    alert("error");
+                },
+                completed: function () {
+                }
+            });
+        }
+        else if (criteria === 'names that contain') {
+            $.ajax({
+                type: "GET",
+                data: {
+                    name: subjectName,
+                    searchId: searchId
+                },
+                url: "/Products/CheckNameStartAndContainsWith",
+                success: function (data) {
+                    console.log(data);
+                    data.data.forEach(name => addToRow(name));
+                },
+                error: function () {
+                    alert("error");
+                },
+                completed: function () {
+                }
+            });
+        }
+    };
+
+    function addToRow(name) {
+
+        console.log("addToRow =================== name");
+        console.log(name);
+        selectedName = name;
+        console.log(selectedName);
+        var registeredTableContainer = document.getElementById('registeredTable');
+        var reservedTableContainer = document.getElementById('reservedTable');
+        var pendingTableContainer = document.getElementById('pendingTable');
+
+        var row = document.createElement('tr');
+        var nameColumn = document.createElement('td');
+        var anotherColumn = document.createElement('td');
+        var dateColumn = document.createElement('td');
+        var anotherNotherColumn = document.createElement('td');
+     
+        //if (name.name === subjectName && name.search_ID === searchId) {
+        //    selectedName = name;
+        //    console.log(selectedName);
+        //    console.log();
+
+        //} else {
+        nameColumn.textContent = name.name;
+        anotherColumn.textContent = name.search_ID;
+        dateColumn.textContent = name.status;
+        anotherNotherColumn.textContent = name.name_ID;
+            row.appendChild(nameColumn);
+            row.appendChild(anotherColumn);
+            row.appendChild(dateColumn);
+            row.appendChild(anotherNotherColumn);
+            if (name.status === 'Registered') {
+                console.log('registered not emplimented');
+            } else if (name.status === 'Reserved') {
+                clearTable(pendingTableContainer);
+                reservedTableContainer.appendChild(row);
+            } else {
+                clearTable(pendingTableContainer);
+                pendingTableContainer.appendChild(row);
+            }
+        //}
+    };
+
+    function clearTable(pendingTableContainer) {
+        console.log("clearTable");
+        if (pendingTableContainer.hasChildNodes()) {
+            pendingTableContainer.removeChild(pendingTableContainer.firstChild);
+            clearTable(pendingTableContainer);
+        }
+    };
+
+    function changeCriteria() {
+        console.log("changeCriteria");
+        var nameElement = document.getElementById('nameOnReview');
+        populateTables(nameElement.textContent);
+        console.log(searchId);
+    };
+
+    function approveName(status, TaskID) {
+        console.log("approveName");
+        console.log(status);
+        selectedName.status = status;
+        console.log(selectedName);
+   
+
+        $.ajax({
+            type: "POST",
+            url: "/Products/ApproveSearchedName",
+            data: {
+                name: selectedName,
+                TaskID: TaskID,
+                status: status
+
+
+            },
+            success: function (data) {
+                if (data.res === "ok")
+                    window.location.reload();
+                else
+                    alert('could not perform operation');
+            },
+            error: function () {
+                alert(data.message);
+            },
+            completed: function () {
+            }
+        });
+    }</script>
