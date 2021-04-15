@@ -672,51 +672,51 @@ namespace BillerClientConsole.Controllers
             return NotFound();
         }
 
-        [HttpGet("QueryCard/{applicationID}")]
-        public IActionResult QueryCard(string applicationID)
-        {
-            List<Queries> query = new List<Queries>();
+        //[HttpGet("QueryCard/{applicationID}")]
+        //public IActionResult QueryCard(string applicationID)
+        //{
+        //    List<Queries> query = new List<Queries>();
 
-            var query1 = context.Queries
-                .Where(q => q.applicationID == applicationID && q.status == "Pending")
-                .ToList();
-            foreach (var query1item in query1)
-            {
-                query.Add(query1item);
-            }
+        //    var query1 = context.Queries
+        //        .Where(q => q.applicationID == applicationID && q.status == "Pending")
+        //        .ToList();
+        //    foreach (var query1item in query1)
+        //    {
+        //        query.Add(query1item);
+        //    }
 
-            ViewBag.applicationID = applicationID;
-            return View(query);
-        }
-
-
-        [HttpGet("ResolveQuery/{id}")]
-        [HttpGet("ResolveQuery/{applicationRef}")]
-        public async Task<IActionResult> ResolveQuery(string step, string applicationRef, string id = null, string applicationID = null)
-        {
-            var client = new HttpClient();
-            //Code to get Registered Office Details
-            if (step == "Step2")
-            {
-                var registeredOfficeExists = await client.GetAsync($"{Globals.Globals.service_end_point}/RegisteredOffice/{id}").Result.Content.ReadAsStringAsync();
-                var model = JsonConvert.DeserializeObject<RegisteredOffice>(registeredOfficeExists);
-                return View(model);
-            }
-            else if (step == "Step3")
-            {   //ViewBag.CompanyApplication = companyApplication;
-                // Redirecting to an another Action with the model data from database........
-                return RedirectToAction("ResolveMembersQuery", new { applicationID = applicationID });
-
-                ///return ResolveMembersQuery(companyApplication);
-            }
-            else if (step == "Step4")
-            {
-                return RedirectToAction("ResolveShareClauseQuery", new { applicationID = applicationID });
-            }
+        //    ViewBag.applicationID = applicationID;
+        //    return View(query);
+        //}
 
 
-            return NotFound();
-        }
+        //[HttpGet("ResolveQuery/{id}")]
+        //[HttpGet("ResolveQuery/{applicationRef}")]
+        //public async Task<IActionResult> ResolveQuery(string step, string applicationRef, string id = null, string applicationID = null)
+        //{
+        //    var client = new HttpClient();
+        //    //Code to get Registered Office Details
+        //    if (step == "Step2")
+        //    {
+        //        var registeredOfficeExists = await client.GetAsync($"{Globals.Globals.service_end_point}/RegisteredOffice/{id}").Result.Content.ReadAsStringAsync();
+        //        var model = JsonConvert.DeserializeObject<RegisteredOffice>(registeredOfficeExists);
+        //        return View(model);
+        //    }
+        //    else if (step == "Step3")
+        //    {   //ViewBag.CompanyApplication = companyApplication;
+        //        // Redirecting to an another Action with the model data from database........
+        //        return RedirectToAction("ResolveMembersQuery", new { applicationID = applicationID });
+
+        //        ///return ResolveMembersQuery(companyApplication);
+        //    }
+        //    else if (step == "Step4")
+        //    {
+        //        return RedirectToAction("ResolveShareClauseQuery", new { applicationID = applicationID });
+        //    }
+
+
+        //    return NotFound();
+        //}
 
         [HttpGet("ResolveShareClauseQuery")]
         public async Task<IActionResult> ResolveShareClauseQuery(string applicationID)
