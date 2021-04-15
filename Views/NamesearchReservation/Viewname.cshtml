@@ -25,7 +25,7 @@
                     <h5 class="card-title">View Details</h5>
 
                     <table class="table  table-mb table-hover" style="color:#0C2A46;">
-
+                        
                         <tr>
                             <th> Reserved name:  </th>
                             <td> @ViewBag.reserved.Name </td>
@@ -51,6 +51,7 @@
                             <td>@DateTime.Parse(ViewBag.nameinfo.ApprovedDate).AddDays(30) </td>
                         </tr>
                     </table>
+                    @ViewBag.nameinfo.Satus SortingOffice ApprovedDate
 
                     <p class="card-text"> NB. Further reservation costs  $80. Your name will be further reserved by 30 days. </p>
                     <a href="CreditStatus?=@ViewBag.reserved.Search_ID" class="btn btn-primary">Further Reserve Name</a>

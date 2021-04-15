@@ -365,6 +365,35 @@ namespace BillerClientConsole.Controllers
             return View();
         }
 
+            ViewBag.title = "Name search detail";
+            var client = new HttpClient();
+            var res = await client.GetAsync($"{Globals.Globals.end_point_get_name_search_by_user_by_task_id}?UserID={user.Email}&TaskID={taskid}").Result.Content.ReadAsStringAsync();
+
+            dynamic data_j = JsonConvert.DeserializeObject(res);
+            dynamic json_data = JsonConvert.DeserializeObject(res);
+            var searchNamess = data_j.data.value;
+            List<mSearch> names = JsonConvert.DeserializeObject<List<mSearch>>(searchNamess.ToString());
+            var namess = names.Where(z => z.searchInfo.Satus == "Assigned" || z.searchInfo.Satus == "Approved" || z.searchInfo.Satus == "Rejected").ToList();
+            var mysearchnames= names.Select(e => e.SearchNames).ToList();
+            var names1 = mysearchnames.Where(i => i.FirstOrDefault().Search_ID == searchid).ToList();
+            var searchinfo = names.FirstOrDefault().searchInfo;// Jackpot!!
+            ViewBag.dateSubmitted = searchinfo.SearchDate;
+            ViewBag.purpose = searchinfo.Purpose;
+            ViewBag.natureOfBusiness = searchinfo.Search_For;
+            ViewBag.Justification = searchinfo.Justification;
+            ViewBag.searchDate = searchinfo.SearchDate;
+            ViewBag.searchId = searchinfo.search_ID;
+            ViewBag.designation = searchinfo.Desigination;
+            ViewBag.applicant = searchinfo.Searcher_ID;
+            ViewBag.reference = searchinfo.search_ID;
+            //List<mSearchNames> namesp = JsonConvert.DeserializeObject<List<mSearchNames>>(searchNames.ToString());
+            ViewBag.TaskId = taskid;
+            ViewBag.searchId = searchid;
+            ViewBag.names = names1;
+            // TempData["names"] = searchNames;
+            return View();
+        }
+
         [HttpGet("Services")]
         public IActionResult Services()
         {

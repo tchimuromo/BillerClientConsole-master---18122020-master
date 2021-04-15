@@ -154,7 +154,7 @@ namespace BillerClientConsole.Globals
         public static string end_point_get_beneficiaryshareholders = $"{service_end_point}/api/v1/GetBeneShareholders";
 
 
-        //Examination endpoints..
+        //Queries endpoints..
         public static string end_point_post_address_has_query = $"{service_end_point}/api/v1/PostAddressHasQuery";
         public static string end_point_ReduceNumOfRecords = $"{service_end_point}/api/v1/ReduceNumOfRecords";
 
