@@ -9,7 +9,7 @@
             <div class="card-body">
                 <div class="row">
                     <div class="col-md-6">
-                        <label><strong>Account Balance</strong> : @ViewBag.Balance</label>
+                        <label class="e-inline"><strong>Account Balance : $ </strong><strong class="text-success">@ViewBag.Balance</strong></label>
                     </div>
                     <div class="col-md-6">
                         @if (ViewBag.credits.NameSearch > 0 || ViewBag.credits.PvtLimitedCompany > 0)
@@ -19,14 +19,14 @@
                                 @if (ViewBag.credits.NameSearch > 0)
                                 {
                                     <li>
-                                        <label>Name Search : @ViewBag.credits.NameSearch</label>
+                                        <label>Name Search :<strong class="text-success">@ViewBag.credits.NameSearch</strong> </label>
                                     </li>
                                 }
 
                                 @if (ViewBag.credits.PvtLimitedCompany > 0)
                                 {
                                     <li>
-                                        <label>Private Limited Entity : @ViewBag.credits.PvtLimitedCompany</label>
+                                        <label>Private Limited Entity : <strong class="text-success">@ViewBag.credits.PvtLimitedCompany</strong></label>
                                     </li>
                                 }
 
@@ -39,21 +39,19 @@
             </div>
             <div class="card-footer">
                 <div class="row">
-                    <div class="col-md-6">
-                        <div class="row">
-                            <div class="col-md-3">
+                    
+                            <div class="ml-3">
                                 <button class="btn btn-primary" data-toggle="modal" data-target="#name-search-modal">Topup</button>
                             </div>
-                        </div>
-                    </div>
+                       
                     <div class="col-md-6">
                         @if (@ViewBag.Balance > 0)
                         {
-                            <div class="row">
-                                <div class="col-md-4">
+                           
+                                <div class="ml-auto" style="width:200px;">
                                     <button class="btn btn-primary" data-toggle="modal" data-target="#purchase-modal">Purchase credits</button>
                                 </div>
-                            </div>
+                           
                         }
                     </div>
                 </div>
@@ -130,7 +128,7 @@
 
                     <div class="modal-footer">
                         <button type="button" class="btn btn-white" data-dismiss="modal" style="color:#0C2A46">Cancel</button>
-                        <button type="submit" class="btn" style="background-color:#0C2A46">Continue</button>
+                        <button type="submit" class="btn btn-success" >Continue</button>
                     </div>
                 </div>
             </div>
@@ -162,7 +160,7 @@
 
                     <div class="modal-footer">
                         <button type="button" class="btn btn-white" data-dismiss="modal" style="color:#0C2A46">Cancel</button>
-                        <button type="submit" class="btn" style="background-color:#0C2A46">Continue</button>
+                        <button type="submit" class="btn btn-primary">Continue</button>
                     </div>
                 </div>
             </div>

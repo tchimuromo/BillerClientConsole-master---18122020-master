@@ -1,0 +1,176 @@
+﻿@{ Layout = "../Shared/_LayoutMain"; }
+<div class="container-fluid">
+    <div class="container">
+        <br />
+        <div class="row ">
+            <br />
+
+            <div class="col-lg-12">
+                <div class="card-deck">
+
+
+                    <div class="card bg-primary">
+                        <a href="/Products/UnassignedTasks">
+
+                            <div class="card-body text-center">
+                                <h1 style="color:white;"> @ViewBag.allApprovedApplications; </h1>
+
+                                <p class="card-text" style="color:white;"><b>Your Approved Applications </b></p>
+
+                            </div>
+                        </a>
+                    </div>
+
+
+                   
+                   
+                    @ViewBag.pendingApplications;
+
+                    <div class="card bg-warning">
+
+                        <a href="/Home/AssignedCompanyApplications">
+                            <div class="card-body text-center">
+                                <h1 style="color:white;"> @ViewBag.recommendedCount;</h1>
+
+                                <p class="card-text" style="color:white;"><b> Recommended Applications </b></p>
+
+                            </div>
+                        </a>
+                    </div>
+
+                    <div class="card bg-info">
+
+                        <a href="/Home/NameSearchTasks">
+                            <div class="card-body text-center">
+                                <h1 style="color:white;"> @ViewBag.approvedApplications; </h1>
+
+                                <p class="card-text" style="color:white;"><b> All Approved Applications </b></p>
+
+                            </div>
+                        </a>
+                    </div>
+
+
+
+                    <div class="card bg-success">
+
+                        <a href="/Products/UnassignedTasks?ToDisplay=CompanyApplications">
+                            <div class="card-body text-center">
+                                <h1 style="color:white;">null </h1>
+
+                                <p class="card-text" style="color:white;"><b>Companies </b></p>
+
+                            </div>
+                        </a>
+                    </div>
+
+
+
+
+                    <!div class="card bg-info">
+
+                        <a href="#">
+                            <div class="card-body text-center">
+                                <h1 style="color:white;">null</h1>
+                                <p class="card-text" style="color:white;"><b>Total Namesearches </b></p>
+
+                            </div>
+                        </a>
+                    </!div>
+
+
+
+                </div>
+            </div>
+
+
+
+        </div>
+        <br />
+        @*<div class="row ">
+            <div class="col-sm-6">
+                <div class="card">
+
+                    <canvas id="bar-chart" width="200" height="120"></canvas>
+                </div>
+            </div>
+
+            @*<div class="col-sm-6">
+                <div class="card">
+
+                    <canvas id="bar-chartb" width="200" height="120"></canvas>
+                </div>
+            </div>
+        </div>*@
+
+
+
+        <!-- .tab-pane -->
+        <div class="tab-pane fade show active" id="client-projects" role="tabpanel" aria-labelledby="client-projects-tab">
+            <!-- .card -->
+            <div class="card">
+                <!-- .card-header -->
+                <div class="card-header d-flex">
+                    <!-- .dropdown -->
+                    <div class="dropdown">
+                        <button type="button" class="btn btn-secondary" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"><i class="fas fa-filter mr-1"></i> All <i class="fa fa-caret-down"></i></button> <!-- .dropdown-menu -->
+                        <div class="dropdown-menu stop-propagation">
+                            <h6 id="client-projects-tab" class="dropdown-header"> Entities </h6><label class="custom-control custom-radio"><input type="radio" class="custom-control-input" name="clientProjectFilter" value="0" checked> <span class="custom-control-label">All</span></label> <label class="custom-control custom-radio"><input type="radio" class="custom-control-input" name="clientProjectFilter" value="1"> <span class="custom-control-label">Private  Limited Company</span>
+                        </div><!-- /.dropdown-menu -->
+                    </div><!-- /.dropdown -->
+                    <button type="button" class="btn btn-primary ml-auto">Register Entity</button>
+                </div><!-- /.card-header -->
+                <!-- .table-responsive -->
+                <div class="table-responsive">
+                    <!-- .table -->
+                    <table class="table">
+                        <!-- thead -->
+                        <thead>
+                            <tr>
+                                <th style="color:#0C2A46">Type of entity</th>
+
+                                <th style="color:#0C2A46">Company name</th>
+                                <th style="color:#0C2A46">Registered number</th>
+
+
+                                <th style="color:#0C2A46"></th>
+                            </tr>
+                        </thead><!-- /thead -->
+                        <!-- tbody -->
+                        <tbody>
+                            <!-- tr -->
+
+
+                            @foreach (var companies in ViewBag.companyApplications)
+                            {
+                <tr>
+
+                    <td> @companies.companyInfo.Type </td>
+                    <td> @companies.companyInfo.Name  </td>
+                    <td> @companies.companyInfo.RegNumber  </td>
+                    <td> 
+                        <span style="display:inline-block; width:100px" class="badge badge-pill badge-warning">@companies.companyInfo.Status  </span></td>
+                    <td> <a href="/Products/RegistrarDetail?reference=@companies.companyInfo.Search_Ref" style="color:#0C2A46;text-decoration:underline">View</a>  </td>
+                    <td> <a href="/Products/RegistrarDetail?reference=@companies.companyInfo.Search_Ref" style="color:#0C2A46;text-decoration:underline">Approve</a>  </td>
+
+                    <td class="align-middle text-right">
+                        <div class="dropdown">
+                            <button type="button" class="btn btn-sm btn-icon btn-secondary" data-toggle="dropdown" aria-expanded="false" aria-haspopup="true"><i class="fa fa-ellipsis-h"></i> <span class="sr-only">Actions</span></button>
+                            <div class="dropdown-menu dropdown-menu-right">
+                                <div class="dropdown-arrow mr-n1"></div><button class="dropdown-item" type="button"><a target="_blank" href="/Docs/Summary?=">Summary</a></button> <button class="dropdown-item" type="button"><a target="_blank" href="/Docs/Test?=">Certificate</a></button>
+                            </div>
+                        </div>
+                    </td>
+                </tr><!-- /tr --> <!-- tr -->}
+
+                        </tbody><!-- /tbody -->
+                    </table><!-- /.table -->
+                </div><!-- /.table-responsive -->
+            </div><!-- /.card -->
+        </div><!-- /.tab-pane -->
+
+
+
+
+    </div>
+</div>

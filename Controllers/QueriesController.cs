@@ -699,15 +699,15 @@ namespace BillerClientConsole.Controllers
             NameOfficeResponse nameOffice = JsonConvert.DeserializeObject<NameOfficeResponse>(nameOfficeJson.ToString());
             ViewBag.NameOffice = nameOffice;
             ViewBag.ApplicationRef = companyApplication.memo._id;
-            foreach (var clause in companyApplication.memo.LiabilityClause)
-            {
-                ViewBag.Liability_liab = clause.description;
-            }
+            //foreach (var clause in companyApplication.memo.LiabilityClause)
+            //{
+            //    ViewBag.Liability_liab = clause.description;
+            //}
 
-            foreach (var clause in companyApplication.memo.SharesClause)
-            {
-                ViewBag.Share_share = clause.description;
-            }
+            //foreach (var clause in companyApplication.memo.SharesClause)
+            //{
+            //    ViewBag.Share_share = clause.description;
+            //}
 
             ViewBag.article_type = companyApplication.articles.articles_type;
 
@@ -721,35 +721,35 @@ namespace BillerClientConsole.Controllers
                 var liability = companyApplication.memo.LiabilityClause;
                 var ShareClause = companyApplication.memo.SharesClause;
 
-                foreach (liabilityClause lc in liability)
-                {
-                    if (lc.Status == 0)
-                    {
-                        if (!string.IsNullOrEmpty(lc.description))
-                        {
-                            LiabilityClauseExaminerDto liablity = new LiabilityClauseExaminerDto();
-                            liablity.LiabilityClause = lc.description;
-                            liablity.Application_Ref = companyApplication.companyInfo.Application_Ref;
-                            liabilityClause.Add(liablity);
-                        }
+                //foreach (liabilityClause lc in liability)
+                //{
+                //    if (lc.Status == 0)
+                //    {
+                //        if (!string.IsNullOrEmpty(lc.description))
+                //        {
+                //            LiabilityClauseExaminerDto liablity = new LiabilityClauseExaminerDto();
+                //            liablity.LiabilityClause = lc.description;
+                //            liablity.Application_Ref = companyApplication.companyInfo.Application_Ref;
+                //            liabilityClause.Add(liablity);
+                //        }
 
-                    }
-                }
+                //    }
+                //}
 
-                foreach (sharesClause sc in ShareClause)
-                {
-                    if (sc.Status == 0)
-                    {
-                        if (!string.IsNullOrEmpty(sc.description))
-                        {
-                            ShareClauseExaminerDto share = new ShareClauseExaminerDto();
-                            share.ShareClause = sc.description;
-                            share.Application_Ref = companyApplication.companyInfo.Application_Ref;
-                            shareClause.Add(share);
-                        }
-                    }
+                //foreach (sharesClause sc in ShareClause)
+                //{
+                //    if (sc.Status == 0)
+                //    {
+                //        if (!string.IsNullOrEmpty(sc.description))
+                //        {
+                //            ShareClauseExaminerDto share = new ShareClauseExaminerDto();
+                //            share.ShareClause = sc.description;
+                //            share.Application_Ref = companyApplication.companyInfo.Application_Ref;
+                //            shareClause.Add(share);
+                //        }
+                //    }
 
-                }
+                //}
 
 
 
@@ -836,46 +836,46 @@ namespace BillerClientConsole.Controllers
                 if (cor == null)
                 {
                     companyResponses.Add(companyApplication);
-                    foreach (liabilityClause lc in companyApplication.memo.LiabilityClause)
-                    {
-                        if (lc.Status == 0)
-                        {
-                            if (!string.IsNullOrEmpty(lc.description))
-                            {
-                                LiabilityClauseExaminerDto liablity = new LiabilityClauseExaminerDto();
-                                liablity.LiabilityClause = lc.description;
-                                liablity.Application_Ref = companyApplication.companyInfo.Application_Ref;
-                                liabilityClause.Add(liablity);
-                                ViewBag.LiabilityClause = liablity;
-                            }
+                    ////foreach (liabilityClause lc in companyApplication.memo.LiabilityClause)
+                    ////{
+                    ////    if (lc.Status == 0)
+                    ////    {
+                    ////        if (!string.IsNullOrEmpty(lc.description))
+                    ////        {
+                    ////            LiabilityClauseExaminerDto liablity = new LiabilityClauseExaminerDto();
+                    ////            liablity.LiabilityClause = lc.description;
+                    ////            liablity.Application_Ref = companyApplication.companyInfo.Application_Ref;
+                    ////            liabilityClause.Add(liablity);
+                    ////            ViewBag.LiabilityClause = liablity;
+                    ////        }
 
-                        }
-                    }
+                    ////    }
+                    ////}
 
-                    foreach (sharesClause sc in companyApplication.memo.SharesClause)
-                    {
-                        if (sc.Status == 0)
-                        {
-                            if (!string.IsNullOrEmpty(sc.description))
-                            {
-                                ShareClauseExaminerDto share = new ShareClauseExaminerDto();
-                                share.ShareClause = sc.description;
-                                share.Application_Ref = companyApplication.companyInfo.Application_Ref;
-                                shareClause.Add(share);
-                                ViewBag.ShareClause = share;
-                            }
+                    //foreach (sharesClause sc in companyApplication.memo.SharesClause)
+                    //{
+                    //    if (sc.Status == 0)
+                    //    {
+                    //        if (!string.IsNullOrEmpty(sc.description))
+                    //        {
+                    //            ShareClauseExaminerDto share = new ShareClauseExaminerDto();
+                    //            share.ShareClause = sc.description;
+                    //            share.Application_Ref = companyApplication.companyInfo.Application_Ref;
+                    //            shareClause.Add(share);
+                    //            ViewBag.ShareClause = share;
+                    //        }
 
-                        }
-                    }
+                    //    }
+                    //}
 
 
-                    foreach (mmainClause obj in companyApplication.memo.objects)
-                    {
-                        MemorandumExaminerDto memo = new MemorandumExaminerDto();
-                        memo.TheObject = obj.objective;
-                        memo.Application_Ref = companyApplication.companyInfo.Application_Ref;
-                        memoObjects.Add(memo);
-                    }
+                    //foreach (mmainClause obj in companyApplication.memo.objects)
+                    //{
+                    //    MemorandumExaminerDto memo = new MemorandumExaminerDto();
+                    //    memo.TheObject = obj.objective;
+                    //    memo.Application_Ref = companyApplication.companyInfo.Application_Ref;
+                    //    memoObjects.Add(memo);
+                    //}
 
                     if (!string.IsNullOrEmpty(companyApplication.articles.articles_type))
                     {
@@ -1049,15 +1049,15 @@ namespace BillerClientConsole.Controllers
 
 
 
-            foreach (var clause in companyApplication.memo.LiabilityClause)
-            {
-                ViewBag.Liability_liab = clause.description;
-            }
+            //foreach (var clause in companyApplication.memo.LiabilityClause)
+            //{
+            //    ViewBag.Liability_liab = clause.description;
+            //}
 
-            foreach (var clause in companyApplication.memo.SharesClause)
-            {
-                ViewBag.Share_share = clause.description;
-            }
+            //foreach (var clause in companyApplication.memo.SharesClause)
+            //{
+            //    ViewBag.Share_share = clause.description;
+            //}
 
             ViewBag.article_type = companyApplication.articles.articles_type;
 
@@ -1071,35 +1071,35 @@ namespace BillerClientConsole.Controllers
                 var liability = companyApplication.memo.LiabilityClause;
                 var ShareClause = companyApplication.memo.SharesClause;
 
-                foreach (liabilityClause lc in liability)
-                {
-                    if (lc.Status == 0)
-                    {
-                        if (!string.IsNullOrEmpty(lc.description))
-                        {
-                            LiabilityClauseExaminerDto liablity = new LiabilityClauseExaminerDto();
-                            liablity.LiabilityClause = lc.description;
-                            liablity.Application_Ref = companyApplication.companyInfo.Application_Ref;
-                            liabilityClause.Add(liablity);
-                        }
+                //foreach (liabilityClause lc in liability)
+                //{
+                //    if (lc.Status == 0)
+                //    {
+                //        if (!string.IsNullOrEmpty(lc.description))
+                //        {
+                //            LiabilityClauseExaminerDto liablity = new LiabilityClauseExaminerDto();
+                //            liablity.LiabilityClause = lc.description;
+                //            liablity.Application_Ref = companyApplication.companyInfo.Application_Ref;
+                //            liabilityClause.Add(liablity);
+                //        }
 
-                    }
-                }
+                //    }
+                //}
 
-                foreach (sharesClause sc in ShareClause)
-                {
-                    if (sc.Status == 0)
-                    {
-                        if (!string.IsNullOrEmpty(sc.description))
-                        {
-                            ShareClauseExaminerDto share = new ShareClauseExaminerDto();
-                            share.ShareClause = sc.description;
-                            share.Application_Ref = companyApplication.companyInfo.Application_Ref;
-                            shareClause.Add(share);
-                        }
-                    }
+                //foreach (sharesClause sc in ShareClause)
+                //{
+                //    if (sc.Status == 0)
+                //    {
+                //        if (!string.IsNullOrEmpty(sc.description))
+                //        {
+                //            ShareClauseExaminerDto share = new ShareClauseExaminerDto();
+                //            share.ShareClause = sc.description;
+                //            share.Application_Ref = companyApplication.companyInfo.Application_Ref;
+                //            shareClause.Add(share);
+                //        }
+                //    }
 
-                }
+                //}
 
 
 
@@ -1186,37 +1186,37 @@ namespace BillerClientConsole.Controllers
                 if (cor == null)
                 {
                     companyResponses.Add(companyApplication);
-                    foreach (liabilityClause lc in companyApplication.memo.LiabilityClause)
-                    {
-                        if (lc.Status == 0)
-                        {
-                            if (!string.IsNullOrEmpty(lc.description))
-                            {
-                                LiabilityClauseExaminerDto liablity = new LiabilityClauseExaminerDto();
-                                liablity.LiabilityClause = lc.description;
-                                liablity.Application_Ref = companyApplication.companyInfo.Application_Ref;
-                                liabilityClause.Add(liablity);
-                                ViewBag.LiabilityClause = liablity;
-                            }
+                    ////foreach (liabilityClause lc in companyApplication.memo.LiabilityClause)
+                    ////{
+                    ////    if (lc.Status == 0)
+                    ////    {
+                    ////        if (!string.IsNullOrEmpty(lc.description))
+                    ////        {
+                    ////            LiabilityClauseExaminerDto liablity = new LiabilityClauseExaminerDto();
+                    ////            liablity.LiabilityClause = lc.description;
+                    ////            liablity.Application_Ref = companyApplication.companyInfo.Application_Ref;
+                    ////            liabilityClause.Add(liablity);
+                    ////            ViewBag.LiabilityClause = liablity;
+                    ////        }
 
-                        }
-                    }
+                    ////    }
+                    ////}
 
-                    foreach (sharesClause sc in companyApplication.memo.SharesClause)
-                    {
-                        if (sc.Status == 0)
-                        {
-                            if (!string.IsNullOrEmpty(sc.description))
-                            {
-                                ShareClauseExaminerDto share = new ShareClauseExaminerDto();
-                                share.ShareClause = sc.description;
-                                share.Application_Ref = companyApplication.companyInfo.Application_Ref;
-                                shareClause.Add(share);
-                                ViewBag.ShareClause = share;
-                            }
+                    //foreach (sharesClause sc in companyApplication.memo.SharesClause)
+                    //{
+                    //    if (sc.Status == 0)
+                    //    {
+                    //        if (!string.IsNullOrEmpty(sc.description))
+                    //        {
+                    //            ShareClauseExaminerDto share = new ShareClauseExaminerDto();
+                    //            share.ShareClause = sc.description;
+                    //            share.Application_Ref = companyApplication.companyInfo.Application_Ref;
+                    //            shareClause.Add(share);
+                    //            ViewBag.ShareClause = share;
+                    //        }
 
-                        }
-                    }
+                    //    }
+                    //}
 
 
                     foreach (mmainClause obj in companyApplication.memo.objects)

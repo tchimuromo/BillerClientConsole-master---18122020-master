@@ -16,6 +16,7 @@ using Microsoft.Extensions.DependencyInjection;
 using Microsoft.AspNetCore.Authentication.Cookies;
 using Microsoft.AspNetCore.Mvc.Infrastructure;
 
+
 namespace BillerClientConsole
 {
     public class Startup
@@ -36,7 +37,7 @@ namespace BillerClientConsole
             services.AddSingleton<IActionContextAccessor, ActionContextAccessor>(); // <= Add this for pagination
             services.AddSingleton<IHttpContextAccessor, HttpContextAccessor>();
 
-
+           // services.AddNotyf(config => { config.DurationInSeconds = 10; config.IsDismissable = true; config.Position = NotyfPosition.BottomRight; });
 
 
 

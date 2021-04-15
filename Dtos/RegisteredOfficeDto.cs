@@ -8,6 +8,7 @@ namespace BillerClientConsole.Dtos
     public class RegisteredOfficeDto
     {
         public string AppicationId { get; set; }
+        public string EffectiveDate { get; set; }
         public string OfficeId { get; set; }
         public string PhysicalAddress { get; set; }
         public string PostalAddress { get; set; }

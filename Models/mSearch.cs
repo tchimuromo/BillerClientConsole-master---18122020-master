@@ -8,7 +8,7 @@ namespace BillerClientConsole.Models
 {
     public class mSearchInfo
     {
-        public string search_ID { get; set; } = Guid.NewGuid().ToString();
+        public string search_ID { get; set; }
         public string Searcher_ID { get; set; }
         public string Search_For { get; set; }
         public string Purpose { get; set; }
@@ -24,6 +24,7 @@ namespace BillerClientConsole.Models
         public string Desigination { get; set; }
         public string SearchRef { get; set; }
         public string Payment { get; set; }
+        public int Reservecount { get; set; }
 
     }
 

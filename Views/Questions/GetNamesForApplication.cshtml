@@ -1,0 +1,95 @@
+﻿@{ ViewData["Title"] = "Private Limited Entity Application";
+    Layout = "~/Views/Shared/_LayoutMain.cshtml"; }
+<div id="step-1" class="tab-pane" role="tabpanel" aria-labelledby="step-1">
+    @if (ViewBag.Count > 0)
+    {
+<div class="card">
+    <div class="card-header">
+        <div class="row ml-3 mr-3">
+            <h4>Reserved names</h4>
+            <span style="flex: 1 1 auto"></span>
+            <div class="btn-group ml-4">
+                <button class="btn btn-success" data-toggle="modal" data-target="#name-d">New name search</button>
+            </div>
+        </div>
+    </div>
+    <div class="card-body">
+        <div class="table-responsive container-fluid">
+            <table class="table  table-mb table-hover">
+                <thead>
+                    <tr>
+                        <th style="color:#0C2A46">Ref #</th>
+                        <th style="color:#0C2A46">Type of entity</th>
+                        <th style="color:#0C2A46">Reserved name</th>
+                        <th style="color:#0C2A46">Date reserved</th>
+                        <th style="color:#0C2A46">Objective</th>
+                        <th style="color:#0C2A46">Action</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @if (ViewBag.nameSearches != null)
+                    {
+
+    @foreach (var item in ViewBag.nameSearches)
+    {
+<tr>
+    <td style="color:#0C2A46">@item.searchInfo.SearchRef</td>
+    <td style="color:#0C2A46">@item.searchInfo.Search_For</td>
+    @foreach (var name in item.SearchNames)
+    {
+@if (name.Status == "Reserved")
+{
+<td style="color:#0C2A46">@name.Name</td>}}
+
+    <td style="color:#0C2A46">@item.searchInfo.ApprovedDate</td>
+    <td style="color:#0C2A46">@item.searchInfo.Purpose</td>
+    <td>
+        <a class="btn btn-sm btn-primary" style="color:white;" href="/Company/CompanyApplication?applicationid=@item.searchInfo.SearchRef&nameId=@item.searchInfo.search_ID"  style="color:#0C2A46;text-decoration:underline">Apply </a>
+       
+    </td>
+</tr>} }
+                    else
+                    {
+    <script>hasNoName(true);</script>
+                        <div class="card">
+                            <div class="card-body">
+                                <h4>You have no reserved names</h4>
+                                <span style="flex: 1 1 auto"></span>
+                                <button class="btn btn-success">Perform a name search</button>
+                            </div>
+                        </div>}
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>
+                <div class="form-group fa-pull-right mt-5">
+                    <button type="button" onclick="submitNameSearch()" class="btn btn-primary btn-sm" style="visibility: hidden; display: none;" id="subNameSearch">
+                        Save application
+                    </button>
+                </div> }
+                            else
+                            {
+                <script>$("#next-btn").addClass('disabled');
+                            $("#prev-btn").addClass('disabled');</script>
+                                <div class="container-fluid">
+                                    <h4>You currently have no registered names. Make a new <a href="/Payments/CreditStatus/Name search">Name search</a> application and then proceed</h4>
+                                </div>}
+</div>
+<script>
+    function submitNameSearch(appId, nameId, tocheck) {
+        console.log(appId);
+        console.log(nameId);
+        $.ajax({
+            type: "POST",
+            url: '/PvtReg/' + appId + '/RegisterName/' + nameId,
+            success: function (data) {
+                //$("#next-btn").trigger("click");
+                return true;
+                
+            },
+           
+        });
+    }
+
+</script>

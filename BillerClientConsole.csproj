@@ -38,6 +38,9 @@
 
 
   <ItemGroup>
+    <PackageReference Include="alertify" Version="0.3.11" />
+    <PackageReference Include="AlertifyJS" Version="1.13.1" />
+    <PackageReference Include="AspNetCoreHero.ToastNotification" Version="1.1.0" />
     <PackageReference Include="BarCode" Version="2020.4.0.1" />
     <PackageReference Include="EntityFramework" Version="6.3.0" />
     <PackageReference Include="IronPdf" Version="5.2.0.1" />
@@ -67,6 +70,7 @@
     <PackageReference Include="Paynow" Version="1.0.3" />
     <PackageReference Include="Syncfusion.EJ2.AspNet.Core" Version="18.1.0.42" />
     <PackageReference Include="System.IO.Compression" Version="4.3.0" />
+    <PackageReference Include="toastr" Version="2.1.1" />
     <PackageReference Include="X.PagedList.Mvc.Core" Version="7.9.1" />
   </ItemGroup>
 
@@ -74,12 +78,22 @@
   <ItemGroup>
     <Folder Include="Views\CompanyPartial\" />
     <Folder Include="Views\Company\" />
-    <Folder Include="Views\Documents\" />
     <Folder Include="Views\PrincipalExaminer\" />
   </ItemGroup>
 
 
   <ItemGroup>
+    <None Include="wwwroot\assets\country-region-selector-master\.gitignore" />
+    <None Include="wwwroot\assets\country-region-selector-master\dist\crs.js" />
+    <None Include="wwwroot\assets\country-region-selector-master\dist\crs.min.js" />
+    <None Include="wwwroot\assets\country-region-selector-master\dist\jquery.crs.js" />
+    <None Include="wwwroot\assets\country-region-selector-master\dist\jquery.crs.min.js" />
+    <None Include="wwwroot\assets\country-region-selector-master\gruntfile.js" />
+    <None Include="wwwroot\assets\country-region-selector-master\LICENSE" />
+    <None Include="wwwroot\assets\country-region-selector-master\README.md" />
+    <None Include="wwwroot\assets\country-region-selector-master\source\README.md" />
+    <None Include="wwwroot\assets\country-region-selector-master\source\source-crs.js" />
+    <None Include="wwwroot\assets\country-region-selector-master\source\source-jquery.crs.js" />
     <None Include="wwwroot\assets\js\bootstrap.min.js" />
     <None Include="wwwroot\assets\js\fontawesome.js" />
     <None Include="wwwroot\assets\js\jquery-3.4.1.min.js" />

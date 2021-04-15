@@ -15,6 +15,7 @@ using PdfSharpCore.Fonts;
 using BillerClientConsole.Data;
 using System.Net.Mail;
 using System.Net;
+using System.Globalization;
 
 // For more information on enabling MVC for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
 
@@ -42,45 +43,183 @@ namespace BillerClientConsole.Controllers
         //List<CompanyMember> entityMembers = new List<CompanyMember>();
         //List<Director> AllCompanyDirectors = new List<Director>();
 
-        [HttpGet("CompanyApplication")]
-        public async Task<IActionResult> CompanyApplication(mCompanyInfo companyinfo)
+
+
+
+        // [HttpGet("GetShareholder")]
+        //public async Task<IActionResult> GetShareholder(string id)
+        //{
+
+        //}
+        DateTime ConvertStringToDate(string dateInString)
         {
-            member = new List<MemberDto>();
-            entityMember = new List<MemberDto>();
-            objects = new List<mmainClause>();
-            ViewBag.title = "New Company Registration";
+            try
+            {
+                //string SSD = dateInString;
+                //DateTime date = Convert.ToDateTime(SSD);
+                //string strDate = String.Format("{0:yyyy-MM-dd HH:mm:ss.fff}", date);
+                //return Convert.ToDateTime(strDate);
+
+                return DateTime.ParseExact(dateInString, "MM/dd/yyyy", CultureInfo.InvariantCulture);
+            }
+            catch (Exception) { }
+            return DateTime.Today;
+        }
+        [HttpGet("GetNamesForAoplication")]
+        public async Task<IActionResult> GetNamesForApplication()
+        {
+            ViewBag.title = "Names ready to Register";
+
             var user = db.AspNetUsers.Where(i => i.Email == User.Identity.Name).FirstOrDefault();
             var client = new HttpClient();
             var resp = await client.GetAsync($"{Globals.Globals.service_end_point}/Names/{ user.Email}/GetUnusedNames").Result.Content.ReadAsStringAsync();
             dynamic json_data = JsonConvert.DeserializeObject(resp);
-           
+
             var data = json_data.data.value;
             List<mSearch> nameSear = JsonConvert.DeserializeObject<List<mSearch>>(data.ToString());
             List<mSearchInfo> nameSearchSummary = new List<mSearchInfo>();
 
-            List<mSearch> nameSearches = nameSear.Where(z => z.searchInfo.Satus == "Approved").OrderByDescending(z => z.searchInfo.SearchDate).ToList();
+            List<mSearch> nameSearches = nameSear.Where(z => z.searchInfo.Satus == "Approved").OrderByDescending(z => z.searchInfo.SearchRef).ToList();
 
             foreach (mSearch search in nameSearches)
             {
                 var adata = search.searchInfo.ApprovedDate.ToString();
-               DateTime regDate = Convert.ToDateTime(adata);
-               DateTime expDate = regDate.AddDays(30);
+                DateTime regDate = Convert.ToDateTime(adata);
+                DateTime expDate = regDate.AddDays(30);
                 int daysLeft = (expDate - regDate).Days;
 
                 //search.searchInfo.ExpiryDate = expDate.ToString();
                 //search.searchInfo.DaysLeft = daysLeft.ToString();
             }
-            //foreach (mSearch search in nameSearches)
-            //{
-            //    nameSearchSummary.Add(search.searchInfo);
-            //}
 
-            //nameSearchSummary = nameSearchSummary.Where(z => z.Satus == "Reserved").ToList();
-            //int counFPostt = nameSearchSummary.Count;
-            string[] sex = { "Male","Female" };
             ViewBag.nameSearches = nameSearches;
-            ViewBag.sex = sex;
             ViewBag.Count = nameSearches.Count;
+            return View();
+         }
+
+        [HttpPost("GetCompanyShareholders")]
+        public async Task<IActionResult> GetCompanyShareholders(string id)
+        {
+            HttpClient client = new HttpClient();
+            if (id != null)
+            {
+                var response = await client.GetAsync($"{Globals.Globals.end_point_get_company_shareholders}/{id}").Result.Content.ReadAsStringAsync();
+                dynamic res = JsonConvert.DeserializeObject(response);
+                var data = res;
+                return Ok(data);
+                
+                
+            }
+            return BadRequest();
+        }
+
+            [HttpGet("CompanyApplication")]
+        public async Task<IActionResult> CompanyApplication(string applicationid, string nameId)
+
+        {
+            
+            ViewBag.title = "New Company Registration";
+           
+            var client = new HttpClient();
+            string searchReferenzi = "";
+            var response = await client.GetAsync($"{Globals.Globals.end_point_get_name_searches_by_id}?ID={nameId}").Result.Content.ReadAsStringAsync();
+            var rhisponzi = await client.GetAsync($"{Globals.Globals.end_point_get_company_application_by_search_ref}?SearchRef={applicationid}").Result.Content.ReadAsStringAsync();
+
+
+            
+           
+            mCompanyResponse stepInfo = new mCompanyResponse();
+
+            try
+            {
+                dynamic json_step_data = JsonConvert.DeserializeObject(rhisponzi);
+                var datadata = json_step_data.data.value;
+                stepInfo = JsonConvert.DeserializeObject<mCompanyResponse>(datadata.ToString());
+               
+                List<Subscribers> subscribers = new List<Subscribers>();
+                NameOfficeResponse nameOffice = new NameOfficeResponse();
+                if (stepInfo.companyInfo.Office != null)
+                {
+                    var nameOfficeResponse = await client.GetAsync($"{Globals.Globals.service_end_point}/{ stepInfo.companyInfo.Search_Ref}/Namesearch/{ stepInfo.companyInfo.Office}/Office").Result.Content.ReadAsStringAsync();
+                    dynamic nameOfficeJson = JsonConvert.DeserializeObject(nameOfficeResponse);
+                    nameOffice = JsonConvert.DeserializeObject<NameOfficeResponse>(nameOfficeJson.ToString());
+
+                    ViewBag.NameOffice = nameOffice;
+                }
+
+                else
+                {
+                    ViewBag.NameOffice = nameOffice;
+                    
+                }
+
+               
+                ViewBag.objects = stepInfo.memo.objects;
+                if(stepInfo.memo.SharesClause!=null)
+                {
+                    ViewBag.shareclause = stepInfo.memo.SharesClause.description;
+                  
+             
+                }
+                if (stepInfo.memo.LiabilityClause != null)
+                {
+                    ViewBag.liability = stepInfo.memo.LiabilityClause.description;
+                }
+                ViewBag.Subscribers = stepInfo.shareholders;
+
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine(ex.Message);
+            }
+
+          
+            dynamic json_data = JsonConvert.DeserializeObject(response);
+            var data = json_data.data.value;
+            mSearch nameSearch = JsonConvert.DeserializeObject<mSearch>(data.ToString());
+
+            Globals.Globals.toBePaid = nameSearch.searchInfo.SearchRef;
+
+            var search = JsonConvert.SerializeObject(nameSearch);
+            Globals.Globals.companyInfo.Search_Ref = nameSearch.searchInfo.search_ID;
+
+            mCompany NewCompany = new mCompany();
+            foreach (mSearchNames name in nameSearch.SearchNames)
+            {
+                if (name.Status == "Reserved")
+                {
+                    NewCompany.CompanyInfo.Search_Name_ID = name.Name_ID;
+                    NewCompany.CompanyInfo.Name = name.Name;
+                    break;
+                }
+            }
+            if (stepInfo.companyInfo == null)
+            {
+               
+                NewCompany.CompanyInfo.Type = nameSearch.searchInfo.Search_For;
+                NewCompany.CompanyInfo.Status = "Saved";
+                NewCompany.CompanyInfo.Search_Ref = nameSearch.searchInfo.SearchRef;
+               
+                //companyInfo = companyInformation;
+                DateTime ikozvino = DateTime.Now;
+                NewCompany.CompanyInfo.Date_Of_Application = ikozvino.ToString();
+                NewCompany.CompanyInfo.Application_Ref = Guid.NewGuid().ToString();
+                NewCompany.CompanyInfo.Payment = "Paid";
+                var user = db.AspNetUsers.Where(i => i.Email == User.Identity.Name).FirstOrDefault();
+                NewCompany.CompanyInfo.AppliedBy = user.Email;
+
+                var res = await client.PostAsJsonAsync<mCompany>($"{Globals.Globals.end_point_post_company_application}", NewCompany).Result.Content.ReadAsStringAsync();
+
+                ViewBag.CompanyInfo = NewCompany;
+                ViewBag.Application_Ref = NewCompany.CompanyInfo.Application_Ref;
+            }
+            else
+            {
+                ViewBag.CompanyInfo = stepInfo.companyInfo;
+                ViewBag.Application_Ref = stepInfo.companyInfo.Application_Ref;
+            }
+            
+           
 
             return View();
         }
@@ -285,7 +424,158 @@ namespace BillerClientConsole.Controllers
         /// </summary>
         /// <param name="product"></param>
         /// <returns></returns>
-        [HttpPost("AddCompanyMembers")]
+        /// 
+
+        [HttpPost("AddCompanyBeneShareholders")]
+        public async Task<IActionResult> AddCompanyBeneShareholders(Subscribers shareholder)
+        {
+
+            mmainClause obj = new mmainClause();
+            obj.application_ref = shareholder.ApplicationRef;
+
+            //check if application has existing memoid
+            var client = new HttpClient();
+            var resp = await client.GetAsync($"{Globals.Globals.service_end_point}/api/v1/GetCompanyMemoByApplicationRef?userId=" + shareholder.ApplicationRef).Result.Content.ReadAsStringAsync();
+            dynamic json_data = JsonConvert.DeserializeObject(resp);
+
+
+            if (json_data.res == "null")
+            {
+                obj.memo_id = Guid.NewGuid().ToString();
+                PostmMemorandum memo = new PostmMemorandum();
+                PostMemo postMemo = new PostMemo();
+                memo.Application_Ref = shareholder.ApplicationRef;
+                memo._id = obj.memo_id;
+                postMemo.memo = memo;
+                var respo = await client.PostAsJsonAsync<PostMemo>($"{Globals.Globals.end_point_post_company_application_memo}", postMemo).Result.Content.ReadAsStringAsync();
+
+            }
+
+            else
+            {
+                var data = json_data.data.value;
+                PostmMemorandum nameSear = JsonConvert.DeserializeObject<PostmMemorandum>(data.ToString());
+                if (nameSear.Application_Ref == null)
+                {
+                    obj.memo_id = Guid.NewGuid().ToString();
+                    PostmMemorandum memo = new PostmMemorandum();
+                    PostMemo postMemo = new PostMemo();
+                    postMemo.memo.Application_Ref = shareholder.ApplicationRef;
+                    postMemo.memo._id = obj.memo_id;
+                    var respo = await client.PostAsJsonAsync<PostMemo>($"{Globals.Globals.end_point_post_company_application_memo}", postMemo).Result.Content.ReadAsStringAsync();
+                    //create  new memo
+                }
+                else
+                {
+                    shareholder.memo_id = nameSear._id;
+                }
+
+            }
+            shareholder._id = Guid.NewGuid().ToString();
+
+            if (shareholder.memo_id != null)
+            {
+                //post object
+
+                var respo = await client.PostAsJsonAsync<Subscribers>($"{Globals.Globals.service_end_point}/api/v1/postCompanyShareholders", shareholder).Result.Content.ReadAsStringAsync();
+
+            }
+            var test = Json(shareholder);
+            return Json(shareholder);
+        }
+
+        [HttpGet("GetBeneficiaryShareholders")]
+        public async Task<IActionResult> GetBeneficiaryShareholders(string id)
+        {
+            var client = new HttpClient();
+            var resp = await client.GetAsync($"{Globals.Globals.end_point_get_beneficiaryshareholders}/{id}").Result.Content.ReadAsStringAsync();
+            List<Subscribers> json_data = JsonConvert.DeserializeObject<List<Subscribers>>(resp);
+           // List<Subscribers> list = new List<Subscribers>()
+           // {
+           //    new Subscribers
+           //    {
+           //        names="Name",
+           //        surname="surnsme",
+           //        address="address",
+           //        email="email.email.com",
+           //        gender="male",
+           //        nationality="Zimbabwe",
+           //        type="Beneficiary"
+
+           //    },
+           //     new Subscribers
+           //    {
+           //        names="Name1",
+           //        surname="surnsme1",
+           //        address="address1",
+           //        email="email1.email.com",
+           //        gender="male",
+
+
+           //    }
+
+           //};
+            return Ok(json_data);
+        }
+        [HttpPost("AddCompanyShareholders")]
+        public async Task<IActionResult> AddCompanyShareholders(Subscribers shareholder )
+        {
+
+            mmainClause obj = new mmainClause();
+            obj.application_ref = shareholder.ApplicationRef;
+         
+            //check if application has existing memoid
+            var client = new HttpClient();
+            var resp = await client.GetAsync($"{Globals.Globals.service_end_point}/api/v1/GetCompanyMemoByApplicationRef?userId=" + shareholder.ApplicationRef).Result.Content.ReadAsStringAsync();
+            dynamic json_data = JsonConvert.DeserializeObject(resp);
+
+
+            if (json_data.res == "null")
+            {
+                obj.memo_id = Guid.NewGuid().ToString();
+                PostmMemorandum memo = new PostmMemorandum();
+                PostMemo postMemo = new PostMemo();
+                memo.Application_Ref = shareholder.ApplicationRef;
+                memo._id = obj.memo_id;
+                postMemo.memo = memo;
+                var respo = await client.PostAsJsonAsync<PostMemo>($"{Globals.Globals.end_point_post_company_application_memo}", postMemo).Result.Content.ReadAsStringAsync();
+
+            }
+
+            else
+            {
+                var data = json_data.data.value;
+                PostmMemorandum nameSear = JsonConvert.DeserializeObject<PostmMemorandum>(data.ToString());
+                if (nameSear.Application_Ref == null)
+                {
+                    obj.memo_id = Guid.NewGuid().ToString();
+                    PostmMemorandum memo = new PostmMemorandum();
+                    PostMemo postMemo = new PostMemo();
+                    postMemo.memo.Application_Ref = shareholder.ApplicationRef; 
+                    postMemo.memo._id = obj.memo_id;
+                    var respo = await client.PostAsJsonAsync<PostMemo>($"{Globals.Globals.end_point_post_company_application_memo}", postMemo).Result.Content.ReadAsStringAsync();
+                    //create  new memo
+                }
+                else
+                {
+                   shareholder.memo_id = nameSear._id;
+                }
+
+            }
+            shareholder._id = Guid.NewGuid().ToString();
+
+            if (shareholder.memo_id != null)
+            {
+                //post object
+
+                var respo = await client.PostAsJsonAsync<Subscribers>($"{Globals.Globals.service_end_point}/api/v1/postCompanyShareholders",shareholder).Result.Content.ReadAsStringAsync();
+
+            }
+
+            var test = shareholder._id;
+            return Json(shareholder);
+        }
+            [HttpPost("AddCompanyMembers")]
         public async Task<IActionResult> AddCompanyMemebers(string members, string companyMembers)
         {
             ViewBag.title = "New Company Application";
@@ -705,7 +995,7 @@ namespace BillerClientConsole.Controllers
                 case 4:
                     mArticles articles = new mArticles();
                     articles._id = Guid.NewGuid().ToString();
-                    articles.Application_Ref = Globals.Globals.companyInfo.Application_Ref;
+                    articles.Application_Ref = companyInformation.Application_Ref;
 
                     if (companyInformation.Article.Contains("Table B"))
                         articles.articles_type = "Table B";
@@ -894,6 +1184,7 @@ namespace BillerClientConsole.Controllers
         [HttpPost("/PvtReg/{applicationid}/RegisterName/{nameId}")]
         public async Task<IActionResult> SubmitNameForPvtReg(string applicationid, string nameId)
         {
+            ViewBag.AppId = applicationid;
             var client = new HttpClient();
             string searchReferenzi = "";
             var response = await client.GetAsync($"{Globals.Globals.end_point_get_name_searches_by_id}?ID={nameId}").Result.Content.ReadAsStringAsync();
@@ -944,7 +1235,9 @@ namespace BillerClientConsole.Controllers
             mCompany NewCompany = new mCompany();
             NewCompany.CompanyInfo = Globals.Globals.companyInfo;
             var res = await client.PostAsJsonAsync<mCompany>($"{Globals.Globals.end_point_post_company_application}", NewCompany).Result.Content.ReadAsStringAsync();
-            return Ok(NewCompany.CompanyInfo.Search_Ref);
+
+           return  RedirectToAction("CompanyApplication", NewCompany.CompanyInfo);
+           // return Ok(NewCompany.CompanyInfo.Search_Ref);
         }
 
 
@@ -1201,7 +1494,168 @@ namespace BillerClientConsole.Controllers
         //    return Json(value);
         //}
 
-        [HttpPost("AddCompanyMemorandum")]
+        [HttpPost("AddCompanyShareClause")]
+        public async Task<ActionResult> AddCompanyShareClause(string ApplicationRef, string Sclause)
+        {
+          sharesClause lc = new sharesClause();
+            //check if application has existing memoid
+            var client = new HttpClient();
+            var resp = await client.GetAsync($"{Globals.Globals.service_end_point}/api/v1/GetCompanyMemoByApplicationRef?userId=" + ApplicationRef).Result.Content.ReadAsStringAsync();
+            dynamic json_data = JsonConvert.DeserializeObject(resp);
+
+            lc.description = Sclause;
+            if (json_data.res == "null")
+            {
+                lc.memo_id = Guid.NewGuid().ToString();
+                PostmMemorandum memo = new PostmMemorandum();
+                PostMemo postMemo = new PostMemo();
+                memo.Application_Ref = ApplicationRef;
+                memo._id = lc.memo_id;
+                postMemo.memo = memo;
+                var respo = await client.PostAsJsonAsync<PostMemo>($"{Globals.Globals.end_point_post_company_application_memo}", postMemo).Result.Content.ReadAsStringAsync();
+
+            }
+
+            else
+            {
+                var data = json_data.data.value;
+                PostmMemorandum nameSear = JsonConvert.DeserializeObject<PostmMemorandum>(data.ToString());
+                if (nameSear.Application_Ref == null)
+                {
+                    lc.memo_id = Guid.NewGuid().ToString();
+                    PostmMemorandum memo = new PostmMemorandum();
+                    PostMemo postMemo = new PostMemo();
+                    postMemo.memo.Application_Ref = ApplicationRef;
+                    postMemo.memo._id = lc.memo_id;
+                    var respo = await client.PostAsJsonAsync<PostMemo>($"{Globals.Globals.end_point_post_company_application_memo}", postMemo).Result.Content.ReadAsStringAsync();
+                    //create  new memo
+                }
+                else
+                {
+                    lc.memo_id = nameSear._id;
+                }
+
+            }
+            lc._id = Guid.NewGuid().ToString();
+
+            if (lc.memo_id != null)
+            {
+                //post object
+
+                var respo = await client.PostAsJsonAsync<sharesClause>($"{Globals.Globals.service_end_point}/api/v1/postCompanyShareClause", lc).Result.Content.ReadAsStringAsync();
+
+            }
+            return Json(lc);
+        }
+        [HttpPost("AddCompanyLiabilityClause")]
+        public async Task<ActionResult> AddCompanyLiabilityClause(string ApplicationRef, string lclause)
+        {
+            liabilityClause lc = new liabilityClause();
+            //check if application has existing memoid
+            var client = new HttpClient();
+            var resp = await client.GetAsync($"{Globals.Globals.service_end_point}/api/v1/GetCompanyMemoByApplicationRef?userId=" + ApplicationRef).Result.Content.ReadAsStringAsync();
+            dynamic json_data = JsonConvert.DeserializeObject(resp);
+
+            lc.description = lclause;
+            if (json_data.res == "null")
+            {
+               lc.memo_id = Guid.NewGuid().ToString();
+                PostmMemorandum memo = new PostmMemorandum();
+                PostMemo postMemo = new PostMemo();
+                memo.Application_Ref = ApplicationRef;
+                memo._id = lc.memo_id;
+                postMemo.memo = memo;
+                var respo = await client.PostAsJsonAsync<PostMemo>($"{Globals.Globals.end_point_post_company_application_memo}", postMemo).Result.Content.ReadAsStringAsync();
+
+            }
+
+            else
+            {
+                var data = json_data.data.value;
+                PostmMemorandum nameSear = JsonConvert.DeserializeObject<PostmMemorandum>(data.ToString());
+                if (nameSear.Application_Ref == null)
+                {
+                    lc.memo_id = Guid.NewGuid().ToString();
+                    PostmMemorandum memo = new PostmMemorandum();
+                    PostMemo postMemo = new PostMemo();
+                    postMemo.memo.Application_Ref = ApplicationRef;
+                    postMemo.memo._id = lc.memo_id;
+                    var respo = await client.PostAsJsonAsync<PostMemo>($"{Globals.Globals.end_point_post_company_application_memo}", postMemo).Result.Content.ReadAsStringAsync();
+                    //create  new memo
+                }
+                else
+                {
+                   lc.memo_id = nameSear._id;
+                }
+
+            }
+            lc._id = Guid.NewGuid().ToString();
+
+            if (lc.memo_id != null)
+            {
+                //post object
+
+                var respo = await client.PostAsJsonAsync<liabilityClause>($"{Globals.Globals.service_end_point}/api/v1/postCompanyLiabilityClause", lc).Result.Content.ReadAsStringAsync();
+
+            }
+            return Json(lc);
+        }
+        [HttpPost("AddCompanyOjects")]
+        public async Task<ActionResult> AddCompanyObjects(string ApplicationRef, string objects)
+        {
+            mmainClause obj = new mmainClause();
+            obj.application_ref = ApplicationRef;
+            obj.objective = objects;
+            //check if application has existing memoid
+            var client = new HttpClient();
+            var resp = await client.GetAsync($"{Globals.Globals.service_end_point}/api/v1/GetCompanyMemoByApplicationRef?userId="+ApplicationRef).Result.Content.ReadAsStringAsync();
+            dynamic json_data = JsonConvert.DeserializeObject(resp);
+
+            
+            if (json_data.res == "null")
+            {
+                obj.memo_id = Guid.NewGuid().ToString();
+                PostmMemorandum memo = new PostmMemorandum();
+                PostMemo postMemo = new PostMemo();
+               memo.Application_Ref = ApplicationRef;
+             memo._id = obj.memo_id;
+                postMemo.memo = memo;
+                var respo = await client.PostAsJsonAsync<PostMemo>($"{Globals.Globals.end_point_post_company_application_memo}", postMemo).Result.Content.ReadAsStringAsync();
+
+            }
+
+            else
+            {
+                var data = json_data.data.value;
+                PostmMemorandum nameSear = JsonConvert.DeserializeObject<PostmMemorandum>(data.ToString());
+                if (nameSear.Application_Ref == null)
+                {
+                    obj.memo_id = Guid.NewGuid().ToString();
+                    PostmMemorandum memo = new PostmMemorandum();
+                    PostMemo postMemo = new PostMemo();
+                    postMemo.memo.Application_Ref = ApplicationRef;
+                    postMemo.memo._id = obj.memo_id;
+                    var respo = await client.PostAsJsonAsync<PostMemo>($"{Globals.Globals.end_point_post_company_application_memo}", postMemo).Result.Content.ReadAsStringAsync();
+                    //create  new memo
+                }
+                else
+                {
+                    obj.memo_id = nameSear._id;
+                }
+
+            }
+            obj._id = Guid.NewGuid().ToString();
+
+            if (obj.memo_id != null)
+            {
+                //post object
+
+                var respo = await client.PostAsJsonAsync<mmainClause>($"{Globals.Globals.service_end_point}/api/v1/postCompanyObjects", obj).Result.Content.ReadAsStringAsync();
+
+            }
+            return Json(obj);
+        }
+            [HttpPost("AddCompanyMemorandum")]
         public async Task<ActionResult> AddCompanyMemorandumAsync(int step, string liab, string shareClo)
         {
             var client = new HttpClient();
@@ -1251,7 +1705,7 @@ namespace BillerClientConsole.Controllers
             {
                 objecty.memo_id = memo._id;
                 objecty._id = Guid.NewGuid().ToString();
-                objecty.Application_Ref = Globals.Globals.companyInfo.Application_Ref;
+                objecty.application_ref = Globals.Globals.companyInfo.Application_Ref;
 
                 if (objectiveType == 0)
                 {
@@ -1378,7 +1832,8 @@ namespace BillerClientConsole.Controllers
                 City = dto.City,
                 TelephoneNumber = dto.Telephone,
                 MobileNumber = dto.MobileNumber,
-                EmailAddress = dto.EmailAddress
+                EmailAddress = dto.EmailAddress,
+                EffectiveDate = dto.EffectiveDate
                 
             };
             var respopopo = await client.PostAsJsonAsync<RegisteredOffice>($"{Globals.Globals.service_end_point}/PvtRegistration/{dto.AppicationId}/RegisterOffice", office).Result.Content.ReadAsStringAsync();
@@ -1496,7 +1951,7 @@ namespace BillerClientConsole.Controllers
 
 
         [HttpPost("/{applicationId}/Approve")]
-        public async Task<IActionResult> ApprovePvtEntityApplication(string applicationId, string emailAddress=null)
+        public async Task<IActionResult> RecommendPvtEntityApplication(string applicationId, helpermodel model)
         {
             //var db = new db();
             
@@ -1506,10 +1961,18 @@ namespace BillerClientConsole.Controllers
             var res1 = JsonConvert.DeserializeObject(companyApplication);
             ///var CompInfo = res1.data.value[0].companyInfo;
 
-           //// var DeCompInfo = JsonConvert.DeserializeObject<mCompanyInfo>(CompInfo.ToString());
-           // var email2 = DeCompInfo.AppliedBy;
+            //// var DeCompInfo = JsonConvert.DeserializeObject<mCompanyInfo>(CompInfo.ToString());
+            // var email2 = DeCompInfo.AppliedBy;
+            //Functionality to reduce number of records on a given task by 1 
+          
+            //Get all the Tasks Including Company Applications
+            var response = client.GetAsync($"{Globals.Globals.end_point_ReduceNumOfRecords}/{model.taskid}").Result;
+            //if (response.IsSuccessStatusCode)
+            //{
+            //    return Ok();
+            //}
+            // Functionality to check if there are still pending Applications in the given
 
-            
             //Code to See if there are pending Queries on the Application 
             var ApplicationQueries = queryDb.Queries.Where(q => q.applicationRef == applicationId && q.status == "Pending").ToList();
             if (ApplicationQueries.Count > 0)
@@ -1520,7 +1983,7 @@ namespace BillerClientConsole.Controllers
                 if (update.IsSuccessStatusCode)
                 {
                     //Code to Send email to user
-                    var email1 = emailAddress;// user.Email;
+                    var email1 = model.emailAddress;// user.Email;
                     SmtpClient emailclient1 = new SmtpClient("mail.ttcsglobal.com");
                     emailclient1.UseDefaultCredentials = false;
                     emailclient1.Credentials = new NetworkCredential("companiesonlinezw", "N3wPr0ducts@1");
@@ -1567,7 +2030,7 @@ namespace BillerClientConsole.Controllers
                 var resolve = await client.GetAsync($"{Globals.Globals.end_point_resolveQuery_companyinfo}/{applicationId}");
                 if (resolve.IsSuccessStatusCode)
                 {
-                    var email = emailAddress;// user.Email;
+                    var email = model.emailAddress;// user.Email;
                     SmtpClient emailclient = new SmtpClient("mail.ttcsglobal.com");
                     emailclient.UseDefaultCredentials = false;
                     emailclient.Credentials = new NetworkCredential("companiesonlinezw", "N3wPr0ducts@1");
@@ -1585,7 +2048,7 @@ namespace BillerClientConsole.Controllers
                         "<body style=\"font-family:'Century Gothic'\">" +
                         "<p><b>Hi Dear valued Customer</b></p>" +
 
-                        "<p>Your Company Application has been Approved, use the link to login and Check your Company Application.</p>" +
+                        "<p>Your Company Application has been recommended for Approval, use the link to login and Check your Company Application.</p>" +
 
                         "<a>https://deedsapp.ttcsglobal.com:6868/Auth/Login </a>" +
                         "<p>Please login/p>" +
@@ -1600,14 +2063,8 @@ namespace BillerClientConsole.Controllers
                     mailMessage.Subject = "Company Application has been Approved";
                     emailclient.Send(mailMessage);
                 }
-
-
-
-                //Code to do Query Verification on the incoming ApplicationId
-                //var result = await client.GetAsync($"{Globals.Globals.end_point_get_queries}").Result.Content.ReadAsStringAsync();
-                //// var res= result.Content.ReadAsStringAsync();
-                //var queries = JsonConvert.DeserializeObject<IEnumerable<mQuery>>(result).ToList();
-                var response = await client.PostAsJsonAsync<string>($"{Globals.Globals.service_end_point}/PvtRegistration/{applicationId}/Approve", user.Email).Result.Content.ReadAsStringAsync();
+                // ASK TALENT REASON FOR HITTING THIS METHOD  
+                var response1 = await client.PostAsJsonAsync<string>($"{Globals.Globals.service_end_point}/PvtRegistration/{applicationId}/Approve", user.Email).Result.Content.ReadAsStringAsync();
                 return Ok();
             }
            
@@ -1615,7 +2072,22 @@ namespace BillerClientConsole.Controllers
         }
 
 
-        private string SetupPaymentForApplication(string searchRef)
+        //code to approve the recommendation
+        [HttpPost("/{applicationId}/ApproveRecomendation")]
+        public async Task<IActionResult> ApprovePvtEntityApplication(string applicationId, helpermodel model)
+        {
+            var client = new HttpClient();
+            var user = db.AspNetUsers.Where(i => i.Email == User.Identity.Name).FirstOrDefault();
+            var response1 = await client.PostAsJsonAsync<string>($"{Globals.Globals.service_end_point}/PvtRecommendation/{applicationId}/Approve?approver={user.Email}", user.Email).Result.Content.ReadAsStringAsync();
+
+
+
+            return RedirectToActionPermanent("Home/RegistrarDashboard");
+
+        }
+
+
+            private string SetupPaymentForApplication(string searchRef)
         {
             string uri = "";
             //var paynow = new Paynow("9848", "9cb58118-b8e3-45bc-b5b5-66a29ce71309");

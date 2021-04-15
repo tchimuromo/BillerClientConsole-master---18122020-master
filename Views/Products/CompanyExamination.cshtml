@@ -10,6 +10,7 @@
 <div class="container-fluid mt-3">
     <input hidden id="applicationId" value="@ViewBag.Application"/>
     <input hidden id="Email" value="@ViewBag.NameOffice.Office.EmailAddress"/>
+    <input hidden id="TaskId" value="@ViewBag.TaskId"/>
 
     <!-- SmartWizard html -->
     <div id="smartwizard">
@@ -27,7 +28,7 @@
             </li>
             <li class="nav-item">
                 <a class="nav-link" href="#step-3" data-repo="jquery-smartcart">
-                    <strong>Members, Directors and Secretary</strong>
+                    <strong> Directors and Secretary</strong>
                 </a>
             </li>
             <li class="nav-item">
@@ -220,57 +221,68 @@
 
                             <form action="" id="membersForm" method="post" style="width:100%;">
 
-                                @{ var DropDownList = new Syncfusion.EJ2.DropDowns.DropDownList() { DataSource = ViewBag.sex, Query = "new ej.data.Query()", AllowFiltering = true, Fields = new Syncfusion.EJ2.DropDowns.DropDownListFieldSettings() { Value = "Country", Text = "Country" } }; }
+                                <div class="card">
+                                    <!-- .card-header -->
+                                    <div class="card-body d-flex">
+                                        <!-- .dropdown -->
+                                        <div class="table-responsive">
+                                            <!-- .table -->
+                                            <table class="table">
+                                                <!-- thead -->
+                                                <thead>
+                                                    <tr>
+                                                        <th style="min-width:256px"> Full Name </th>
+                                                        <th>National ID/Passport</th>
+                                                        <th>Nationality </th>
+                                                        <th> Address </th>
+                                                        <th> Date of Appoinment </th>
 
-                                <div class="card-body">
-                                    <div class="form-group">
-                                        <ejs-grid id="Grid-members" allowResizing="true" allowFiltering="true" toolbar="@(new List<string>() {"Edit"})">
-                                            <e-grid-editSettings allowAdding="true" allowDeleting="true" allowEditing="true" mode="Normal"></e-grid-editSettings>
-                                            <e-data-manager url="/Products/MemberUrlDataSource" updateUrl="/Company/MemberCellEditUpdate" insertUrl="/Company/MemberCellEditInsert" removeUrl="/Company/CellEditDelete" adaptor="UrlAdaptor"></e-data-manager>
-                                            <e-grid-filterSettings type="Excel"></e-grid-filterSettings>
-                                            <e-grid-columns>
-                                                <e-grid-column field="applicationId" headerText="#" visible="false" allowEditing="false" width="35px"></e-grid-column>
-                                                @*<e-grid-column field="application_Ref" isPrimaryKey="true" headerText="#" visible="false" allowEditing="false" width="35px"></e-grid-column>*@
-                                                <e-grid-column field="num-num" headerText="#" width="35px" allowEditing="false"></e-grid-column>
-                                                <e-grid-column field="nationalId" headerText="National ID" allowEditing="false"></e-grid-column>
-                                                <e-grid-column field="nationality" headerText="Nationality" allowEditing="false"></e-grid-column>
-                                                <e-grid-column field="surname" headerText="Surname" allowEditing="false"></e-grid-column>
-                                                <e-grid-column field="firstName" headerText="Firstname" allowEditing="false"></e-grid-column>
-                                                @*<e-grid-column field="gender" headerText="Gender" allowEditing="false"></e-grid-column>*@
-                                                <e-grid-column field="physicalAddress" headerText="Physical address" allowEditing="false"></e-grid-column>
-                                                <e-grid-column field="roles" headerText="Role" allowEditing="false"></e-grid-column>
-                                                <e-grid-column field="ordinaryShares" headerText="Ordinary shares" allowEditing="false"></e-grid-column>
-                                                <e-grid-column field="preferenceShares" headerText="Preference shares" allowEditing="false"></e-grid-column>
-                                                <e-grid-column field="totalShares" headerText="Total shares" allowEditing="false"></e-grid-column>
-                                                <e-grid-column field="memberHasQuery" headerText="Has query" editType="booleanedit" displayAsCheckBox="true" textAlign="Center" type="boolean"></e-grid-column>
-                                                <e-grid-column field="memberComment" headerText="Comment"></e-grid-column>
+                                                        <th>Action</th>
+                                                    </tr>
+                                                </thead><!-- /thead -->
+                                                <!-- tbody -->
+                                                <tbody id="Directors">
+                                                    @if (ViewBag.Subscribers != null)
+                                                    {
+                                                        @foreach (var subs in ViewBag.Subscribers)
+                                                        {
+                                                            if (subs.IsDirector == 1)
+                                                            {
 
-                                            </e-grid-columns>
-                                        </ejs-grid>
-                                    </div>
-                                    <div class="form-group mt-5">
-                                        <ejs-grid id="Grid-entities" allowResizing="true" allowFiltering="true" allowPaging="true" toolbar="@(new List<string>() {"Edit" })">
 
-                                            <e-grid-editSettings allowAdding="true" allowDeleting="true" allowEditing="true" mode="Normal"></e-grid-editSettings>
-                                            <e-data-manager url="/Products/EntityUrlDataSource" updateUrl="/Company/EntityCellEditUpdate" insertUrl="/Company/EntityCellEditInsert" removeUrl="/Company/CellEditDelete" adaptor="UrlAdaptor"></e-data-manager>
-                                            <e-grid-filterSettings type="Excel"></e-grid-filterSettings>
-                                            <e-grid-columns>
+                                                                <tr>
 
-                                                <e-grid-column field="applicationId" headerText="#" visible="false" allowEditing="false" width="35px"></e-grid-column>
-                                                <e-grid-column field="num" isPrimaryKey="true" headerText="#" width="35px" allowEditing="false"></e-grid-column>
-                                                <e-grid-column field="entityName" headerText="Entity name" allowEditing="false"></e-grid-column>
-                                                <e-grid-column field="entityNumber" headerText="Entity number" allowEditing="false"></e-grid-column>
-                                                <e-grid-column field="entityCountryOfOrigin" headerText="Country of origin" allowEditing="false"></e-grid-column>
-                                                <e-grid-column field="entityOrdinaryShares" headerText="Ordinary shares" allowEditing="false"></e-grid-column>
-                                                <e-grid-column field="entityPreferenceShares" headerText="Preference shares" allowEditing="false"></e-grid-column>
-                                                <e-grid-column field="entityTotalShares" headerText="Total shares" allowEditing="false"></e-grid-column>
-                                                <e-grid-column field="entityHasQuery" headerText="Has query" editType="booleanedit" displayAsCheckBox="true" textAlign="Center" type="boolean"></e-grid-column>
-                                                <e-grid-column field="entityComment" headerText="Comment" validationRules="@(new { required=true})"></e-grid-column>
-                                                @*<e-grid-column field="Name6" headerText="N0 of Shares" validationRules="@(new { required=true})"></e-grid-column>*@
-                                            </e-grid-columns>
-                                        </ejs-grid>
-                                    </div>
+
+                                                                    <td>@subs.surname  @subs.names </td>
+
+                                                                    <td>@subs.id_no</td>
+
+                                                                    <td>@subs.nationality</td>
+
+                                                                    <td>@subs.address</td>
+                                                                    <td>@subs.names</td>
+
+                                                              
+                                                                    <td></td>
+
+                                                             
+                                                                    <td>@subs.names</td>
+
+                                                                </tr>
+                                                            }
+
+                                                        }
+                                                    }
+                                                </tbody><!-- /tbody -->
+                                            </table><!-- /.table -->
+                                        </div><!-- /.table-responsive -->
+
+                                    </div><!-- /.card-header -->
+                                    <!-- .table-responsive -->
+                                 
                                 </div>
+
+
                                 <div class="col-md-6">
                                     <div class="form-group">
                                         <label for="HasQuery">Raise Query</label>
@@ -339,42 +351,240 @@
 
             <div id="step-4" class="tab-pane" role="tabpanel" aria-labelledby="step-4">
                 <div class="card">
+                    <div class="card">
+                        <div class="card-body">
+
+
+                            <form action="#" method="post" style="width:100%;">
+                                <input type="hidden" id="ApplicatioID" name="billercode" value="@ViewBag.Application_Ref" />
+                                <input type="hidden" name="billercode" value="@ViewBag.billercode" />
+                                <input type="hidden" id="objectivesss" name="otherObjectives" value="@ViewBag.AppId" />
+                                <input type="hidden" name="billercode" value="@ViewBag.billercode" />
+
+                                <div class="nav-scroller border-bottom">
+                                    <!-- .nav-tabs -->
+                                    <ul class="nav nav-tabs">
+                                        <li class="nav-item">
+                                            <a class="nav-link active show" data-toggle="tab" href="#client-projects">Company  Objects</a>
+                                        </li>
+                                        <li class="nav-item">
+                                            <a class="nav-link" data-toggle="tab" href="#client-projects1">Liability Clause</a>
+                                        </li>
+
+                                        <li class="nav-item">
+                                            <a class="nav-link" data-toggle="tab" href="#client-projects2">Share Clause</a>
+                                        </li>
+
+                                        <li class="nav-item">
+                                            <a class="nav-link" data-toggle="tab" href="#client-projects3">Shareholders</a>
+                                        </li>
+
+                                    </ul><!-- /.nav-tabs -->
+                                </div>
+
+
+
+                                <div class="tab-content pt-4" id="clientDetailsTabs">
+                                    <!-- .tab-pane -->
+                                    <div class="tab-pane fade show active" id="client-projects" role="tabpanel" aria-labelledby="client-projects-tab">
+                                        <!-- .card -->
+                                        <div class="card">
+
+                                            <div class="card-body">
+                                                <div class="table-responsive">
+                                                    <!-- .table -->
+                                                    <table class="table">
+                                                        <!-- thead -->
+                                                        <thead>
+                                                            <tr>
+
+                                                                <th style="color:#0C2A46">Objects</th>
+
+
+                                                            </tr>
+                                                        </thead><!-- /thead -->
+                                                        <!-- tbody -->
+                                                        <tbody id="tblObjects">
+                                                            @if (ViewBag.objects != null)
+                                                            {
+                                                                @foreach (var obj in ViewBag.objects)
+                                                                {
+                                                                    <tr>
+                                                                        <td>@obj.objective</td>
+                                                                    </tr>
+
+                                                                }
+                                                            }
+                                                        </tbody><!-- /tbody -->
+                                                    </table><!-- /.table -->
+                                                </div><!-- /.table-responsive -->
+                                            </div>
+                                            
+                                        </div>
+                                    </div>
+                                    <div class="tab-pane fade show" id="client-projects1" role="tabpanel" aria-labelledby="client-projects-tab1">
+
+                                        <div class="nav-tabs-navigation">
+
+                                            <div class="card">
+
+
+                                                <div class="form-group">
+                                                    <div class="col-md-12">
+
+                                                        <div class="card card-fluid">
+                                                            <!-- #summernote-basic -->
+                                                            <textarea type="text" id="liabilityClause" class="form-control" rows="5" readonly name="liab" required>@ViewBag.liability</textarea>
+
+                                                        </div><!-- /.card-body -->
+
+                                                    </div><!-- /.card -->
+                                                   
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <!-- .card -->
+                                    <!-- .tab-pane -->
+                                    <div class="tab-pane fade show" id="client-projects2" role="tabpanel" aria-labelledby="client-projects-tab2">
+                                        <!-- .card -->
+                                        <div class="card">
+                                            <!-- .card-header -->
+                                            <div class="card-header d-flex">
+                                                <label class="form-group">Share clause</label>
+                                            </div>
+
+                                            <div class="form-group">
+                                                <div class="col-md-12">
+                                                    <div class="card card-fluid">
+                                                        <!-- #summernote-basic -->
+                                                        <textarea type="text" id="shareClause" class="form-control" rows="5" readonly name="shareClo" required>@ViewBag.shareclause</textarea>
+
+                                                    </div><!-- /.card-body -->
+
+                                                </div><!-- /.card -->
+                                                
+
+                                            </div>
+                                        </div>
+
+                                    </div>
+                                    <div class="tab-pane fade show" id="client-projects3" role="tabpanel" aria-labelledby="client-projects-tab3">
+                                        <div class="card">
+                                            <!-- .card-header -->
+                                            <div class="card-body d-flex">
+                                                <!-- .dropdown -->
+                                                <div class="table-responsive">
+                                                    <!-- .table -->
+                                                    <table class="table">
+                                                        <!-- thead -->
+                                                        <thead>
+                                                            <tr>
+                                                                <th style="min-width:256px"> Full Name </th>
+                                                                <th>National ID/Passport</th>
+                                                                <th>Nationality </th>
+                                                                <th> Address </th>
+                                                                <th> Date of Appoinment </th>
+                                                                <th>Representing </th>
+                                                                <th>Action</th>
+                                                            </tr>
+                                                        </thead><!-- /thead -->
+                                                        <!-- tbody -->
+                                                        <tbody id="shareholders">
+                                                            <!-- tr -->     @if (ViewBag.Subscribers != null)
+                                                            {
+                                                                @foreach (var subs in ViewBag.Subscribers)
+                                                                {
+                                                                    if (subs.type == "Self")
+                                                                    {
+
+
+                                                                        <tr>
+
+
+                                                                            <td>@subs.surname  @subs.names </td>
+
+                                                                            <td>@subs.id_no</td>
+
+                                                                            <td>@subs.nationality</td>
+
+                                                                            <td>@subs.address</td>
+                                                                            <td>@subs.names</td>
+
+                                                                           
+                                                                            <td>@subs.type</td>
+
+                                                                          
+                                                                            <td>@subs.names</td>
+
+                                                                        </tr>
+ }
+                                                                    else if (subs.type == "Beneficiary")
+                                                                    {
+
+                                                                        <tr>
+
+
+                                                                            <td>@subs.surname  @subs.names </td>
+
+                                                                            <td>@subs.id_no</td>
+
+                                                                            <td>@subs.nationality</td>
+
+                                                                            <td>@subs.address</td>
+                                                                            <td>@subs.names</td>
+
+
+                                                                            <td>@subs.type </td>
+
+                                                                       
+                                                                            <td>
+                                                                                <a href="#addEmployeeModal1" class="btn btn-primary btn-sm" id="@subs._id" data-toggle="modal">View Beneficiaries </a>
+                                                                            </td>
+
+
+                                                                        </tr>
+
+
+                                                                    }
+                                                                }}
+
+
+                                                        </tbody><!-- /tbody -->
+                                                    </table><!-- /.table -->
+                                                </div><!-- /.table-responsive -->
+                                            </div><!-- /.card-header -->
+                                            <!-- .table-responsive -->
+                                           
+                                        </div><!-- /.card -->
+
+                                    </div>
+                                </div>
+
+
+                                <div class="row">
+
+
+                                </div>
+                                <div class="form-group fa-pull-right">
+                                    <button type="button" onclick="submitObzizz()" class="btn btn-primary" id="memo-new" style="display:none">
+                                        Continue
+                                    </button>
+                                </div>
+                            </form>
+                        </div>
+                    </div>
                     <div class="card-body">
                         @* form to submit share clause and liability clause *@
                         <form style="width:100%;" id="shareClauseForm" method="post">
                             <input type="hidden" name="billercode" value="@ViewBag.billercode" />
-                            <input type="hidden" name="billercode" value="@ViewBag.billercode" />
-                            <input type="hidden" id="objectivesss" name="otherObjectives" />
-                            <input type="hidden" name="billercode" value="@ViewBag.billercode" />
+                            @*<input type="hidden" name="billercode" value="@ViewBag.billercode" />
+                <input type="hidden" id="objectivesss" name="otherObjectives" />
+                <input type="hidden" name="billercode" value="@ViewBag.billercode" />*@
 
-                            <div class="form-group">
-                                @*<label>Company Members</label>*@
-                                <ejs-grid id="Grid" toolbar="@(new List<string>() {"Edit"})">
-                                    <e-grid-editSettings allowEditing="true" allowDeleting="true" mode="Normal"></e-grid-editSettings>
-                                    <e-data-manager url="/Products/UrlDataSource" updateUrl="/Company/CellEditUpdate" insertUrl="/Company/CellEditInsert" removeUrl="/Company/CellEditDelete" adaptor="UrlAdaptor"></e-data-manager>
 
-                                    <e-grid-columns>
-                                        <e-grid-column field="theObject" headerText="Object" allowEditing="false" allowFiltering="false"></e-grid-column>
-                                        <e-grid-column field="hasQuery" headerText="Raise query" editType="booleanedit" displayAsCheckBox="true" textAlign="Center" type="boolean"></e-grid-column>
-                                        <e-grid-column field="Comment" headerText="Comment"></e-grid-column>
-                                    </e-grid-columns>
-                                </ejs-grid>
-                            </div>
 
                             <div class="row">
-                                <div class="col-md-6">
-                                    <label class="form-group">Liability clause</label>
-                                    <div class="input-group form-group">
-                                        <input type="text" class="form-control" id="liabilityClause" name="liab" value="@ViewBag.Liability_liab" step="3" readonly>
-                                    </div>
-                                </div>
-                                <div class="col-md-6">
-                                    <label class="form-group">Share clause</label>
-                                    <div class="input-group form-group">
-                                        <input type="text" class="form-control" id="shareClause" name="shareClo" value="@ViewBag.Share_share" readonly>
-                                    </div>
-                                </div>
-
 
                                 <div class="col-md-6">
                                     <div class="form-group">
@@ -683,7 +893,8 @@
             type: 'POST',
             url: '/' + document.getElementById('applicationId').value + '/Approve',
             data: {
-                emailAddress: document.getElementById('Email').value
+                emailAddress: document.getElementById('Email').value,
+                taskid: document.getElementById('TaskId').value,
             },
             success: function (data) {
                 alert('Application Approved With No Queries');

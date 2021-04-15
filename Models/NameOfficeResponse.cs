@@ -11,7 +11,7 @@ namespace BillerClientConsole.Models
         public string Type { get; set; }
         public string Justification { get; set; }
 
-        public RegisteredOffice Office { get; set; }
+        public RegisteredOffice Office { get; set; } = new RegisteredOffice();
     }
 
 }

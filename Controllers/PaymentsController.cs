@@ -47,8 +47,8 @@ namespace BillerClientConsole.Controllers
                 var paynow = new Paynow("10057", "5220513d-580d-402e-8eb4-abceff3efae5");
 
 
-               // paynow.ResultUrl = "https://deedsapp.ttcsglobal.com/Paynow/Result";
-               // paynow.ReturnUrl = $"https://deedsapp.ttcsglobal.com/Payments/Response/{redirect}";
+                //paynow.ResultUrl = "https://deedsapp.ttcsglobal.com/Paynow/Result";
+                //paynow.ReturnUrl = $"https://deedsapp.ttcsglobal.com/Payments/Response/{redirect}";
                 paynow.ResultUrl = "http://localhost:2015/Paynow/Result";
                 paynow.ReturnUrl = $"http://localhost:2015/Payments/Response/{redirect}";
 
@@ -111,6 +111,16 @@ namespace BillerClientConsole.Controllers
                 var user = db.AspNetUsers.Where(i => i.Email == User.Identity.Name).FirstOrDefault();
                 puchase.UserID = user.UserName;
                 var responsey = await client.PostAsJsonAsync<CreditPurchaseDto>($"{Globals.Globals.service_end_point}/Payments/PurchaseCredits", puchase).Result.Content.ReadAsStringAsync();
+                if(responsey== "You have no enough topup to fund this purchase")
+                {
+                    TempData["paymentStatus"] = "You have insufficient funds, please topup first!";
+                    ViewBag.Insufficient = TempData["paymentStatus"];
+                }
+                else
+                {
+                    TempData["paymentSuccess"] = "Credit Purchase was Successfull";
+                    ViewBag.Insufficient = TempData["paymentSuccess"];
+                }
                 if (redirect.Equals("PaymentHistory"))
                     return RedirectToAction("PaymentHistory");
                 else
@@ -143,7 +153,7 @@ namespace BillerClientConsole.Controllers
                 {
                     if (creditsFromDb.PvtLimitedCompany > 0)
                     {
-                        return Redirect("/Company/CompanyApplication");
+                        return Redirect("/Company/GetNamesForAoplication");
                     }
                 }
                 

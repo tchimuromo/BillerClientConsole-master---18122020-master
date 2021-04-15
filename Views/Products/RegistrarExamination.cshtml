@@ -1,0 +1,704 @@
+﻿@using Syncfusion.EJ2
+@using BillerClientConsole.Models.QueryModel 
+
+@{
+    Layout = "_LayoutMain";
+    bool HasQuery = false;
+}
+
+
+<div class="container-fluid mt-3">
+    <input hidden id="applicationId" value="@ViewBag.Application"/>
+    <input hidden id="Email" value="@ViewBag.NameOffice.Office.EmailAddress"/>
+    <input hidden id="TaskId" value="@ViewBag.TaskId"/>
+
+    <!-- SmartWizard html -->
+    <div id="smartwizard">
+
+        <ul class="nav">
+            <li class="nav-item">
+                <a class="nav-link" href="#step-1">
+                    <strong>Name details of the entity</strong>
+                </a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link" href="#step-2" data-repo="smartwizard">
+                    <strong>Registered office</strong>
+                </a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link" href="#step-3" data-repo="jquery-smartcart">
+                    <strong>Members, Directors and Secretary</strong>
+                </a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link" href="#step-4" data-repo="jquery-smartcart">
+                    <strong>Memorundum of association</strong>
+                </a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link" href="#step-5" data-repo="jquery-smartcart">
+                    <strong>Articles of association</strong>
+                </a>
+            </li>
+        </ul>
+
+
+
+        <div class="tab-content">
+
+            <div id="step-1" class="tab-pane" role="tabpanel" aria-labelledby="step-1">
+                <div class="card">
+                    <div class="card-body">
+                        <input type="hidden" name="billercode" value="@ViewBag.billercode" />
+                        <div class="row">
+                            <div class="col-md-6">
+                                <div class="form-group">
+                                    <label>Name of entity</label>
+                                    <input type="text" class="form-control" value="@ViewBag.NameOffice.Name" placeholder="Entity name" readonly>
+                                </div>
+                            </div>
+                            <div class="col-md-6">
+                                <div class="form-group">
+                                    <label>Type of entity</label>
+                                    <input type="text" class="form-control" value="@ViewBag.NameOffice.Type" placeholder="Type" readonly>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="row">
+                            <div class="col-md-6">
+                                <div class="form-group">
+                                    <label>Justification</label>
+                                    <input type="text" class="form-control" placeholder="Justification" value="@ViewBag.NameOffice.Justification" readonly>
+                                </div>
+                            </div>
+                        </div>
+
+
+
+                    </div>
+                </div>
+            </div>
+
+
+
+
+
+            <div id="step-2" class="tab-pane" role="tabpanel" aria-labelledby="step-2">
+                <form id="officeForm" method="post">
+                    <!--id="officeForm"-->
+
+                    <input type="hidden" id="txtapplicationRef" name="applicationRef" value="@ViewBag.Application" />
+                    <input type="hidden" name="tableName" value="RegisteredOffice" />
+                    <input type="hidden" name="applicationID" value="@ViewBag.ApplicationID"/>
+                    @*<input type ="hidden" name="tableName" value="RegisteredOffice" />*@
+
+                    <div class="card">
+                        <div class="card-header">
+                            <h4>Registered office details</h4>
+                        </div>
+                        <div class="card-body">
+
+                            <input type="hidden" name="billercode" value="@ViewBag.billercode" />
+                            <div class="row">
+                                <div class="col-md-6">
+                                    <div class="form-group">
+                                        <label for="#physicalAddress">Physical address</label>
+                                        <input type="text" id="physicalAddress" class="form-control" value="@ViewBag.NameOffice.Office.PhysicalAddress" readonly>
+                                        <input type="hidden" id="txtofficeid" class="form-control" name="officeid" value="@ViewBag.NameOffice.Office.OfficeId" readonly>
+                                    </div>
+                                </div>
+                                <div class="col-md-6">
+                                    <div class="form-group">
+                                        <label for="#postalAddress">Postal address</label>
+                                        <input type="text" class="form-control" id="postalAddress" value="@ViewBag.NameOffice.Office.PostalAddress" readonly>
+                                    </div>
+                                </div>
+                                <div class="col-md-6">
+                                    <div class="form-group">
+                                        <label for="#city">City</label>
+                                        <input type="text" class="form-control" id="city" value="@ViewBag.NameOffice.Office.City" readonly>
+                                    </div>
+                                </div>
+                                <div class="col-md-6">
+                                    <div class="form-group">
+                                        <label for="#emailAddress">Email address</label>
+                                        <input type="email" class="form-control" name="emailAddress" id="txtemailAddress" value="@ViewBag.NameOffice.Office.EmailAddress" readonly>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="row">
+                                <div class="col-md-6">
+                                    <div class="form-group">
+                                        <label for="#telephone">Telephone number</label>
+                                        <input type="text" class="form-control" id="telephone" value="@ViewBag.NameOffice.Office.TelephoneNumber" readonly>
+                                    </div>
+                                </div>
+                                <div class="col-md-6">
+                                    <div class="form-group">
+                                        <label>Mobile number</label>
+                                        <input type="text" class="form-control" id="mobileNumber" value="@ViewBag.NameOffice.Office.MobileNumber" readonly>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="col-md-6">
+                                    <div class="form-group">
+                                        <label for="HasQuery">Raise Query</label>
+                                        <input type="checkbox" asp-for="@HasQuery" name="HasQuery" id="txtHasQuery">
+
+                                    </div>
+                                </div>
+
+
+
+
+
+                                <div class="col-md-6">
+                                    <div class="form-group">
+                                        <label>Comment</label>
+                                        <input type="text" class="form-control" id="txtcomment" name="comment" required>
+                                        @* we neeed to test why the text bpx is not working.. the value will post if put manually *@
+                                    </div>
+                                </div>
+
+
+                                <div class="form-group fa-pull-rig ht mt-5">
+                                    <button type="button" id="btnsubmit" class="btn btn-danger">
+
+                                        <!-- //id="submitOffice"  style="display:none" -->
+                                        Submit Query
+                                    </button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </form>
+            </div>
+
+            <script>
+                $(document).ready(function () {
+                    $("#btnsubmit").click(function (e) {
+                        //Serialize the form datas.
+                        var valdata = $("#officeForm").serialize();
+                        //to get alert popup
+                        //alert(valdata);
+                        $.ajax({
+                            url: '/Queries/RegisteredOfficeHasQuery',
+                            type: "POST",
+                            dataType: 'json',
+                            contentType: 'application/x-www-form-urlencoded; charset=UTF-8',
+                            data: valdata,
+                            success: function (msg) {
+                                alert("Query Saved");
+                            },
+                            error: function (msg) {
+                                alert("Query Processed");
+                            }
+
+                        });
+
+                    });
+                });
+            </script>
+
+
+
+       
+
+            <div id="step-3" class="tab-pane" role="tabpanel" aria-labelledby="step-3">
+                <input type="hidden" nameF="billercode" value="@ViewBag.billercode" />
+
+                <div class="card">
+                    <div class="card-header">
+                        <label class="mt-3">Members</label>
+                        <span style="flex: 1 1 auto"></span>
+                    </div>
+                    <div class="card-body">
+                        <div class="form-group">
+
+                            <form action="" id="membersForm" method="post" style="width:100%;">
+
+                                @{ var DropDownList = new Syncfusion.EJ2.DropDowns.DropDownList() { DataSource = ViewBag.sex, Query = "new ej.data.Query()", AllowFiltering = true, Fields = new Syncfusion.EJ2.DropDowns.DropDownListFieldSettings() { Value = "Country", Text = "Country" } }; }
+
+                                <div class="card-body">
+                                    <div class="form-group">
+                                        <ejs-grid id="Grid-members" allowResizing="true" allowFiltering="true" toolbar="@(new List<string>() {"Edit"})">
+                                            <e-grid-editSettings allowAdding="true" allowDeleting="true" allowEditing="true" mode="Normal"></e-grid-editSettings>
+                                            <e-data-manager url="/Products/MemberUrlDataSource" updateUrl="/Company/MemberCellEditUpdate" insertUrl="/Company/MemberCellEditInsert" removeUrl="/Company/CellEditDelete" adaptor="UrlAdaptor"></e-data-manager>
+                                            <e-grid-filterSettings type="Excel"></e-grid-filterSettings>
+                                            <e-grid-columns>
+                                                <e-grid-column field="applicationId" headerText="#" visible="false" allowEditing="false" width="35px"></e-grid-column>
+                                                @*<e-grid-column field="application_Ref" isPrimaryKey="true" headerText="#" visible="false" allowEditing="false" width="35px"></e-grid-column>*@
+                                                <e-grid-column field="num-num" headerText="#" width="35px" allowEditing="false"></e-grid-column>
+                                                <e-grid-column field="nationalId" headerText="National ID" allowEditing="false"></e-grid-column>
+                                                <e-grid-column field="nationality" headerText="Nationality" allowEditing="false"></e-grid-column>
+                                                <e-grid-column field="surname" headerText="Surname" allowEditing="false"></e-grid-column>
+                                                <e-grid-column field="firstName" headerText="Firstname" allowEditing="false"></e-grid-column>
+                                                @*<e-grid-column field="gender" headerText="Gender" allowEditing="false"></e-grid-column>*@
+                                                <e-grid-column field="physicalAddress" headerText="Physical address" allowEditing="false"></e-grid-column>
+                                                <e-grid-column field="roles" headerText="Role" allowEditing="false"></e-grid-column>
+                                                <e-grid-column field="ordinaryShares" headerText="Ordinary shares" allowEditing="false"></e-grid-column>
+                                                <e-grid-column field="preferenceShares" headerText="Preference shares" allowEditing="false"></e-grid-column>
+                                                <e-grid-column field="totalShares" headerText="Total shares" allowEditing="false"></e-grid-column>
+                                                <e-grid-column field="memberHasQuery" headerText="Has query" editType="booleanedit" displayAsCheckBox="true" textAlign="Center" type="boolean"></e-grid-column>
+                                                <e-grid-column field="memberComment" headerText="Comment"></e-grid-column>
+
+                                            </e-grid-columns>
+                                        </ejs-grid>
+                                    </div>
+                                    <div class="form-group mt-5">
+                                        <ejs-grid id="Grid-entities" allowResizing="true" allowFiltering="true" allowPaging="true" toolbar="@(new List<string>() {"Edit" })">
+
+                                            <e-grid-editSettings allowAdding="true" allowDeleting="true" allowEditing="true" mode="Normal"></e-grid-editSettings>
+                                            <e-data-manager url="/Products/EntityUrlDataSource" updateUrl="/Company/EntityCellEditUpdate" insertUrl="/Company/EntityCellEditInsert" removeUrl="/Company/CellEditDelete" adaptor="UrlAdaptor"></e-data-manager>
+                                            <e-grid-filterSettings type="Excel"></e-grid-filterSettings>
+                                            <e-grid-columns>
+
+                                                <e-grid-column field="applicationId" headerText="#" visible="false" allowEditing="false" width="35px"></e-grid-column>
+                                                <e-grid-column field="num" isPrimaryKey="true" headerText="#" width="35px" allowEditing="false"></e-grid-column>
+                                                <e-grid-column field="entityName" headerText="Entity name" allowEditing="false"></e-grid-column>
+                                                <e-grid-column field="entityNumber" headerText="Entity number" allowEditing="false"></e-grid-column>
+                                                <e-grid-column field="entityCountryOfOrigin" headerText="Country of origin" allowEditing="false"></e-grid-column>
+                                                <e-grid-column field="entityOrdinaryShares" headerText="Ordinary shares" allowEditing="false"></e-grid-column>
+                                                <e-grid-column field="entityPreferenceShares" headerText="Preference shares" allowEditing="false"></e-grid-column>
+                                                <e-grid-column field="entityTotalShares" headerText="Total shares" allowEditing="false"></e-grid-column>
+                                                <e-grid-column field="entityHasQuery" headerText="Has query" editType="booleanedit" displayAsCheckBox="true" textAlign="Center" type="boolean"></e-grid-column>
+                                                <e-grid-column field="entityComment" headerText="Comment" validationRules="@(new { required=true})"></e-grid-column>
+                                                @*<e-grid-column field="Name6" headerText="N0 of Shares" validationRules="@(new { required=true})"></e-grid-column>*@
+                                            </e-grid-columns>
+                                        </ejs-grid>
+                                    </div>
+                                </div>
+                                <div class="col-md-6">
+                                    <div class="form-group">
+                                        <label for="HasQuery">Raise Query</label>
+                                        <input type="checkbox" asp-for="@HasQuery" name="HasQuery" id="thasQuery">
+                                        <input type="hidden" id="tapplicationRef" name="applicationRef" value="@ViewBag.Application" />
+                                        <input type="hidden" id="tapplicationID" name="applicationID" value="@ViewBag.ApplicationID" />
+
+                                    </div>
+                                </div>
+                                <div class="col-md-6">
+                                    <div class="form-group">
+                                        <label>Comment</label>
+                                        <input type="text" class="form-control" id="tcomment" name="comment" required>
+                                    </div>
+                                </div>
+                                <div class="form-group fa-pull-right">
+                                    <button type="button" id="submitMembersDirectors" class="btn btn-danger">
+                                        Submit Query
+                                    </button>
+                                </div>
+                                <div class="form-group fa-pull-right">
+                                    <button type="submit" class="btn btn-primary" style="display:none">
+                                        Continue
+                                    </button>
+                                </div>
+                            </form>
+                        </div>
+                    </div>
+                </div>
+                <input type="hidden" name="members" id="members" />
+                <input type="hidden" name="companyMembers" id="companyMembers" />
+
+                <div class="form-group fa-pull-right mt-5">
+                    <button type="button" id="submitEntityMembers" onclick="submitMembers()" class="btn btn-primary btn-sm" style="display:none">
+                        Save application
+                    </button>
+                </div>
+            </div>
+
+            <script>
+                $(document).ready(function () {
+                    $("#submitMembersDirectors").click(function (e) {
+                        //Serialize the form datas.
+                        var valdata = $("#membersForm").serialize();
+                        //to get alert popup
+                        //alert(valdata);
+                        $.ajax({
+                            url: '/Queries/MembersHasQuery',
+                            type: "POST",
+                            dataType: 'json',
+                            contentType: 'application/x-www-form-urlencoded; charset=UTF-8',
+                            data: valdata,
+                            success: function (msg) {
+                                alert("Query Saved");
+                            },
+                            error: function (msg) {
+                                alert("Query Processed");
+                            }
+
+                        });
+
+                    });
+                });
+            </script>
+
+
+            <div id="step-4" class="tab-pane" role="tabpanel" aria-labelledby="step-4">
+                <div class="card">
+                    <div class="card-body">
+                        @* form to submit share clause and liability clause *@
+                        <form style="width:100%;" id="shareClauseForm" method="post">
+                            <input type="hidden" name="billercode" value="@ViewBag.billercode" />
+                            @*<input type="hidden" name="billercode" value="@ViewBag.billercode" />
+                            <input type="hidden" id="objectivesss" name="otherObjectives" />
+                            <input type="hidden" name="billercode" value="@ViewBag.billercode" />*@
+
+                            <div class="form-group">
+                                @*<label>Company Members</label>*@
+                                <ejs-grid id="Grid" toolbar="@(new List<string>() {"Edit"})">
+                                    <e-grid-editSettings allowEditing="true" allowDeleting="true" mode="Normal"></e-grid-editSettings>
+                                    <e-data-manager url="/Products/UrlDataSource" updateUrl="/Company/CellEditUpdate" insertUrl="/Company/CellEditInsert" removeUrl="/Company/CellEditDelete" adaptor="UrlAdaptor"></e-data-manager>
+
+                                    <e-grid-columns>
+                                        <e-grid-column field="theObject" headerText="Object" allowEditing="false" allowFiltering="false"></e-grid-column>
+                                        <e-grid-column field="hasQuery" headerText="Raise query" editType="booleanedit" displayAsCheckBox="true" textAlign="Center" type="boolean"></e-grid-column>
+                                        <e-grid-column field="Comment" headerText="Comment"></e-grid-column>
+                                    </e-grid-columns>
+                                </ejs-grid>
+                            </div>
+
+                            <div class="row">
+                                <div class="col-md-6">
+                                    <label class="form-group">Liability clause</label>
+                                    <div class="input-group form-group">
+                                        <input type="text" class="form-control" id="liabilityClause" name="liab" value="@ViewBag.Liability_liab" step="3" readonly>
+                                    </div>
+                                </div>
+                                <div class="col-md-6">
+                                    <label class="form-group">Share clause</label>
+                                    <div class="input-group form-group">
+                                        <input type="text" class="form-control" id="shareClause" name="shareClo" value="@ViewBag.Share_share" readonly>
+                                    </div>
+                                </div>
+
+
+                                <div class="col-md-6">
+                                    <div class="form-group">
+                                        <label for="HasQuery">Raise Query</label>
+                                        <input type="checkbox" asp-for="@HasQuery" name="HasQuery" id="thasQuery">
+                                        <input type="hidden" id="tapplicationRef" name="applicationRef" value="@ViewBag.Application" />
+                                        <input type="hidden" id="tapplicationID" name="applicationID" value="@ViewBag.ApplicationID" />
+                                    </div>
+                                </div>
+                                <div class="col-md-6">
+                                    <div class="form-group">
+                                        <label>Comment</label>
+                                        <input type="text" class="form-control" id="tcomment" name="comment" required>
+                                    </div>
+                                </div>
+                                <div class="form-group fa-pull-right">
+                                    <button type="button" id="submitShareAndLiabilityClause" class="btn btn-danger">
+                                        Submit Query
+                                    </button>
+                                </div>
+
+
+
+                            </div>
+
+                        </form>
+                    </div>
+                </div>
+
+            </div>
+
+
+            <script>
+                $(document).ready(function () {
+                    $("#submitShareAndLiabilityClause").click(function (e) {
+                        //Serialize the form datas.
+                        var valdata = $("#shareClauseForm").serialize();
+                        //to get alert popup
+                        //alert(valdata);
+                        $.ajax({
+                            url: '/Queries/LiabilityAndShareClauseHasQuery',
+                            type: "POST",
+                            dataType: 'json',
+                            contentType: 'application/x-www-form-urlencoded; charset=UTF-8',
+                            data: valdata,
+                            success: function (msg) {
+                                alert("Query Saved");
+                            },
+                            error: function (msg) {
+                                alert("Query Processed");
+                            }
+
+                        });
+
+                    });
+                });
+            </script>
+
+
+
+            <div id="step-5" class="tab-pane" role="tabpanel" aria-labelledby="step-4">
+                <div class="card">
+                    <div class="card-body">
+
+
+                        <div class="radio radio-primary form-group">
+                            <input type="hidden" id="tableB" value="Yes" name="articles">
+                            @*<label>Table B: Model Articles for Private Companies Limited by Shares</label>*@
+                        </div>
+
+                        <div class="radio radio-primary form-group">
+                            <input type="hidden" id="tableC" value="Yes" name="articles">
+                            @*<label>Table C: Model Articles for Private Companies Limited by Guarantee</label>*@
+                        </div>
+
+                        <div class="row">
+                            <div class="col-md-6">
+                                <div class="form-group">
+                                    <div class="form-group">
+                                        <label>Articles of association</label>
+                                        <input type="text" class="form-control" id="articles" value="@ViewBag.article_type" readonly>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <textarea type="text" class="form-control" id="ammendedArticles"></textarea>
+                            <label>Provisions of non applicable or amended articles</label>
+                        </div>
+                    </div>
+                </div>
+                <div class="form-group fa-pull-right mt-5">
+                    <button type="button" id="submitArticles" onclick="submitArticles()" class="btn btn-primary btn-sm" style="display:none">
+                        Save application
+                    </button>
+                </div>
+            </div>
+
+
+
+
+
+
+            <div style="display:none">
+                <div class="card mt-5">
+                    <div class="card-header">
+                        <h4>Articles of association</h4>
+                    </div>
+                    <div class="card-body">
+                        <div class="radio radio-primary form-group">
+                            <input type="hidden" id="tableB" value="Yes" name="articles">
+                            @*<label>Table B: Model Articles for Private Companies Limited by Shares</label>*@
+                        </div>
+
+                        <div class="radio radio-primary form-group">
+                            <input type="hidden" id="tableC" value="Yes" name="articles">
+                            @*<label>Table C: Model Articles for Private Companies Limited by Guarantee</label>*@
+                        </div>
+
+                        <div class="form-group">
+                            <ejs-grid id="Gridyyyy" allowResizing="true" allowFiltering="true" toolbar="@(new List<string>() {"Edit"})">
+                                <e-grid-editSettings allowAdding="true" allowDeleting="true" allowEditing="true" mode="Normal"></e-grid-editSettings>
+                                <e-data-manager url="/Products/SelectedArticleUrlDataSource" updateUrl="/Company/SelectedArticleCellEditUpdate" insertUrl="/Company/CellEditInsert" removeUrl="/Company/CellEditDelete" adaptor="UrlAdaptor"></e-data-manager>
+                                <e-grid-filterSettings type="Excel"></e-grid-filterSettings>
+                                <e-grid-columns>
+                                    <e-grid-column field="application_Ref" headerText="#" visible="false" allowEditing="false" width="35px"></e-grid-column>
+                                    <e-grid-column field="articleId" headerText="#" visible="false" allowEditing="false" width="35px"></e-grid-column>
+                                    <e-grid-column field="obj_num" isPrimaryKey="true" headerText="#" allowEditing="false" width="35px"></e-grid-column>
+                                    <e-grid-column field="article" headerText="Selected Articles of Association model" allowEditing="false"></e-grid-column>
+                                    <e-grid-column field="articleHasQuery" headerText="Has a query" width=125px editType="booleanedit" displayAsCheckBox="true" textAlign="Center" type="boolean"></e-grid-column>
+                                    <e-grid-column field="articleComment" headerText="Comment" validationRules="@(new { required=true})"></e-grid-column>
+                                </e-grid-columns>
+                            </ejs-grid>
+                        </div>
+
+                        <div class="form-group">
+                            <ejs-grid id="Gridyyy" allowResizing="true" allowFiltering="true" toolbar="@(new List<string>() {"Edit"})">
+                                <e-grid-editSettings allowAdding="true" allowDeleting="true" allowEditing="true" mode="Normal"></e-grid-editSettings>
+                                <e-data-manager url="/Products/AmmendedArticleUrlDataSource" updateUrl="/Company/AmmendedArticleCellEditUpdate" insertUrl="/Company/CellEditInsert" removeUrl="/Company/CellEditDelete" adaptor="UrlAdaptor"></e-data-manager>
+                                <e-grid-filterSettings type="Excel"></e-grid-filterSettings>
+                                <e-grid-columns>
+                                    <e-grid-column field="articlesId" headerText="#" visible="false" allowEditing="false" width="35px"></e-grid-column>
+                                    <e-grid-column field="application_Ref" headerText="#" visible="false" allowEditing="false" width="35px"></e-grid-column>
+                                    <e-grid-column field="obj_num" isPrimaryKey="true" headerText="#" width="35px" allowEditing="false"></e-grid-column>
+                                    <e-grid-column field="ammendedArticle" headerText="Ammended article" allowEditing="false"></e-grid-column>
+                                    <e-grid-column field="ammendedHasQuery" headerText="Has a query" allowEditing="false" width=125px editType="booleanedit" displayAsCheckBox="true" textAlign="Center" type="boolean"></e-grid-column>
+                                    <e-grid-column field="ammendedComment" headerText="Comment" validationRules="@(new { required=true})"></e-grid-column>
+                                </e-grid-columns>
+                            </ejs-grid>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+
+
+
+
+            <div style="display:none">
+                <div class="card mt-5">
+                    <div class="card-header">
+                        <h4>Members, Directors and Secretary</h4>
+                    </div>
+
+                </div>
+            </div>
+        </div>
+    </div>
+    
+    <div class="card">
+        <h4 class="card-header">Queries</h4>
+        <div class="card-body">
+            @if (ViewBag.ApplicationQueries.Count > 0) {
+            <table class="table table-colored">
+                <thead>
+                    <tr>
+                        <th>Comment</th>
+                        <th>Step Number</th>
+                        <th>Query Status</th>
+                    </tr>
+                </thead>
+                <tbody>
+
+                    @foreach (Queries queries in ViewBag.ApplicationQueries)
+                    {
+                <tr>
+                    <td>@queries.comment</td>
+                    <td>@queries.tableName</td>
+                    <td>@queries.status</td>
+                </tr>}
+                </tbody>
+                </table>
+            }
+            else
+            {
+            <h5 class="text-primary"><strong>Application has No Pending Queries </strong></h5>
+            }
+        </div>
+
+
+    </div>
+</div>
+
+
+
+<script type="text/javascript">
+    $(document).ready(function () {
+
+        // Toolbar extra buttons
+        var btnFinish = $('<button></button>').text('Approve application')
+            .addClass('btn btn-primary')
+            .on('click', function () {
+                approvePvtApplication();
+            });
+
+        // Step show event
+        $("#smartwizard").on("showStep", function (e, anchorObject, stepNumber, stepDirection, stepPosition) {
+            $("#prev-btn").removeClass('disabled');
+            $("#next-btn").removeClass('disabled');
+            if (stepPosition === 'first') {
+                $("#prev-btn").addClass('disabled');
+            } else if (stepPosition === 'last') {
+                $("#next-btn").addClass('disabled');
+                btnFinish.removeClass('disabled');
+            } else {
+                $("#prev-btn").removeClass('disabled');
+                $("#next-btn").removeClass('disabled');
+                btnFinish.addClass('disabled');
+            }
+        });
+
+        $("#smartwizard").on("leaveStep", function (e, anchorObject, stepNumber, stepDirection, stepPosition) {
+            if (stepNumber === 1 && stepDirection === 'forward') {
+               
+            } else if (stepNumber === 2 && stepDirection === 'forward') {
+                
+            } else if (stepNumber === 3 && stepDirection === 'forward') {
+                
+            }
+        });
+
+        // Smart Wizard
+        $('#smartwizard').smartWizard({
+            theme: 'arrows',
+            selected: 0,
+            transition: {
+                animation: 'fade', // Effect on navigation, none/fade/slide-horizontal/slide-vertical/slide-swing
+            },
+            toolbarSettings: {
+                toolbarPosition: 'bottom', // both bottom
+                toolbarExtraButtons: [btnFinish]
+            }
+        });
+
+        // External Button Events
+        $("#reset-btn").on("click", function () {
+            // Reset wizard
+            $('#smartwizard').smartWizard("reset");
+            return true;
+        });
+
+        $("#prev-btn").on("click", function () {
+            // Navigate previous
+            $('#smartwizard').smartWizard("prev");
+            return true;
+        });
+
+        $("#next-btn").on("click", function () {
+            // Navigate next
+            $('#smartwizard').smartWizard("next");
+            return true;
+        });
+
+    });
+
+    var selectedCheck;
+    var applicationId;
+
+    //function SubmitQueryOnOffice() {
+    //    let str = document.getElementById('query').value;
+    //    if (!str || str.trim().length === 0) {
+    //        alert('You must pass a comment');
+    //    } else {
+    //        $.ajax({
+    //            type: "POST",
+    //            url: "/Examination/AddressHasQuery",
+    //            data: {
+    //                ApplicationRef: document.getElementById('companyAppRef').value,
+    //                HasQuery: document.getElementById('officeHasQuery').checked,
+    //                Comment: document.getElementById('query').value
+    //            },
+    //            success: function (data) {
+    //                alert('success');
+    //            },
+    //            error: function () {
+    //                alert("error here");
+    //            },
+    //            completed: function () {
+    //            }
+    //        });
+    //    }
+    //}
+
+    function approvePvtApplication() {
+        $.ajax({
+            type: 'POST',
+            url: '/' + document.getElementById('applicationId').value + '/ApproveRecomendation',
+            data: {
+                emailAddress: document.getElementById('Email').value,
+                taskid: document.getElementById('TaskId').value,
+            },
+            success: function (data) {
+                alert('Application Approved With No Queries');
+                window.location = '/Home/Dashboard'
+            },
+            error: function (data) {
+                alert('Application Submitted with Queries');
+                window.location = '/Home/Dashboard'
+            },
+            error: function (err) {
+                alert("Application Submitted with Queries");
+                window.location = '/Home/Dashboard'
+            },
+        });
+    }
+</script>

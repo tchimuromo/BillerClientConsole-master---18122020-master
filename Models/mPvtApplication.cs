@@ -139,10 +139,10 @@ namespace BillerClientConsole.Models
         public string _id { get; set; }
         public string Application_Ref { get; set; }
 
-        public List<liabilityClause> LiabilityClause { get; set; }
+        public liabilityClause LiabilityClause { get; set; } = new liabilityClause();
 
 
-        public List<sharesClause> SharesClause { get; set; }
+        public sharesClause SharesClause { get; set; } = new sharesClause();
 
         public List<mmainClause> objects { get; set; } = new List<mmainClause>();
     }
@@ -153,7 +153,7 @@ namespace BillerClientConsole.Models
         public string _id { get; set; }
         public string obj_num { get; set; }
         public string memo_id { get; set; }
-        public string Application_Ref { get; set; }
+        public string application_ref { get; set; }
         public string objective { get; set; }
         public string objType { get; set; }
         public int HasQuery { get; set; }
@@ -235,7 +235,7 @@ namespace BillerClientConsole.Models
 
     public class mCompany
     {
-        public mCompanyInfo CompanyInfo { get; set; }
+        public mCompanyInfo CompanyInfo { get; set; } = new mCompanyInfo();
         public mMemorandum memo { get; set; }
         public List<mMembersPotifolio> MembersPotifolios { get; set; }
         public List<mDirectorsPotifolio> DirectorsPotifolios { get; set; }
@@ -246,8 +246,8 @@ namespace BillerClientConsole.Models
     public class mCompanyResponse
     {
         public mCompanyInfo companyInfo { get; set; }
-
-        public mMemorandum memo { get; set; }
+        public List<Subscribers> shareholders { get; set; } = new List<Subscribers>();
+        public mMemorandum memo { get; set; } = new mMemorandum();
 
         public List<mMembersPotifolio> membersPotifolios { get; set; }
 
@@ -261,9 +261,9 @@ namespace BillerClientConsole.Models
     {
         public string _id { get; set; }
 
-        public string description { get; set; }
+        public string description { get; set; } = "";
 
-        public string memo_id { get; set; }
+        public string memo_id { get; set; } = "";
 
         public int HasQuery { get; set; }
 
@@ -274,11 +274,11 @@ namespace BillerClientConsole.Models
 
     public class liabilityClause
     {
-        public string _id { get; set; }
+        public string _id { get; set; } = "";
 
-        public string description { get; set; }
+        public string description { get; set; } = "";
 
-        public string memo_id { get; set; }
+        public string memo_id { get; set; } = "";
 
         public int HasQuery { get; set; }
 
@@ -328,6 +328,8 @@ namespace BillerClientConsole.Models
         public int step { get; set; }
     }
 
+  
+
     public class PaymentsResponse
     {
         public double AccountBalance { get; set; }
@@ -356,6 +358,8 @@ namespace BillerClientConsole.Models
         public string TelephoneNumber { get; set; }
         public string MobileNumber { get; set; }
         public string EmailAddress { get; set; }
+
+        public string EffectiveDate { get; set; }
         public int HasQuery { get; set; }
         public string Comment { get; set; }
         public string status { get; set; }

@@ -21,6 +21,7 @@
                             <th style="color: #0C2A46">Date submitted</th>
                             <th style="color: #0C2A46">Proposed name</th>
                             <th style="color: #0C2A46">Type of entity</th>
+                            <th style="color: #0C2A46">Status</th>
                             <th style="color: #0C2A46">Payment status</th>
                             <th style="color: #0C2A46">Allocate</th>
                         </tr>
@@ -28,18 +29,27 @@
                     <tbody>
                         @foreach (var application in ViewBag.CompanyApplications)
                         {
-                            <tr>
-                                <td>@application.companyInfo.Application_Ref</td>
-                                <td>@application.companyInfo.Date_Of_Application</td>
-                                <td>@application.companyInfo.Name</td>
-                                <td>@application.companyInfo.Type</td>
-                                <td>@application.companyInfo.Payment</td>
-                                <td>
-                                    <a href="/Products/Detail?reference=@application.companyInfo.Search_Ref">
-                                        Examine
-                                    </a>
-                                </td>
-                            </tr>
+                        <tr>
+                            <td>@application.companyInfo.Application_Ref</td>
+                            <td>@application.companyInfo.Date_Of_Application</td>
+                            <td>@application.companyInfo.Name</td>
+                            <td>@application.companyInfo.Type</td>
+                            @if (application.companyInfo.Status == "Has Query")
+                            {
+                        <td class="text-danger">@application.companyInfo.Status</td>
+                        }
+                                            else
+                                            {
+                                                <td>@application.companyInfo.Status</td>
+                                            }
+
+                            <td>@application.companyInfo.Payment</td>
+                            <td>
+                                <a href="/Products/Detail?reference=@application.companyInfo.Search_Ref&taskid=@ViewBag.TaskId">
+                                    Examine
+                                </a>
+                            </td>
+                        </tr>
                         }
                     </tbody>
                 </table>

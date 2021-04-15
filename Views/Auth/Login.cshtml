@@ -330,7 +330,7 @@
 
 
             <div class="mg-t-60 tx-center">
-                Not yet a member?   <a href="#" class="btn btn-primary tx-11 tx-uppercase pd-y-12 pd-x-25 tx-mont tx-medium" data-toggle="modal" data-target="#CitizenSelector">Sign Up</a>
+                Not yet a signed up?   <a href="#" class="btn btn-primary tx-11 tx-uppercase pd-y-12 pd-x-25 tx-mont tx-medium" data-toggle="modal" data-target="#CitizenSelector">Sign Up</a>
             </div>
         </div><!-- login-wrapper -->
     </div><!-- col -->
@@ -390,18 +390,18 @@
                     <div class="form-layout form-layout-1">
                         <div class="row mg-b-25">
                             @*<div class="col-lg-6">
-                                    <div class="form-group d-inline">
-                                        <label class="form-control-label">Foreigner <span class="tx-danger">*</span></label>
-                                        <input class="form-control" type="checkbox" id="foreignerCheck">
+            <div class="form-group d-inline">
+                <label class="form-control-label">Foreigner <span class="tx-danger">*</span></label>
+                <input class="form-control" type="checkbox" id="foreignerCheck">
 
-                                    </div>
-                                </div>
-                                <div class="col-lg-6">
-                                    <div class="form-group d-inline">
-                                        <label class="form-control-label">Citizen <span class="tx-danger">*</span></label>
-                                        <input class="form-control" type="checkbox" id="citizenCheck">
-                                    </div>
-                                </div>*@
+            </div>
+        </div>
+        <div class="col-lg-6">
+            <div class="form-group d-inline">
+                <label class="form-control-label">Citizen <span class="tx-danger">*</span></label>
+                <input class="form-control" type="checkbox" id="citizenCheck">
+            </div>
+        </div>*@
 
                             <div class="col-lg-6">
                                 <div class="form-group">
@@ -419,14 +419,14 @@
                             <div class="col-lg-4">
                                 <div class="form-group">
                                     <label class="form-control-label">National ID: <span class="tx-danger">*</span></label>
-                                  
+
                                     <input class="form-control" type="text" required pattern="(^\d{2}) (\d{4,7}) ([A-Z-a-z]{1} (\d{2}$))|(^\d{2})-(\d{4,7})-([A-Z-a-z]{1}-(\d{2}$))" title="69-235489-C-67" name="natid" placeholder="National ID ">
                                 </div>
                             </div><!-- col-4 -->
                             <div class="col-lg-8">
                                 <div class="form-group mg-b-10-force">
                                     <label class="form-control-label">Email Address: <span class="tx-danger">*</span></label>
-                                    <input class="form-control" type="email" name="email"  required placeholder="Email">
+                                    <input class="form-control" type="email" name="email" required placeholder="Email">
                                 </div>
                             </div><!-- col-8 -->
 
@@ -440,25 +440,20 @@
 
                             <div class="col-lg-6">
                                 <div class="form-group mg-b-10-force">
-                                    <label class="form-control-label">City: <span class="tx-danger">*</span></label>
-                                    <input class="form-control" type="text" required name="city" placeholder="City">
-                                </div>
-                            </div><!-- col-8 -->
-
-                            <div class="col-lg-6">
-                                <div class="form-group mg-b-10-force">
                                     <label class="form-control-label">Country: <span class="tx-danger">*</span></label>
-                                    <select class="form-control select2" required name="country" data-placeholder="Choose country">
-                                        <option label="Choose country"></option>
-                                        <option value="Zimbabwe">Zimbabwe</option>
-                                        <option value="USA">United States of America</option>
-                                        <option value="UK">United Kingdom</option>
-                                        <option value="China">China</option>
-                                        <option value="Japan">Japan</option>
-                                        <option value="Zambia">Zambia</option>
+                                    <select class="form-control select2 crs-country" data-whitelist="ZW" data-region-id="six" required name="country" data-placeholder="Choose country">
                                     </select>
                                 </div>
                             </div><!-- col-4 -->
+
+                            <div class="col-lg-6">
+                                <div class="form-group mg-b-10-force">
+                                    <label class="form-control-label">City: <span class="tx-danger">*</span></label>
+                                    <select class="form-control" id="six" type="text" required name="city" placeholder="City"> </select>
+                                </div>
+                            </div><!-- col-8 -->
+
+
 
                             <div class="col-lg-6">
                                 <div class="form-group mg-b-10-force">
@@ -512,18 +507,18 @@
                     <div class="form-layout form-layout-1">
                         <div class="row mg-b-25">
                             @*<div class="col-lg-6">
-                                    <div class="form-group d-inline">
-                                        <label class="form-control-label">Foreigner <span class="tx-danger">*</span></label>
-                                        <input class="form-control" type="checkbox" id="foreignerCheck">
+            <div class="form-group d-inline">
+                <label class="form-control-label">Foreigner <span class="tx-danger">*</span></label>
+                <input class="form-control" type="checkbox" id="foreignerCheck">
 
-                                    </div>
-                                </div>
-                                <div class="col-lg-6">
-                                    <div class="form-group d-inline">
-                                        <label class="form-control-label">Citizen <span class="tx-danger">*</span></label>
-                                        <input class="form-control" type="checkbox" id="citizenCheck">
-                                    </div>
-                                </div>*@
+            </div>
+        </div>
+        <div class="col-lg-6">
+            <div class="form-group d-inline">
+                <label class="form-control-label">Citizen <span class="tx-danger">*</span></label>
+                <input class="form-control" type="checkbox" id="citizenCheck">
+            </div>
+        </div>*@
 
                             <div class="col-lg-6">
                                 <div class="form-group">
@@ -555,31 +550,26 @@
                             <div class="col-lg-12">
                                 <div class="form-group mg-b-10-force">
                                     <label class="form-control-label">Residential Address: <span class="tx-danger">*</span></label>
-                                    <input class="form-control" type="text"  required name="address" placeholder="Residential address">
-                                </div>
-                            </div><!-- col-8 -->
-
-                            <div class="col-lg-6">
-                                <div class="form-group mg-b-10-force">
-                                    <label class="form-control-label">City: <span class="tx-danger">*</span></label>
-                                    <input class="form-control" type="text" required name="city" placeholder="City">
+                                    <input class="form-control" type="text" required name="address" placeholder="Residential address">
                                 </div>
                             </div><!-- col-8 -->
 
                             <div class="col-lg-6">
                                 <div class="form-group mg-b-10-force">
                                     <label class="form-control-label">Country: <span class="tx-danger">*</span></label>
-                                    <select class="form-control select2" required name="country" data-placeholder="Choose country">
-                                        <option label="Choose country"></option>
-                                        <option value="Zimbabwe">Zimbabwe</option>
-                                        <option value="USA">United States of America</option>
-                                        <option value="UK">United Kingdom</option>
-                                        <option value="China">China</option>
-                                        <option value="Japan">Japan</option>
-                                        <option value="Zambia">Zambia</option>
+                                    <select class="form-control select2 crs-country" required name="country" data-blacklist="ZW" data-region-id="seven" data-placeholder="Choose country">
                                     </select>
                                 </div>
                             </div><!-- col-4 -->
+
+                            <div class="col-lg-6">
+                                <div class="form-group mg-b-10-force">
+                                    <label class="form-control-label">City: <span class="tx-danger">*</span></label>
+                                    <select id="seven" class="form-control" type="text" required name="city" placeholder="City"> </select>
+                                </div>
+                            </div><!-- col-8 -->
+
+
 
                             <div class="col-lg-6">
                                 <div class="form-group mg-b-10-force">
@@ -664,3 +654,5 @@
         document.getElementById("msg").style.color = color;
     }
 </script>
+
+<script src="~/assets/country-region-selector-master/dist/crs.min.js" rel="stylesheet"></script>

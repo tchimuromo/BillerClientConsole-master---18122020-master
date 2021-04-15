@@ -6,6 +6,11 @@ body {
     background: #fff;
 }
 
+.error {
+    color: red;
+    border-color:red;
+}
+
 p {
     font-family: 'Poppins', sans-serif;
     font-size: 1.1em;

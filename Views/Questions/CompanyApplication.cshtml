@@ -1,398 +1,1688 @@
 ﻿
-@{
-    ViewData["Title"] = "Private Limited Entity Application";
-    Layout = "~/Views/Shared/_LayoutMain.cshtml";
-}
+@{ ViewData["Title"] = "Private Limited Entity Application";
+    Layout = "~/Views/Shared/_LayoutMain.cshtml"; }
 
 
-    <div class="container-fluid">
-        <!-- SmartWizard html -->
-        <div id="smartwizard" class="mt-3">
+<div class="container-fluid">
+    <!-- SmartWizard html -->
+    <div id="smartwizard" class="mt-3">
 
-            <ul class="nav">
-                <li class="nav-item">
-                    <a class="nav-link" href="#step-1">
-                        <strong>Select name of the entity</strong>
-                    </a>
-                </li>
-                <li class="nav-item">
-                    <a class="nav-link" href="#step-2" data-repo="smartwizard">
-                        <strong>Register office</strong>
-                    </a>
-                </li>
-                <li class="nav-item">
-                    <a class="nav-link" href="#step-3" data-repo="jquery-smartcart">
-                        <strong>Specify Members, Directors and Secretary</strong>
-                    </a>
-                </li>
-                <li class="nav-item">
-                    <a class="nav-link" href="#step-4" data-repo="jquery-smartcart">
-                        <strong>Specify The memorundum of association</strong>
-                    </a>
-                </li>
-                <li class="nav-item">
-                    <a class="nav-link" href="#step-5" data-repo="jquery-smartcart">
-                        <strong>Specify the articles of association</strong>
-                    </a>
-                </li>
-            </ul>
+        <ul class="nav">
 
-            <div class="tab-content">
-                <div id="step-1" class="tab-pane" role="tabpanel" aria-labelledby="step-1">
-                    @if (ViewBag.Count > 0)
-                    {
-                        <div class="card">
-                            <div class="card-header">
-                                <div class="row ml-3 mr-3">
-                                    <h4>Reserved names</h4>
-                                    <span style="flex: 1 1 auto"></span>
-                                    <div class="btn-group ml-4">
-                                        <button class="btn btn-success" data-toggle="modal" data-target="#name-d">New name search</button>
-                                    </div>
-                                </div>
-                            </div>
-                            <div class="card-body">
-                                <div class="table-responsive container-fluid">
-                                    <table class="table  table-mb table-hover">
-                                        <thead>
-                                            <tr>
-                                                <th style="color:#0C2A46">Ref #</th>
-                                                <th style="color:#0C2A46">Type of entity</th>
-                                                <th style="color:#0C2A46">Reserved name</th>
-                                                <th style="color:#0C2A46">Date reserved</th>
-                                                <th style="color:#0C2A46">Objective</th>
-                                                <th style="color:#0C2A46">Action</th>
-                                            </tr>
-                                        </thead>
-                                        <tbody>
-                                            @if (ViewBag.nameSearches != null)
-                                            {
+            <li class="nav-item">
+                <a class="nav-link" href="#step-2" data-repo="smartwizard">
+                    <strong>Register office</strong>
+                </a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link" href="#step-3" data-repo="jquery-smartcart">
+                    <strong>Specify Directors and Secretary</strong>
+                </a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link" href="#step-4" data-repo="jquery-smartcart">
+                    <strong>Specify The memorundum of association</strong>
+                </a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link" href="#step-5" data-repo="jquery-smartcart">
+                    <strong>Specify the articles of association</strong>
+                </a>
+            </li>
+        </ul>
 
-                                                @foreach (var item in ViewBag.nameSearches)
-                                                {
-                                                    <tr onclick="submitNameSearch('@item.searchInfo.SearchRef','@item.searchInfo.search_ID','@item.searchInfo.search_ID')">
-                                                        <td style="color:#0C2A46">@item.searchInfo.SearchRef</td>
-                                                        <td style="color:#0C2A46">@item.searchInfo.Search_For</td>
-                                                        @foreach (var name in item.SearchNames)
-                                                        {
-                                                            @if (name.Status == "Reserved")
-                                                            {
-                                                                <td style="color:#0C2A46">@name.Name</td>
-                                                            }
-                                                        }
+        <div class="tab-content">
 
-                                                        <td style="color:#0C2A46">@item.searchInfo.ApprovedDate</td>
-                                                        <td style="color:#0C2A46">@item.searchInfo.Purpose</td>
-                                                        <td>
-                                                            <input type="checkbox" id="@item.searchInfo.search_ID">
-                                                        </td>
-                                                    </tr>
-                                                }
-                                            }
-                                            else
-                                            {
-                                                <script>
-                                                    hasNoName(true);
-                                                </script>
-                                                <div class="card">
-                                                    <div class="card-body">
-                                                        <h4>You have no reserved names</h4>
-                                                        <span style="flex: 1 1 auto"></span>
-                                                        <button class="btn btn-success">Perform a name search</button>
-                                                    </div>
-                                                </div>
-                                            }
-                                        </tbody>
-                                    </table>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="form-group fa-pull-right mt-5">
-                            <button type="button" onclick="submitNameSearch()" class="btn btn-primary btn-sm" style="visibility: hidden; display: none;" id="subNameSearch">
-                                Save application
-                            </button>
-                        </div>
-                    }
-                    else
-                    {
-                        <script>
-                            $("#next-btn").addClass('disabled');
-                            $("#prev-btn").addClass('disabled');
-                        </script>
-                        <div class="container-fluid">
-                            <h4>You currently have no registered names. Make a new <a href="/Payments/CreditStatus/Name search">Name search</a> application and then proceed</h4>
-                        </div>
-                    }
-                </div>
+            <div id="step-2" class="tab-pane" role="tabpanel" aria-labelledby="step-2">
+                <form id="officeForm" action="/Company/RegisterOffice" method="get">
 
-
-
-
-
-
-
-                <div id="step-2" class="tab-pane" role="tabpanel" aria-labelledby="step-2">
-                    <form id="officeForm" action="/Company/RegisterOffice" method="get">
-
-                        <input type="hidden" id="ApplicationId" name="appicationId"/>
-
-                        <div class="card">
-                            <div class="card-header">
-                                <h4>Registered office details</h4>
-                            </div>
-                            <div class="card-body">
-
-                                <input type="hidden" name="billercode" value="@ViewBag.billercode" />
-                                <div class="row">
-                                    <div class="col-md-6">
-                                        <div class="form-group">
-                                            <label for="#physicalAddress">Physical address</label>
-                                            <input type="text" data-minlength="6" class="form-control" id="physicalAddress" name="physicalAddress"  required>
-                                            <div class="help-block">Minimum of 6 characters</div>
-                                        </div>
-                                    </div>
-                                    <div class="col-md-6">
-                                        <div class="form-group">
-                                            <label for="#postalAddress">Postal address</label>
-                                            <input type="text" class="form-control" id="postalAddress" name="postalAddress" required>
-                                        </div>
-                                    </div>
-                                    <div class="col-md-6">
-                                        <div class="form-group">
-                                            <label for="#city">City</label>
-                                            <select class="form-control" id="city" name="city" required>
-                                                <option value="Harare" selected>Harare</option>
-                                                <option value="Mutare">Mutare</option>
-                                                <option value="Kadoma">Kadoma</option>
-                                                <option value="Gweru">Gweru</option>
-                                                <option value="Kwekwe">Kwekwe</option>
-                                            </select>
-                                            @*<label>City</label>
-                            <input type="text" class="form-control" id="city" required>*@
-                                        </div>
-                                    </div>
-                                    <div class="col-md-6">
-                                        <div class="form-group">
-                                            <label for="#emailAddress">Email address</label>
-                                            <input type="email" class="form-control" id="emailAddress" name="emailAddress" required>
-                                        </div>
-                                    </div>
-                                </div>
-
-                                <div class="row">
-
-                                    <div class="col-md-6">
-                                        <div class="form-group">
-                                            <label for="#telephone">Telephone number</label>
-                                            <input type="text" class="form-control" id="telephone" name="telephone" required>
-                                        </div>
-                                    </div>
-                                    <div class="col-md-6">
-                                        <div class="form-group">
-                                            <label>Mobile number</label>
-                                            <input type="text" class="form-control" id="mobileNumber" name="mobileNumber" required>
-                                        </div>
-                                    </div>
-                                </div>
-
-                                <div class="form-group fa-pull-right mt-5">
-                                    <button type="submit" id="submitOffice" style="display:none">
-                                        Save application
-                                    </button>
-                                </div>
-                            </div>
-                        </div>
-                    </form>
-                </div>
-
-
-
-
-
-
-                <div id="step-3" class="tab-pane" role="tabpanel" aria-labelledby="step-3">
-                    <input type="hidden" name="billercode" value="@ViewBag.billercode" />
+                    <input type="hidden" id="ApplicationId" name="AppicationId" value="@ViewBag.Application_Ref" />
 
                     <div class="card">
                         <div class="card-header">
-                            <label class="mt-3">Members</label>
-                            <span style="flex: 1 1 auto"></span>                           
+                            <h4>Registered office details</h4>
                         </div>
-                        <div class="card-body"> 
-                            <div class="form-group">
-                                <form action="#" method="post" style="width:100%;">
-                                    @*/Company/AddCompanyMembers*@
 
-                                    @{
-                                        var DropDownList = new Syncfusion.EJ2.DropDowns.DropDownList() { DataSource = ViewBag.sex, Query = "new ej.data.Query()", AllowFiltering = true, Fields = new Syncfusion.EJ2.DropDowns.DropDownListFieldSettings() { Value = "Country", Text = "Country" } };
-                                    }
-
-
+                        <div class="card-body">
+                            <input type="hidden" id="OfficeId" name="OfficeId" value="" />
+                            <input type="hidden" name="billercode" value="@ViewBag.billercode" />
+                            <div class="row">
+                                <div class="col-md-6">
                                     <div class="form-group">
-                                        <ejs-grid id="Grid-members" allowResizing="true" allowPaging="true" toolbar="@(new List<string>() { "Add","Edit" , "Delete" })">
-                                            <e-grid-editSettings allowAdding="true" allowDeleting="true" allowEditing="true" mode="Dialog"></e-grid-editSettings>
-                                            <e-data-manager url="/Company/MemberUrlDataSource" updateUrl="/Company/MemberCellEditUpdate" insertUrl="/Company/MemberCellEditInsert" removeUrl="/Company/CellEditDelete" adaptor="UrlAdaptor"></e-data-manager>
-                                            <e-grid-columns>
-                                                <e-grid-column field="nationalId" headerText="National ID" isPrimaryKey="true" validationRules="@(new { required=true})"></e-grid-column>
-                                                <e-grid-column field="nationality" headerText="Nationality" validationRules="@(new { required=true})"></e-grid-column>
-                                                <e-grid-column field="surname" headerText="Surname" validationRules="@(new { required=true})"></e-grid-column>
-                                                <e-grid-column field="firstName" headerText="Firstname" validationRules="@(new { required=true})"></e-grid-column>
-                                                <e-grid-column field="gender" headerText="Gender" width="150" editType="dropdownedit" edit="new {@params = DropDownList }"></e-grid-column>
-                                                @*<e-grid-column field="gender" headerText="Gender" validationRules="@(new { required=true})" editType="dropdownedit" edit=new {@params = DropDownList }></e-grid-column>*@
-                                                <e-grid-column field="phyicalAddress" headerText="Physical address" validationRules="@(new { required=true})"></e-grid-column>
-                                                <e-grid-column field="isAMember" headerText="Member" width=125px editType="booleanedit" displayAsCheckBox="true" textAlign="Center" type="boolean"></e-grid-column>
-                                                <e-grid-column field="isADirector" headerText="Director" width=125px editType="booleanedit" displayAsCheckBox="true" textAlign="Center" type="boolean"></e-grid-column>
-                                                <e-grid-column field="isABeneficiaryShareholder" headerText="Beneficiary Shareholder" width=125px editType="booleanedit" displayAsCheckBox="true" textAlign="Center" type="boolean"></e-grid-column>
-                                                <e-grid-column field="isCompanySecretary" headerText="Secretary" width=125px editType="booleanedit" displayAsCheckBox="true" textAlign="Center" type="boolean"></e-grid-column>
-                                                <e-grid-column field="ordinaryShares" headerText="Ordinary shares" validationRules="@(new { required=true})" editType="NumericTextBox"></e-grid-column>
-                                                <e-grid-column field="preferenceShares" headerText="Preference shares" validationRules="@(new { required=true})" editType="NumericTextBox"></e-grid-column>
-                                                <e-grid-column field="totalShares" headerText="Total shares" validationRules="@(new { required=true})" editType="NumericTextBox"></e-grid-column>
-                                            </e-grid-columns>
-                                        </ejs-grid>
-                                    </div>
+                                        <label for="#physicalAddress">Physical address</label>
+                                        <input type="text" data-minlength="6" class="form-control" id="physicalAddress" name="physicalAddress" value="@ViewBag.nameOffice.Office.PhysicalAddress" required>
 
-                                    <div class="form-group mt-5">
-                                        <ejs-grid id="Grid-entities" toolbar="@(new List<string>() { "Add","Edit" , "Delete" })">
-                                            <e-grid-editSettings allowAdding="true" allowDeleting="true" allowEditing="true" mode="Dialog"></e-grid-editSettings>
-                                            <e-data-manager url="/Company/CompanyUrlDataSource" updateUrl="/Company/EntityCellEditUpdate" insertUrl="/Company/EntityCellEditInsert" removeUrl="/Company/CellEditDelete" adaptor="UrlAdaptor"></e-data-manager>
-
-                                            <e-grid-columns>
-                                                <e-grid-column field="firstName" headerText="Entity name" validationRules="@(new { required=true})"></e-grid-column>
-                                                <e-grid-column field="entityNumber" headerText="Entity number" validationRules="@(new { required=true})"></e-grid-column>
-                                                <e-grid-column field="nationality" headerText="Country of origin" validationRules="@(new { required=true})"></e-grid-column>
-                                                <e-grid-column field="ordinaryShares" headerText="Ordinary shares" validationRules="@(new { required=true})"></e-grid-column>
-                                                <e-grid-column field="preferenceShares" headerText="Preference shares" validationRules="@(new { required=true})"></e-grid-column>
-                                                <e-grid-column field="totalShares" headerText="Total shares" validationRules="@(new { required=true})"></e-grid-column>
-                                            </e-grid-columns>
-                                        </ejs-grid>
                                     </div>
-
-                                    <div class="form-group fa-pull-right">
-                                        <button type="submit" class="btn btn-primary" style="display:none">
-                                            Continue
-                                        </button>
+                                </div>
+                                <div class="col-md-6">
+                                    <div class="form-group">
+                                        <label for="#postalAddress">Postal address</label>
+                                        <input type="text" class="form-control" id="postalAddress" name="postalAddress" value="@ViewBag.nameOffice.Office.PostalAddress" required>
                                     </div>
-                                </form>
+                                </div>
+                                <div class="col-md-6">
+                                    <div class="form-group">
+                                        <label for="#city">City</label>
+                                        <select class="form-control" id="city" name="city" value="@ViewBag.nameOffice.Office.City" required>
+                                            <option value="Harare" selected>Harare</option>
+                                            <option value="Mutare">Mutare</option>
+                                            <option value="Kadoma">Kadoma</option>
+                                            <option value="Gweru">Gweru</option>
+                                            <option value="Kwekwe">Kwekwe</option>
+                                        </select>
+                                        @*<label>City</label>
+                                            <input type="text" class="form-control" id="city" required>*@
+                                    </div>
+                                </div>
+                                <div class="col-md-6">
+                                    <div class="form-group">
+                                        <label for="#emailAddress">Email address</label>
+                                        <input type="email" class="form-control" id="emailAddress" name="emailAddress" value="@ViewBag.nameOffice.Office.EmailAddress " required>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="row">
+
+                                <div class="col-md-6">
+                                    <div class="form-group">
+                                        <label for="#telephone">Telephone number</label>
+                                        <input type="text" class="form-control" id="telephone" name="telephone" value="@ViewBag.nameOffice.Office.TelephoneNumber" required>
+                                    </div>
+                                </div>
+                                <div class="col-md-6">
+                                    <div class="form-group">
+                                        <label>Mobile number</label>
+                                        <input type="text" class="form-control" id="mobileNumber" name="mobileNumber" value="@ViewBag.nameOffice.Office.MobileNumber" required>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="row">
+
+                                <div class="col-md-6">
+                                    <div class="form-group">
+                                        <label for="#EffectiveDate">Effective  Date</label>
+                                        <input type="date" class="form-control" id="EffectiveDate" name="EffectiveDate" value="@ViewBag.nameOffice.Office.EffectiveDate" required>
+                                    </div>
+                                </div>
+
+                            </div>
+
+                            <div class="form-group fa-pull-right mt-5">
+                                <button type="submit" id="submitOffice">
+                                    Save Office Details
+                                </button>
+                            </div>
+                        </div>
+
+                    </div>
+                </form>
+            </div>
+
+
+
+
+
+
+            <div id="step-3" class="tab-pane" role="tabpanel" aria-labelledby="step-3">
+
+                
+                <input type="hidden" name="billercode" value="@ViewBag.billercode" />
+
+
+                <div class="card">
+                    <div class="card-header">
+                        <label class="mt-3">Directors And Secretaries</label>
+                        <span style="flex: 1 1 auto"></span>
+                    </div>
+                    <div class="card-body">
+                        <div class="form-group">
+                            <div class="card">
+                                <!-- .card-header -->
+                                <!-- /.card-header -->
+                                <!-- .table-responsive -->
+                
+                                <div class="car-body">
+                                    <form action="#" method="post" style="width:100%;">
+                                        <div class="nav-scroller border-bottom">
+                                            <!-- .nav-tabs -->
+                                            <ul class="nav nav-tabs">
+                                                <li class="nav-item">
+                                                    <a class="nav-link active show" data-toggle="tab" href="#directors">Directors</a>
+                                                </li>
+                                                <li class="nav-item">
+                                                    <a class="nav-link" data-toggle="tab" href="#secretary">Secretary</a>
+                                                </li>
+                                            </ul>
+                                        </div>
+
+
+                                        @*start here*@
+
+                                        <div class="tab-content pt-4">
+                                            <!-- .tab-pane -->
+                                            <div class="tab-pane fade show active" id="directors" role="tabpanel" aria-labelledby="directors-tab">
+                                                <!-- .card -->
+                                                <div class="card">
+                                                    <div class="card-header d-flex">
+                                                        <!-- .dropdown -->
+
+                                                        <a href="#addEmployeeModal12" class="btn btn-success btn-primary ml-auto" data-toggle="modal">Add Director</a>
+                                                    </div>
+                                                    <div class="table-responsive">
+                                                        <!-- .table -->
+                                                        <table class="table">
+                                                            <!-- thead -->
+                                                            <thead>
+                                                                <tr>
+                                                                    <th style="min-width:256px"> Full Name </th>
+                                                                    <th>National ID/Passport</th>
+                                                                    <th>Nationality </th>
+                                                                    <th> Address </th>
+                                                                    <th> Date of Appoinment </th>
+
+                                                                    <th>Action</th>
+                                                                </tr>
+                                                            </thead><!-- /thead -->
+                                                            <!-- tbody -->
+                                                            <tbody id="Directors">
+                                                                @if (ViewBag.Subscribers != null)
+                                                                {
+                                                    @foreach (var subs in ViewBag.Subscribers)
+                                                    {
+                                                        if (subs.IsDirector == 1)
+                                                        {
+
+
+                                    <tr>
+
+
+                                        <td>@subs.surname  @subs.names </td>
+
+                                        <td>@subs.id_no</td>
+
+                                        <td>@subs.nationality</td>
+
+                                        <td>@subs.address</td>
+                                        <td>@subs.names</td>
+
+
+                                        <td></td>
+
+
+                                        <td><a href="#addEmployeeModal12" data-toggle="modal" class="btn btn-sm btn-icon btn-secondary" id="@subs._id" name="edit"><i class="fa fa-pencil-alt"></i> <span class="sr-only">Edit</span></a> <a href="#" class="btn btn-sm btn-icon btn-secondary"><i class="far fa-trash-alt"></i> <span class="sr-only">Remove</span></a></td>
+
+                                    </tr>}
+
+                                                    }}
+                                                            </tbody><!-- /tbody -->
+                                                        </table><!-- /.table -->
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <div class="tab-pane fade show" id="secretary" role="tabpanel" aria-labelledby="secretary-tab1">
+
+                                                <div class="nav-tabs-navigation">
+                                                    <div class="card">
+                                                        <div class="card-header d-flex">
+                                                            <!-- .dropdown -->
+
+                                                            <a href="#addSecretaryModal" class="btn btn-success btn-primary ml-auto" data-toggle="modal">Add Company Secretary</a>
+                                                        </div>
+                                                        <div class="table-responsive">
+                                                            <!-- .table -->
+                                                            <table class="table">
+                                                                <!-- thead -->
+                                                                <thead>
+                                                                    <tr>
+                                                                        <th style="min-width:256px"> Full Name </th>
+                                                                        <th>National ID/Passport</th>
+                                                                        <th>Nationality </th>
+                                                                        <th> Address </th>
+                                                                        <th> Date of Appoinment </th>
+
+                                                                        <th>Action</th>
+                                                                    </tr>
+                                                                </thead><!-- /thead -->
+                                                                <!-- tbody -->
+                                                                <tbody id="Secretaries">
+                                                                    @if (ViewBag.Subscribers != null)
+                                                                    {
+                                                        @foreach (var subs in ViewBag.Subscribers)
+                                                        {
+                                                            if (subs.IsCoSec == 1)
+                                                            {
+
+
+                                        <tr>
+
+
+                                            <td>@subs.surname  @subs.names </td>
+
+                                            <td>@subs.id_no</td>
+
+                                            <td>@subs.nationality</td>
+
+                                            <td>@subs.address</td>
+                                            <td>@subs.pshares</td>
+
+
+                                            <td></td>
+
+
+                                            <td><a href="#" data-toggle="modal" class="btn btn-sm btn-icon btn-secondary" id="@subs._id" name="edit"><i class="fa fa-pencil-alt"></i> <span class="sr-only">Edit</span></a> <a href="#" class="btn btn-sm btn-icon btn-secondary"><i class="far fa-trash-alt"></i> <span class="sr-only">Remove</span></a></td>
+
+                                        </tr>
+}
+
+                                }}
+                                                                </tbody><!-- /tbody -->
+                                                            </table><!-- /.table -->
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <!-- .card -->
+                                            <!-- .tab-pane -->
+
+
+                                        </div>
+                                        @*end here*@
+                                    </form>
+                                
+                                        <!-- /.table-responsive -->
+</div>
                             </div>
                         </div>
                     </div>
                     <input type="hidden" name="members" id="members" />
                     <input type="hidden" name="companyMembers" id="companyMembers" />
-                    
+
                     <div class="form-group fa-pull-right mt-5">
                         <button type="button" id="submitEntityMembers" onclick="submitMembers()" class="btn btn-primary btn-sm" style="display:none">
                             Save application
                         </button>
                     </div>
                 </div>
+            </div>
 
 
 
 
 
-                <div id="step-4" class="tab-pane" role="tabpanel" aria-labelledby="step-4">
-                    <div class="card">
-                        <div class="card-body">
-                            <form action="#" method="post" style="width:100%;">
-                                <input type="hidden" name="billercode" value="@ViewBag.billercode" />
-                                <input type="hidden" name="billercode" value="@ViewBag.billercode" />
-                                <input type="hidden" id="objectivesss" name="otherObjectives" />
-                                <input type="hidden" name="billercode" value="@ViewBag.billercode" />
+            <div id="step-4" class="tab-pane" role="tabpanel" aria-labelledby="step-4">
 
-                                <div class="form-group">
-                                    @*<label>Company Members</label>*@
-                                    <ejs-grid id="Grid" toolbar="@(new List<string>() { "Add","Edit" ,"Delete" })">
-                                        <e-grid-editSettings allowAdding="true" allowEditing="true" allowDeleting="true" mode="Dialog"></e-grid-editSettings>
-                                        <e-data-manager url="/Company/UrlDataSource" updateUrl="/Company/CellEditUpdate" insertUrl="/Company/CellEditInsert" removeUrl="/Company/CellEditDelete" adaptor="UrlAdaptor"></e-data-manager>
-
-                                        <e-grid-columns>                                            
-                                            <e-grid-column field="objective" headerText="Object" validationRules="@(new { required=true})"></e-grid-column>
-                                        </e-grid-columns>
-                                    </ejs-grid>
-                                </div>
-
-                                <div class="row">
-                                    <div class="col-md-6">
-                                        <label class="form-group">Liability clause</label>
-                                        <div class="input-group form-group">
-                                            <input type="text" class="form-control" id="liabilityClause" name="liab" step="3" required>
-                                        </div>
-                                    </div>
-                                    <div class="col-md-6">
-                                        <label class="form-group">Share clause</label>
-                                        <div class="input-group form-group">
-                                            <input type="text" class="form-control" id="shareClause" name="shareClo" required>
-                                        </div>
-                                    </div>
-                                </div>
-                                <div class="form-group fa-pull-right">
-                                    <button type="button" onclick="submitObzizz()" class="btn btn-primary" id="memo-new" style="display:none">
-                                        Continue
-                                    </button>
-                                </div>
-                            </form>
-                        </div>
-                    </div>
-                    <div class="form-group fa-pull-right mt-5">
-                        <button type="button" id="submitObjective" onclick="submitObjective()" class="btn btn-primary btn-sm" style="display:none">
-                            Save application
-                        </button>
-                    </div>
-                </div>
+                <div class="card">
+                    <div class="card-body">
 
 
+                        <form action="#" method="post" style="width:100%;">
+                            <input type="hidden" id="ApplicatioID" name="billercode" value="@ViewBag.Application_Ref" />
+                            <input type="hidden" name="billercode" value="@ViewBag.billercode" />
+                            <input type="hidden" id="objectivesss" name="otherObjectives" value="@ViewBag.AppId" />
+                            <input type="hidden" name="billercode" value="@ViewBag.billercode" />
 
+                            <div class="nav-scroller border-bottom">
+                                <!-- .nav-tabs -->
+                                <ul class="nav nav-tabs">
+                                    <li class="nav-item">
+                                        <a class="nav-link active show" data-toggle="tab" href="#client-projects">Company  Objects</a>
+                                    </li>
+                                    <li class="nav-item">
+                                        <a class="nav-link" data-toggle="tab" href="#client-projects1">Liability Clause</a>
+                                    </li>
 
+                                    <li class="nav-item">
+                                        <a class="nav-link" data-toggle="tab" href="#client-projects2">Share Clause</a>
+                                    </li>
 
+                                    <li class="nav-item">
+                                        <a class="nav-link" data-toggle="tab" href="#client-projects3">Shareholders</a>
+                                    </li>
 
-                <div id="step-5" class="tab-pane" role="tabpanel" aria-labelledby="step-4">
-                    <div class="card">
-                        <div class="card-body">
-
-
-                            <div class="radio radio-primary form-group">
-                                <input type="hidden" id="tableB" value="Yes" name="articles">
-                                @*<label>Table B: Model Articles for Private Companies Limited by Shares</label>*@
+                                </ul><!-- /.nav-tabs -->
                             </div>
 
-                            <div class="radio radio-primary form-group">
-                                <input type="hidden" id="tableC" value="Yes" name="articles">
-                                @*<label>Table C: Model Articles for Private Companies Limited by Guarantee</label>*@
+
+
+                            <div class="tab-content pt-4" id="clientDetailsTabs">
+                                <!-- .tab-pane -->
+                                <div class="tab-pane fade show active" id="client-projects" role="tabpanel" aria-labelledby="client-projects-tab">
+                                    <!-- .card -->
+                                    <div class="card">
+
+
+                                        <div class="col-md-12">
+                                            <div class="card card-fluid">
+
+                                                <label for="lbl3">Add Company Objects <span class="badge badge-secondary"><em>Add atleast 1 object</em></span></label>
+                                                <textarea class="form-control" id="textarea" rows="4" placeholder=""></textarea>
+                                            </div>
+                                            <div class="form-group">
+                                                <button id="addBtn" class="btn btn-primary">Add Object</button>
+                                            </div>
+
+                                        </div><!-- /.form-group -->
+
+
+
+                                        <div class="table-responsive">
+                                            <!-- .table -->
+                                            <table class="table">
+                                                <!-- thead -->
+                                                <thead>
+                                                    <tr>
+
+                                                        <th style="color:#0C2A46">Objects</th>
+
+
+                                                    </tr>
+                                                </thead><!-- /thead -->
+                                                <!-- tbody -->
+                                                <tbody id="tblObjects">
+                                                    @if (ViewBag.objects != null)
+                                                    {
+                                        @foreach (var obj in ViewBag.objects)
+                                        {
+                                            <tr>
+                                                <td>@obj.objective</td>
+                                            </tr>
+
+                                        }
+                                    }
+                                                </tbody><!-- /tbody -->
+                                            </table><!-- /.table -->
+                                        </div><!-- /.table-responsive -->
+                                    </div>
+                                </div>
+                                <div class="tab-pane fade show" id="client-projects1" role="tabpanel" aria-labelledby="client-projects-tab1">
+
+                                    <div class="nav-tabs-navigation">
+
+                                        <div class="card">
+
+
+                                            <div class="form-group">
+                                                <div class="col-md-12">
+
+                                                    <div class="card card-fluid">
+                                                        <!-- #summernote-basic -->
+                                                        <textarea type="text" id="liabilityClause" class="form-control" rows="5" name="liab" required>@ViewBag.liability</textarea>
+
+                                                    </div><!-- /.card-body -->
+
+                                                </div><!-- /.card -->
+                                                <div class="form-group">
+                                                    <button id="liability" class="btn btn-primary">Save Liability Clause</button>
+
+
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <!-- .card -->
+                                <!-- .tab-pane -->
+                                <div class="tab-pane fade show" id="client-projects2" role="tabpanel" aria-labelledby="client-projects-tab2">
+                                    <!-- .card -->
+                                    <div class="card">
+                                        <!-- .card-header -->
+                                        <div class="card-header d-flex">
+                                            <label class="form-group">Share clause</label>
+                                        </div>
+
+                                        <div class="form-group">
+                                            <div class="col-md-12">
+                                                <div class="card card-fluid">
+                                                    <!-- #summernote-basic -->
+                                                    <textarea type="text" id="shareClause" class="form-control" rows="5" name="shareClo" required>@ViewBag.shareclause</textarea>
+
+                                                </div><!-- /.card-body -->
+
+                                            </div><!-- /.card -->
+                                            <div class="form-group">
+                                                <button id="share" class="btn btn-primary">Save Share Clause</button>
+
+
+                                            </div>
+
+                                        </div>
+                                    </div>
+
+                                </div>
+                                <div class="tab-pane fade show" id="client-projects3" role="tabpanel" aria-labelledby="client-projects-tab3">
+                                    <div class="card">
+                                        <!-- .card-header -->
+                                        <div id="addshare" class="card-header  d-flex">
+                                            <!-- .dropdown -->
+
+                                            <a href="#addEmployeeModal" id="add" class="btn btn-success btn-primary ml-auto" data-toggle="modal">Add Shareholder</a>
+                                        </div><!-- /.card-header -->
+                                        <!-- .table-responsive -->
+                                        <div class="table-responsive">
+                                            <!-- .table -->
+                                            <table class="table">
+                                                <!-- thead -->
+                                                <thead>
+                                                    <tr>
+                                                        <th style="min-width:256px"> Full Name </th>
+                                                        <th>National ID/Passport</th>
+                                                        <th>Nationality </th>
+                                                        <th> Address </th>
+                                                        <th> Date of Appoinment </th>
+                                                        <th>Representing </th>
+                                                        <th>Action</th>
+                                                    </tr>
+                                                </thead><!-- /thead -->
+                                                <!-- tbody -->
+                                                <tbody id="shareholders">
+                                                    <!-- tr -->     @if (ViewBag.Subscribers != null)
+                                                    {
+                                        @foreach (var subs in ViewBag.Subscribers)
+                                        {
+                                            if (subs.type == "Self")
+                                            {
+
+
+                        <tr>
+
+
+                            <td>@subs.surname  @subs.names </td>
+
+                            <td>@subs.id_no</td>
+
+                            <td>@subs.nationality</td>
+
+                            <td>@subs.address</td>
+                            <td>@subs.names</td>
+
+                            <td>@subs.type</td>
+
+                            <td>
+                                <a href="#addEmployeeModal" class="btn btn-sm btn-icon btn-secondary" name="edit"><i class="fa fa-pencil-alt"></i> <span class="sr-only">Edit</span></a>
+                                <a href="#" class="btn btn-sm btn-icon btn-secondary"><i class="far fa-trash-alt"></i> <span class="sr-only">Remove</span></a>
+                            </td>
+
+                        </tr> }
+                                            else if (subs.type == "Beneficiary")
+                                            {
+
+                        <tr>
+
+
+                            <td>@subs.surname  @subs.names </td>
+
+                            <td>@subs.id_no</td>
+
+                            <td>@subs.nationality</td>
+
+                            <td>@subs.address</td>
+                            <td>@subs.names</td>
+
+
+                            <td>@subs.type  <a href="#BeneficiaryViewModal" name="beneficiaryview" class="btn btn-primary btn-sm" id="@subs._id" data-toggle="modal">View Beneficiaries </a></td>
+
+                            '
+                            <td>
+
+                                <a href="#addEmployeeModal1" id="@subs._id" class="btn btn-primary btn-sm ml-auto" data-toggle="modal">Add Beneficiary </a>
+                                <a href="#addEmployeeModal" id="@subs._id" data-toggle="modal" name="edit" class="btn btn-sm btn-icon btn-secondary"><i class="fa fa-pencil-alt"></i> <span class="sr-only">Edit</span></a> <a href="#" class="btn btn-sm btn-icon btn-secondary" name="delete"><i class="far fa-trash-alt"></i> <span class="sr-only">Remove</span></a>
+                            </td>
+
+
+                        </tr>
+
+
+                                            }
+                                        }}
+
+
+                                                </tbody><!-- /tbody -->
+                                            </table><!-- /.table -->
+                                        </div><!-- /.table-responsive -->
+                                    </div><!-- /.card -->
+
+                                </div>
                             </div>
+
 
                             <div class="row">
-                                <div class="col-md-6">
-                                    <div class="form-group">
-                                        <label>Select Your articles of association model</label>
-                                        <select id="models" style="width:100%">
-                                            <option value="none">Table B: Model Articles for Private Companies Limited by Shares</option>
-                                            <option value="fade">Table C: Model Articles for Private Companies Limited by Guarantee</option>
-                                            <option value="other">Other</option>
-                                        </select>
-                                    </div>
+
+
+                            </div>
+                            <div class="form-group fa-pull-right">
+                                <button type="button" onclick="submitObzizz()" class="btn btn-primary" id="memo-new" style="display:none">
+                                    Continue
+                                </button>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+                <div class="form-group fa-pull-right mt-5">
+                    <button type="button" id="submitObjective" onclick="submitObjective()" class="btn btn-primary btn-sm" style="display:none">
+                        Save application
+                    </button>
+                </div>
+            </div>
+
+
+
+
+
+
+            <div id="step-5" class="tab-pane" role="tabpanel" aria-labelledby="step-4">
+                <div class="card">
+                    <div class="card-body">
+
+
+                        <div class="radio radio-primary form-group">
+                            <input type="hidden" id="tableB" value="Yes" name="articles">
+                            @*<label>Table B: Model Articles for Private Companies Limited by Shares</label>*@
+                        </div>
+
+                        <div class="radio radio-primary form-group">
+                            <input type="hidden" id="tableC" value="Yes" name="articles">
+                            @*<label>Table C: Model Articles for Private Companies Limited by Guarantee</label>*@
+                        </div>
+
+                        <div class="row">
+                            <div class="col-md-6">
+                                <div class="form-group">
+                                    <label>Select Your articles of association model</label>
+                                    <select id="models" style="width:100%">
+                                        <option value="none">Table B: Model Articles for Private Companies Limited by Shares</option>
+                                        <option value="fade">Table C: Model Articles for Private Companies Limited by Guarantee</option>
+                                        <option value="other">Other</option>
+                                    </select>
                                 </div>
                             </div>
-                            <div class="form-group">
-                                <textarea type="text" class="form-control" id="ammendedArticles" required></textarea>
-                                <label>Provisions of non applicable or amended articles</label>
-                            </div>
+                        </div>
+                        <div class="form-group">
+                            <textarea type="text" class="form-control" id="ammendedArticles" required></textarea>
+                            <label>Provisions of non applicable or amended articles</label>
                         </div>
                     </div>
-                    <div class="form-group fa-pull-right mt-5">
-                        <button type="button" id="submitArticles" onclick="submitArticles()" class="btn btn-primary btn-sm" style="display:none">
-                            Save application
-                        </button>
-                    </div>                    
+                </div>
+                <div class="form-group fa-pull-right mt-5">
+                    <button type="button" id="submitArticles" onclick="submitArticles()" class="btn btn-primary btn-sm" style="display:none">
+                        Save application
+                    </button>
                 </div>
             </div>
         </div>
-
-        <br /> &nbsp;
     </div>
 
+    <br /> &nbsp;
+</div>
 
+<div id="addEmployeeModal" class="modal fade">
+    <div class="modal-dialog" style="max-width: 1200px!important;">
+        <div class="modal-content">
+            <form id="AddShareholder" role="form">
+
+                <input type="hidden" id="appid" name="ApplicationRef" value="@ViewBag.Application_Ref" />
+                <input type="hidden" id="member" name="IsMember" value="1" />
+                <div class="modal-header">
+                    <h4 class="modal-title">Add Shareholder</h4>
+                    <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+                </div>
+                <div class="modal-body">
+                    <div class="row">
+                        <div class="col-md-6">
+                            <div class="form-group">
+                                <label>Surname</label>
+                                <input type="text" id="surname" name="surname" class="form-control" required>
+                            </div>
+                        </div>
+                        <div class="col-md-4">
+                            <div class="form-group">
+                                <label>Name</label>
+                                <input type="text" id="name" name="names" class="form-control" required>
+                            </div>
+                        </div>
+                        <div class="col-md-2">
+                            <div class="form-group">
+                                <label>Initials</label>
+                                <input type="text" id="initials" name="initials" class="form-control" required>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row">
+
+                        <div class="col-md-6">
+                            <div class="form-group">
+                                <label>Nationality</label>
+                                <input type="text" id="nationality" name="nationality" class="form-control" required>
+                            </div>
+                        </div>
+                        <div class="col-md-6">
+                            <div class="form-group">
+                                <label>ID No/Passport</label>
+                                <input type="text" id="id_no" name="id_no" class="form-control" required>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row">
+
+                        <div class="col-md-6">
+                            <div class="form-group">
+                                <label>Gender</label>
+                                <select class="custom-select" id="gender" name="gender" required="">
+                                    <option value=""> Choose... </option>
+                                    <option value="Male" id="male">Male</option>
+                                    <option value="Female" id="beneficiary">Female</option>
+                                </select>
+                            </div>
+                        </div>
+                        <div class="col-md-6">
+                            <div class="form-group">
+                                <label>Date of Birth</label>
+                                <input type="date" id="dob" class="form-control" name="dob" required>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-md-6">
+                            <div class="form-group">
+                                <label>Occupation</label>
+                                <input type="text" id="occupation" name="occupation" class="form-control" required>
+                            </div>
+                        </div>
+                        <div class="col-md-6">
+                            <div class="form-group">
+                                <label>Representing</label>
+                                <select class="custom-select" id="type" name="type" required>
+                                    <option value=""> Choose... </option>
+                                    <option value="Self" id="self">Self</option>
+                                    <option value="Beneficiary" id="beneficiary">Beneficiary</option>
+                                    <option value="Entity" id="entity">Entity</option>
+                                </select>
+                            </div>
+                            <div class="hidden" id="entitydiv" style="display:none;">
+                                <div class="form-group">
+                                    <label>Entity Number</label>
+                                    <input type-="text" name="entitynumber" placeholder="Entity Number" />
+                                </div>
+                                <div class="form-group">
+                                    <label>Entity Name</label>
+                                    <input type-="text" name="entityname" placeholder="Entity Name" />
+                                </div>
+                            </div>
+                        </div>
+
+
+                    </div>
+
+
+                    <div class="row">
+                        <div class="col-md-6">
+                            <div class="form-group">
+                                <label>Address</label>
+                                <textarea id="address" class="form-control" name="address" required></textarea>
+                            </div>
+                        </div>
+                        <div class="col-md-6">
+                            <div class="form-group">
+                                <label>Email</label>
+                                <input type="email" id="email" class="form-control" name="email" required>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row">
+
+                        <div class="col-md-6">
+                            <div class="form-group">
+                                <label>Ordinary Share</label>
+                                <input type="text" id="oshares" name="oshares" class="form-control" required>
+                            </div>
+                        </div>
+
+                        <div class="col-md-6">
+                            <div class="form-group">
+                                <label>Preference Shares</label>
+                                <input type="text" id="pshares" name="pshares" class="form-control" required>
+                            </div>
+                        </div>
+
+                    </div>
+
+
+                </div>
+                <div class="modal-footer">
+                    <input type="button" class="btn btn-default" data-dismiss="modal" value="Cancel">
+                    <input type="submit" id="addSholder" class="btn btn-success" value="Add">
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+<div id="addEmployeeModal12" class="modal fade">
+    <div class="modal-dialog" style="max-width: 1200px!important;">
+        <div class="modal-content">
+
+            <form id="AddDirectors" role="form">
+
+                <input type="hidden" id="appid" name="ApplicationRef" value="@ViewBag.Application_Ref" />
+                <input type="hidden" id="director" name="IsDirector" value="1" />
+                <div class="modal-header">
+                    <h4 class="modal-title">Add Directors</h4>
+                    <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+
+                </div>
+
+                <div class="modal-body">
+                    <div class="row">
+                        <div class="col-md-6">
+                            <div class="form-group">
+                                <label>Surname</label>
+                                <input type="text" id="bsurname" name="surname" class="form-control" required>
+                            </div>
+                        </div>
+                        <div class="col-md-4">
+                            <div class="form-group">
+                                <label>Name</label>
+                                <input type="text" id="bname" name="names" class="form-control" required>
+                            </div>
+                        </div>
+                        <div class="col-md-2">
+                            <div class="form-group">
+                                <label>Initials</label>
+                                <input type="text" id="binitials" name="initials" class="form-control" required>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row">
+
+                        <div class="col-md-6">
+                            <div class="form-group">
+                                <label>Nationality</label>
+                                <input type="text" id="bnationality" name="nationality" class="form-control" required>
+                            </div>
+                        </div>
+
+                        <div class="col-md-6">
+                            <div class="form-group">
+                                <label>ID No/Passport</label>
+                                <input type="text" id="bid_no" name="id_no" class="form-control" required>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row">
+
+                        <div class="col-md-6">
+                            <div class="form-group">
+                                <label>Gender</label>
+                                <select class="custom-select" id="bgender" name="gender" required="">
+                                    <option value=""> Choose... </option>
+                                    <option value="Male" id="male">Male</option>
+                                    <option value="Female" id="beneficiary">Female</option>
+                                </select>
+                            </div>
+                        </div>
+                        <div class="col-md-6">
+                            <div class="form-group">
+                                <label>Date Of Appointment</label>
+                                <input type="date" id="bpshares" name="pshares" class="form-control" required>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-md-6">
+                            <div class="form-group">
+                                <label>Occupation</label>
+                                <input type="text" id="boccupation" name="occupation" class="form-control" required>
+                            </div>
+                        </div>
+                        <div class="col-md-6">
+                            <div class="form-group">
+                                <label>Date of Birth</label>
+                                <input type="date" id="bdob" class="form-control" name="dob" required>
+                            </div>
+                        </div>
+                    </div>
+
+
+                    <div class="row">
+                        <div class="col-md-6">
+                            <div class="form-group">
+                                <label>Address</label>
+                                <textarea id="baddress" class="form-control" name="address" required></textarea>
+                            </div>
+                        </div>
+                        <div class="col-md-6">
+                            <div class="form-group">
+                                <label>Email</label>
+                                <input type="email" id="bemail" class="form-control" name="email" required>
+                            </div>
+                        </div>
+                    </div>
+
+                </div>
+                <div class="modal-footer">
+                    <input type="button" id="CancelDirectorSholder" class="btn btn-default" data-dismiss="modal" value="Cancel">
+                    <input type="submit" id="addDirecttor" class="btn btn-success" value="Add">
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+
+
+@*from here add secretary modal*@
+<div id="addSecretaryModal" class="modal fade">
+    <div class="modal-dialog" style="max-width: 1200px!important;">
+        <div class="modal-content">
+
+            <form id="AddSecretaries" role="form">
+
+                <input type="hidden" id="appid" name="ApplicationRef" value="@ViewBag.Application_Ref" />
+                <input type="hidden" id="secretary" name="IsCoSec" value="1" />
+                <div class="modal-header">
+                    <h4 class="modal-title">Add Company Secretaries</h4>
+                    <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+
+                </div>
+
+                <div class="modal-body">
+                    <div class="row">
+                        <div class="col-md-6">
+                            <div class="form-group">
+                                <label>Surname</label>
+                                <input type="text" id="Secsurname" name="surname" class="form-control" required>
+                            </div>
+                        </div>
+                        <div class="col-md-4">
+                            <div class="form-group">
+                                <label>Name</label>
+                                <input type="text" id="Secname" name="names" class="form-control" required>
+                            </div>
+                        </div>
+                        <div class="col-md-2">
+                            <div class="form-group">
+                                <label>Initials</label>
+                                <input type="text" id="Secinitials" name="initials" class="form-control" required>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row">
+
+                        <div class="col-md-6">
+                            <div class="form-group">
+                                <label>Nationality</label>
+                                <input type="text" id="Secnationality" name="nationality" class="form-control" required>
+                            </div>
+                        </div>
+
+                        <div class="col-md-6">
+                            <div class="form-group">
+                                <label>ID No/Passport</label>
+                                <input type="text" id="Secbid_no" name="id_no" class="form-control" required>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row">
+
+                        <div class="col-md-6">
+                            <div class="form-group">
+                                <label>Gender</label>
+                                <select class="custom-select" id="Secgender" name="gender" required="">
+                                    <option value=""> Choose... </option>
+                                    <option value="Male" id="male">Male</option>
+                                    <option value="Female" id="beneficiary">Female</option>
+                                </select>
+                            </div>
+                        </div>
+                        <div class="col-md-6">
+                            <div class="form-group">
+                                <label>Date Of Appointment</label>
+                                <input type="date" id="Secpshares" name="pshares" class="form-control" required>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-md-6">
+                            <div class="form-group">
+                                <label>Occupation</label>
+                                <input type="text" id="Secoccupation" name="occupation" class="form-control" required>
+                            </div>
+                        </div>
+                        <div class="col-md-6">
+                            <div class="form-group">
+                                <label>Date of Birth</label>
+                                <input type="date" id="Secdob" class="form-control" name="dob" required>
+                            </div>
+                        </div>
+                    </div>
+
+
+                    <div class="row">
+                        <div class="col-md-6">
+                            <div class="form-group">
+                                <label>Address</label>
+                                <textarea id="Secaddress" class="form-control" name="address" required></textarea>
+                            </div>
+                        </div>
+                        <div class="col-md-6">
+                            <div class="form-group">
+                                <label>Email</label>
+                                <input type="email" id="Secemail" class="form-control" name="email" required>
+                            </div>
+                        </div>
+                    </div>
+
+                </div>
+                <div class="modal-footer">
+                    <input type="button" id="CancelDirectorSholder" class="btn btn-default" data-dismiss="modal" value="Cancel">
+                    <input type="button" id="addSecretary" class="btn btn-success" value="Add">
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+@*end here secretary modal*@
+<div id="addEmployeeModal1" class="modal fade">
+    <div class="modal-dialog" style="max-width: 1200px!important;">
+        <div class="modal-content">
+
+            <form id="AddShareholderBeneficiary" role="form">
+
+                <input type="hidden" id="appid" name="ApplicationRef" value="@ViewBag.Application_Ref" />
+                <input type="hidden" id="member" name="IsMember" value="1" />
+                <input type="hidden" id="proxyid" name="proxyid" value="" />
+                <div class="modal-header">
+                    <h4 class="modal-title">Add Beneficiary Holder Details</h4>
+                    <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+
+                </div>
+
+                <div class="modal-body">
+                    <div class="row">
+                        <div class="col-md-6">
+                            <div class="form-group">
+                                <label>Benefeciary Type</label>
+
+                            </div>
+                        </div>
+                        <div class="col-md-6">
+                            <div class="form-group">
+
+                                <select class="custom-select" id="benetype" name="type" required>
+                                    <option value=""> Choose... </option>
+                                    <option value="Individual" id="individual">Individual</option>
+                                    <option value="Entity" id="entity">Entity</option>
+                                </select>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+
+                <div class="modal-body" style="display:none" id="details">
+                    <div class="row">
+                        <div class="col-md-6">
+                            <div class="form-group">
+                                <label>Surname</label>
+                                <input type="text" id="surname" name="surname" class="form-control" required>
+                            </div>
+                        </div>
+                        <div class="col-md-6">
+                            <div class="form-group">
+                                <label>Name</label>
+                                <input type="text" id="name" name="names" class="form-control" required>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-md-6">
+                            <div class="form-group">
+                                <label>Initials</label>
+                                <input type="text" id="initials" name="initials" class="form-control" required>
+                            </div>
+                        </div>
+                        <div class="col-md-6">
+                            <div class="form-group">
+                                <label>Nationality</label>
+                                <input type="text" id="nationality" name="nationality" class="form-control" required>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-md-6">
+                            <div class="form-group">
+                                <label>ID No/Passport</label>
+                                <input type="text" id="id_no" name="id_no" class="form-control" required>
+                            </div>
+                        </div>
+                        <div class="col-md-6">
+                            <div class="form-group">
+                                <label>Gender</label>
+                                <select class="custom-select" id="gender" name="gender" required="">
+                                    <option value=""> Choose... </option>
+                                    <option value="Male" id="male">Male</option>
+                                    <option value="Female" id="beneficiary">Female</option>
+                                </select>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-md-6">
+                            <div class="form-group">
+                                <label>Occupation</label>
+                                <input type="text" id="occupation" name="occupation" class="form-control" required>
+                            </div>
+                        </div>
+                        <div class="col-md-6">
+                            <div class="form-group">
+                                <label>Date of Birth</label>
+                                <input type="date" id="dob" class="form-control" name="dob" required>
+                            </div>
+                        </div>
+                    </div>
+
+
+                    <div class="row">
+                        <div class="col-md-6">
+                            <div class="form-group">
+                                <label>Address</label>
+                                <textarea id="address" class="form-control" name="address" required></textarea>
+                            </div>
+                        </div>
+                        <div class="col-md-6">
+                            <div class="form-group">
+                                <label>Email</label>
+                                <input type="email" id="email" class="form-control" name="email" required>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-md-6">
+                            <div class="form-group">
+                                <label>Preference Shares</label>
+                                <input type="text" id="pshares" name="pshares" class="form-control" required>
+                            </div>
+                        </div>
+                        <div class="col-md-6">
+                            <div class="form-group">
+                                <label>Ordinary Share</label>
+                                <input type="text" id="oshares" name="oshares" class="form-control" required>
+                            </div>
+                        </div>
+                    </div>
+
+                </div>
+                <div class="modal-footer">
+                    <input type="button" id="CancelBeneSholder" class="btn btn-default" data-dismiss="modal" value="Cancel">
+                    <input type="submit" id="addBeneSholder" class="btn btn-success" value="Add">
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+
+
+<div id="BeneficiaryViewModal" class="modal fade">
+    <div class="modal-dialog" style="max-width: 1200px!important;">
+        <div class="modal-content">
+
+            <div class="table-responsive">
+                <!-- .table -->
+                <table class="table">
+                    <!-- thead -->
+                    <thead>
+                        <tr>
+                            <th style="min-width:256px"> Full Name </th>
+                            <th>Initials</th>
+                            <th>ID Number </th>
+                            <th>Nationality </th>
+                            <th>Address </th>
+                            <th>Gender </th>
+                            <th>Occupation</th>
+                            <th>Email</th>
+                            
+                            <th>Date of Birth</th>
+
+                           
+                        </tr>
+                    </thead><!-- /thead -->
+                    <tbody id="tbeneficiary">
+                    </tbody>
+
+                </table><!-- /.table -->
+            </div>
+        </div>
+    </div>
+</div>
 <script type="text/javascript">
     $(document).ready(function () {
+        $('#type').change(function () {
+           // if (('#type').val() = 'Entity') {
+                var entity = ('#type').val();
+                alert(entity);
+          //  }
+        });
+    });
+    $().ready(function () {
+        $('#officeForm').validate({
+            rules: {
+                physicalAddress: {
+                    required: true,
+                    minlength: 6
+                },
+            },
+        });
+    });
+
+    $().ready(function () {
+        $('#add').click(function () {
+            $('#AddDirectors').validate(
+            );
+        });
+
+    });
+    $().ready(function () {
+        $('#addSecretary').click(function () {
+            $('#addSecretaries').validate();
+        });
+    });
+
+ 
+
+    $().ready(function () {
+        $('#directors a').on('click', function (e) {
+            e.preventDefault()
+            $(this).tab('show')
+        });
+        $('#secretary a').on('click', function (e) {
+            e.preventDefault()
+            $(this).tab('show')
+        });
+    });
+    //AddDirectors
+
+    $(document).ready(function () {
+
+        $('#AddDirectors').validate();
+
+        $('#AddShareholder').validate();
+
+        $('#AddShareholderBeneficiary').validate();
+        $('#AddSecretaries').validate();
+
+        $('#Directors').on('click', 'a', function (e) {
+            e.preventDefault();
+            var idname = $(this).attr('name');
+            var idd = $(this).attr('id');
+            //alert(idname);
+            if (idname === "edit") {
+                $.ajax({
+                    type: 'POST',
+                    url: '/Company/GetCompanyShareholders',
+                    data: { id: idd },
+                    success: function (data) {
+                        alert(idd);
+                        $("#bname").val(data['names']);
+                        $("#bsurname").val(data['surname']);
+                        $("#bdob").val(data['dob']);
+                        $("#bgender").val(data['gender']);
+                        $("#btype").val(data['type']);
+                        $("#bid_no").val(data['id_no']);
+                        $("#binitials").val(data['initials']);
+                        $("#bnationality").val(data['nationality']);
+                        $("#bemail").val(data['email']);
+                        $("#baddress").val(data['address']);
+                        $("#boccupation").val(data['occupation']);
+                    },
+
+                    error: function () {
+                        alert("error here");
+                    },
+                    completed: function () {
+                    }
+                });
+            }
+        });
+        $("#addshare").on('click', 'a', function (e) {
+
+
+            alert('test');
+
+
+        });
+
+        $("#shareholders").on('click', 'a', function (e) {
+            e.preventDefault();
+            // alert("Hello!");
+            var ids = $(this).attr('id');
+            var idm = $(this).attr('id');
+            var idsn = $(this).attr('name');
+            // alert(idsn);
+            $("#proxyid").val(ids);
+            if (idsn === 'edit') {
+                $.ajax({
+                    type: "POST",
+                    url: "/Company/GetCompanyShareholders",
+                    data: {
+
+                        id: idm
+
+                    },
+
+                    success: function (data) {
+                        // alert(data['id_no'])
+                        $("#name").val(data['names']);
+                        $("#surname").val(data['surname']);
+                        $("#dob").val(data['dob']);
+                        $("#gender").val(data['gender']);
+                        $("#type").val(data['type']);
+                        $("#id_no").val(data['id_no']);
+                        $("#initials").val(data['initials']);
+                        $("#nationality").val(data['nationality']);
+                        $("#email").val(data['email']);
+                        $("#address").val(data['address']);
+                        $("#occupation").val(data['occupation']);
+                        $("#pshares").val(data['pshares']);
+                        $("#oshares").val(data['oshares']);
+                    },
+                    error: function () {
+                        alert("error here");
+                    },
+                    completed: function () {
+                    }
+                });
+
+            }
+            else if (idsn === 'beneficiaryview') {
+                $.ajax({
+                    type: 'GET',
+                    url: '/Company/GetBeneficiaryShareholders',
+                    data: {
+                        id: ids
+                    },
+                    success: function (data) {
+
+                        $("#tbeneficiary tr").remove()
+                        var table = $('#tbeneficiary');
+                        var row = '';
+                        for (var i = 0; i < data.length; i++) {
+                            row = "<tr>\n" +
+
+
+                                "<td>" + data[i].names + "  " + data[i].surname + "</td>\n" +
+                                "<td>" + data[i].initials + "</td>\n" +
+
+                                "<td>" + data[i].id_no + "</td>\n" +
+
+                                "<td>" + data[i].nationality + "</td>\n" +
+
+                                "<td>" + data[i].address + "</td>\n" +
+                                "<td>" + data[i].gender + "</td>\n" +
+                                "<td>" + data[i].occupation + "</td>\n" +
+                                "<td>" + data[i].email + "</td>\n" +
+
+
+                            //    "<td>" + data[i].type + "</td>\n" +
+                                "<td>" + data[i].dob + "</td>\n" +
+
+                                "</tr>\n";
+                            table.append(row);
+
+
+                        }
+
+                    },
+                })
+            }
+
+        });
+
+
+        $('#benetype').change(function () {
+            var x = document.getElementById("details");
+
+            x.style.display = "block";
+
+        });
+
+
+
+        //});
+        $('#addEmployeeModal').on('click', 'a', function (p) {
+            p.preventDefault();
+            var id = $(this).attr('id');
+            alert("test");
+        });
+       
+        $("#addEmployeeModal").on("submit", "form", function (e) {
+            if ($('#AddShareholder').valid()) {
+
+                $.ajax({
+                    type: "POST",
+                    url: "/Company/AddCompanyShareholders",
+                    data: $('#AddShareholder').serialize(),
+
+                    success: function (data) {
+
+
+                        if (document.getElementById("type").value === 'Self') {
+
+                            $('#shareholders').append(
+                                $("<tr>\n" +
+
+
+                                    "<td>" + document.getElementById("name").value + "  " + document.getElementById("surname").value + "</td>\n" +
+
+                                    "<td>" + document.getElementById("id_no").value + "</td>\n" +
+
+                                    "<td>" + document.getElementById("nationality").value + "</td>\n" +
+
+                                    "<td>" + document.getElementById("address").value + "</td>\n" +
+                                    "<td>" + document.getElementById("name").value + "</td>\n" +
+
+                                    "<td>" + document.getElementById("type").value + "</td>\n" +
+
+                                    '<td><a href="#" class="btn btn - sm btn - icon btn - secondary"><i class="fa fa - pencil - alt"></i> <span class="sr - only">Edit</span></a> <a href="#" class="btn btn - sm btn - icon btn - secondary"><i class="far fa - trash - alt"></i> <span class="sr - only">Remove</span></a></td>\n' +
+
+                                    "</tr>\n")
+                            );
+                        }
+                        else if (document.getElementById("type").value === 'Beneficiary') {
+                            $('#shareholders').append(
+                                $("<tr>\n" +
+
+
+                                    "<td>" + document.getElementById("name").value + "  " + document.getElementById("surname").value + "</td>\n" +
+
+                                    "<td>" + document.getElementById("id_no").value + "</td>\n" +
+
+                                    "<td>" + document.getElementById("nationality").value + "</td>\n" +
+
+                                    "<td>" + document.getElementById("address").value + "</td>\n" +
+                                    "<td>" + document.getElementById("name").value + "</td>\n" +
+
+                                    '<td>' + document.getElementById("type").value + '    <a href="#addEmployeeModal" class="btn btn-primary btn-sm" id="' + data['_id'] + '"  data-toggle="modal">View Beneficiaries </a></td>\n' +
+
+                                    '<td><a href="#addEmployeeModal1" class="btn btn-primary btn-sm ml-auto" id="' + data['_id'] + '"  data-toggle="modal">Add Beneficiary </a></td\n' +
+
+                                    "</tr>\n")
+                            );
+
+
+                        }
+                        $('#addEmployeeModal').find('form').trigger('reset');
+
+                        $("#addEmployeeModal").modal('hide');
+                    },
+                    error: function () {
+                        alert("error here");
+                    },
+                    completed: function () {
+                    }
+                });
+            }
+            e.preventDefault();
+        });
+
+        $('#addSholder').on('click', function (e) {
+            //alert("error");
+            $('#AddShareholder').validate();
+        });
+
+
+        //Beneficiary ShareHolders
+        $("#addEmployeeModal1").on("submit", "form", function (e) {
+            if ($('#AddShareholderBeneficiary').valid()) {
+                $.ajax({
+                    type: "POST",
+                    url: "/Company/AddCompanyShareholders",
+                    data: $('#AddShareholderBeneficiary').serialize(),
+
+                    success: function (data) {
+                        $('#addEmployeeModal1').find('form').trigger('reset');
+
+                        $("#addEmployeeModal1").modal('hide');
+                    },
+                    error: function () {
+                        alert("error here");
+                    },
+                    completed: function () {
+                    }
+                });
+            }
+            e.preventDefault();
+
+        });
+
+        $("#addSecretary").on("click", function (e) {
+            //alert('Tasvika');
+            if ($("#AddSecretaries").valid()) {
+                
+                $.ajax({
+                    type: "POST",
+                    url: "/Company/AddCompanyShareholders",
+                    data: $('#AddSecretaries').serialize(),
+
+                    success: function (data) {
+
+
+
+                        $('#Secretaries').append(
+                            $("<tr>\n" +
+
+
+                                "<td>" + document.getElementById("Secname").value + "  " + document.getElementById("Secsurname").value + "</td>\n" +
+
+                                "<td>" + document.getElementById("Secbid_no").value + "</td>\n" +
+
+                                "<td>" + document.getElementById("Secnationality").value + "</td>\n" +
+
+                                "<td>" + document.getElementById("Secaddress").value + "</td>\n" +
+                                "<td>" + document.getElementById("Secpshares").value + "</td>\n" +
+
+
+
+                                '<td> <a href = "#" class= "btn btn-sm btn-icon btn-secondary" ><i class="fa fa-pencil-alt"></i> <span class="sr-only">Edit</span></a > <a href="#" class="btn btn-sm btn-icon btn-secondary"><i class="far fa-trash-alt"></i> <span class="sr-only">Remove</span></a></td>\n' +
+
+                                "</tr>\n")
+                        );
+
+                        $('#addSecretaryModal').find('form').trigger('reset');
+
+                        $("#addSecretaryModal").modal('hide');
+                    },
+                    error: function () {
+                        alert("error here");
+                    },
+                    completed: function () {
+                    }
+                });
+            }
+            e.preventDefault();
+        });
+
+
+
+
+        $("#addEmployeeModal12").on("submit", "form", function (e) {
+            if ($("#AddDirectors").valid()) {
+                $.ajax({
+                    type: "POST",
+                    url: "/Company/AddCompanyShareholders",
+                    data: $('#AddDirectors').serialize(),
+
+                    success: function (data) {
+
+
+
+                        $('#Directors').append(
+                            $("<tr>\n" +
+
+
+                                "<td>" + document.getElementById("bname").value + "  " + document.getElementById("bsurname").value + "</td>\n" +
+
+                                "<td>" + document.getElementById("bid_no").value + "</td>\n" +
+
+                                "<td>" + document.getElementById("bnationality").value + "</td>\n" +
+
+                                "<td>" + document.getElementById("baddress").value + "</td>\n" +
+                                "<td>" + document.getElementById("bpshares").value + "</td>\n" +
+
+
+
+                                '<td> <a href = "#" class= "btn btn-sm btn-icon btn-secondary" ><i class="fa fa-pencil-alt"></i> <span class="sr-only">Edit</span></a > <a href="#" class="btn btn-sm btn-icon btn-secondary"><i class="far fa-trash-alt"></i> <span class="sr-only">Remove</span></a></td>\n' +
+
+                                "</tr>\n")
+                        );
+
+                        $('#addEmployeeModal12').find('form').trigger('reset');
+
+                        $("#addEmployeeModal12").modal('hide');
+                    },
+                    error: function () {
+                        alert("error here");
+                    },
+                    completed: function () {
+                    }
+                });
+            }
+            e.preventDefault();
+        });
+        $('#addDirecttor').on('click', function (e) {
+
+
+            $('#AddDirectors').validate();
+
+
+        });
+        $('#addBeneSholder').on('click', function () {
+
+            $.ajax({
+                type: "POST",
+                url: "/Company/AddCompanyShareholders",
+                data: $('#AddShareholderBeneficiary').serialize(),
+
+                success: function (data) {
+                    $('#addEmployeeModal').find('form').trigger('reset');
+
+                    $("#addEmployeeModal").modal('hide');
+                },
+                error: function () {
+                    alert("error here");
+                },
+                completed: function () {
+                }
+            });
+
+        });
+        $('#addBtn').on('click', function () {
+
+            var input = $('#textarea');
+            var appid = document.getElementById("ApplicatioID").value;
+
+
+            if (document.getElementById("textarea").value !== '') {
+
+                $.ajax({
+                    type: "POST",
+                    url: "/Company/AddCompanyOjects",
+                    data: {
+
+                        ApplicationRef: document.getElementById("ApplicatioID").value,
+                        objects: document.getElementById("textarea").value
+                    },
+
+                    success: function (data) {
+                        //alert.log('memo saved');
+                    },
+                    error: function () {
+                        alert("error here");
+                    },
+                    completed: function () {
+                    }
+                });
+                $('#tblObjects').append(
+                    $("<tr>\n" +
+
+
+                        "<td><ul>" + input.val() + "</ul></td>\n" +
+
+
+                        "</tr>\n")
+                );
+            }
+            else {
+                alert('Please Add Text to add as object')
+            }
+            return false;
+        });
+
+        $('#liability').on('click', function () {
+
+
+            var appid = document.getElementById("ApplicatioID").value;
+
+
+            if (document.getElementById("liabilityClause").value !== '') {
+
+                $.ajax({
+                    type: "POST",
+                    url: "/Company/AddCompanyLiabilityClause",
+                    data: {
+
+                        ApplicationRef: document.getElementById("ApplicatioID").value,
+                        lclause: document.getElementById("liabilityClause").value
+                    },
+
+                    success: function (data) {
+                        //alert.log('memo saved');
+                    },
+                    error: function () {
+                        alert("error here");
+                    },
+                    completed: function () {
+                    }
+                });
+
+            }
+            else {
+                alert('Please Add Text to save LiabilityClause')
+            }
+            return false;
+        });
+
+        $('#share').on('click', function () {
+
+
+            var appid = document.getElementById("ApplicatioID").value;
+
+
+            if (document.getElementById("shareClause").value !== '') {
+
+                $.ajax({
+                    type: "POST",
+                    url: "/Company/AddCompanyShareClause",
+                    data: {
+
+                        ApplicationRef: document.getElementById("ApplicatioID").value,
+                        Sclause: document.getElementById("shareClause").value
+                    },
+
+                    success: function (data) {
+                        //alert.log('memo saved');
+                    },
+                    error: function () {
+                        alert("error here");
+                    },
+                    completed: function () {
+                    }
+                });
+
+            }
+            else {
+                alert('Please Add Text to save LiabilityClause')
+            }
+            return false;
+        });
 
         // Toolbar extra buttons
         var btnFinish = $('<button></button>').text('Submit')
@@ -422,14 +1712,10 @@
 
         $("#smartwizard").on("leaveStep", function (e, anchorObject, stepNumber, stepDirection, stepPosition) {
             if (stepNumber === 0 && stepDirection === 'forward') {
-                var name = $('#ApplicationId').val();
-                console.log(name);
-                if (name === undefined || name.length <= 0) {
-                    return false;
-                }
+
                 return true;
             } else if (stepNumber === 1 && stepDirection === 'forward') {
-                $('#submitOffice').trigger('click');
+
                 return true;
             } else if (stepNumber === 2 && stepDirection === 'forward') {
                 submitMembers();
@@ -442,7 +1728,7 @@
 
         // Smart Wizard
         $('#smartwizard').smartWizard({
-            theme:'arrows',
+            theme: 'arrows',
             selected: 0,
             transition: {
                 animation: 'fade', // Effect on navigation, none/fade/slide-horizontal/slide-vertical/slide-swing
@@ -491,11 +1777,15 @@
                 },
             });
         });
-        
+
     });
 
+
+
+
+
     var noName = false;
-    var selectedCheck;    
+    var selectedCheck;
     var applicationId;
 
     function hasNoName(value) {
@@ -503,7 +1793,7 @@
         console.log(noName);
     }
 
-    function submitNameSearch(appId, nameId,tocheck) {
+    function submitNameSearch(appId, nameId, tocheck) {
         console.log(appId);
         console.log(nameId);
         $.ajax({
@@ -516,9 +1806,9 @@
                 console.log(data);
                 if (selectedCheck !== undefined) {
                     selectedCheck.checked = false;
-                    selectedCheck = document.getElementById(tocheck);                    
+                    selectedCheck = document.getElementById(tocheck);
                 } else {
-                    selectedCheck = document.getElementById(tocheck);                    
+                    selectedCheck = document.getElementById(tocheck);
                 }
                 selectedCheck.checked = true;
             },
@@ -570,10 +1860,10 @@
             type: "GET",
             url: "/Company/SubmitNameSearch",
             data: {
-                step: 4,                
+                step: 4,
                 Article: document.getElementById('models').options[document.getElementById('models').selectedIndex].text,
                 Ammended: document.getElementById('ammendedArticles').value,
-                Application_Ref: applicationId
+                Application_Ref: document.getElementById('ApplicatioID').value
             },
             success: function (data) {
                 alert('Your application has been submitted successfully');
@@ -586,4 +1876,73 @@
             }
         });
     }
+
+     //$('#addSholder').on('click', function () {
+
+
+
+
+        //    $.ajax({
+        //        type: "POST",
+        //        url: "/Company/AddCompanyShareholders",
+        //        data:$('#AddShareholder').serialize(),
+
+        //        success: function (data) {
+
+
+        //            if (document.getElementById("type").value === 'Self') {
+
+        //                $('#shareholders').append(
+        //                    $("<tr>\n" +
+
+
+        //                        "<td>" + document.getElementById("name").value + "  " + document.getElementById("surname").value + "</td>\n" +
+
+        //                        "<td>" + document.getElementById("id_no").value + "</td>\n" +
+
+        //                        "<td>" + document.getElementById("nationality").value + "</td>\n" +
+
+        //                        "<td>" + document.getElementById("address").value + "</td>\n" +
+        //                        "<td>" + document.getElementById("name").value + "</td>\n" +
+
+        //                        "<td>" + document.getElementById("type").value + "</td>\n" +
+
+        //                        '<td><a href="#" class="btn btn - sm btn - icon btn - secondary"><i class="fa fa - pencil - alt"></i> <span class="sr - only">Edit</span></a> <a href="#" class="btn btn - sm btn - icon btn - secondary"><i class="far fa - trash - alt"></i> <span class="sr - only">Remove</span></a></td>\n' +
+
+        //                        "</tr>\n")
+        //                );
+        //            }
+        //            else if (document.getElementById("type").value === 'Beneficiary') {
+        //                $('#shareholders').append(
+        //                    $("<tr>\n" +
+
+
+        //                        "<td>" + document.getElementById("name").value + "  " + document.getElementById("surname").value + "</td>\n" +
+
+        //                        "<td>" + document.getElementById("id_no").value + "</td>\n" +
+
+        //                        "<td>" + document.getElementById("nationality").value + "</td>\n" +
+
+        //                        "<td>" + document.getElementById("address").value + "</td>\n" +
+        //                        "<td>" + document.getElementById("name").value + "</td>\n" +
+
+        //                        '<td>' + document.getElementById("type").value + '    <a href="#addEmployeeModal1" class="btn btn-primary btn-sm" id="' + data['_id'] + '"  data-toggle="modal">View Beneficiaries </a></td>\n' +
+
+        //                        '<td><a href="#addEmployeeModal1" class="btn btn-primary btn-sm ml-auto" id="' + data['_id'] + '"  data-toggle="modal">Add Beneficiary </a></td\n'+
+
+        //                        "</tr>\n")
+        //                );
+
+
+        //            }
+        //            $('#addEmployeeModal').find('form').trigger('reset');
+
+        //            $("#addEmployeeModal").modal('hide');
+        //        },
+        //        error: function () {
+        //            alert("error here");
+        //        },
+        //        completed: function () {
+        //        }
+        //    });
 </script>

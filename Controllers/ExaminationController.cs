@@ -55,6 +55,7 @@ namespace BillerClientConsole.Controllers
             ViewBag.CompanyApplication = companyApplication;
             ViewBag.email = companyApplication.office.EmailAddress;
 
+
             //displaying Queries for the client user
             List<Queries> query = new List<Queries>();
             

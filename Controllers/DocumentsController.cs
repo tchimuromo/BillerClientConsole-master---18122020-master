@@ -651,11 +651,10 @@ namespace BillerClientConsole.Controllers
 
             //////////////////////////////////////////////////////////////////////
             ViewBag.title = "New Search";
+           
+
             return new FileContentResult(byteArray, "application/pdf");
 
-
-
-          
 
 
         }

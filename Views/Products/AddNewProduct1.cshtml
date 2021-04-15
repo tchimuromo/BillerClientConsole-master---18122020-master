@@ -12,174 +12,185 @@
 
 <div class="container-fluid" style="color:#0C2A46">
 
-    <form  asp-action="AddNewProduct" asp-controller="Product" method="post">
-        <input type="hidden" name="billercode" value="@ViewBag.billercode" />
-        <input type="hidden" name="tempsearchID" value="@ViewBag.searchId">        <input type="hidden" name="tempSearchNameId2" value="" />
-        <input type="hidden" name="tempSearchNameId3" value="" />
-        <input type="hidden" name="tempSearchNameId4" value="" />
-        <input type="hidden" name="tempSearchNameId5" value="" />
-        <input type="hidden" name="tempSearchNameId6" value="" />
+    <form asp-action="AddNewProduct" asp-controller="Product" method="post">
+      
+        <input type="hidden" name="search_id" value="@ViewBag.searchId">
+        <input type="hidden" name="tempSearchNameId1" value="@ViewBag.tempSearchNameId1" />
+        <input type="hidden" name="tempSearchNameId2" value="@ViewBag.tempSearchNameId2" />
+        <input type="hidden" name="tempSearchNameId3" value="@ViewBag.tempSearchNameId3" />
+        <input type="hidden" name="tempSearchNameId4" value="@ViewBag.tempSearchNameId4" />
+        <input type="hidden" name="tempSearchNameId5" value="@ViewBag.tempSearchNameId5" />
+        <input type="hidden" name="tempSearchNameId6" value="@ViewBag.tempSearchNameId6" />
         <input type="hidden" name="tempSearchId1" value="" />
         <div class="row">
             <div class="col-md-6 mt-3">
-                <div>
-                    <label style="color:#0C2A46">Select Business Type</label>
-                    <select class="form-control" name="Search_For" id="Search_For">
-                        <option value="PRIVATE LIMITED COMPANY">PRIVATE LIMITED COMPANY</option>
-                        <option value="PRIVATE BUSINESS CORPORATION">PRIVATE BUSINESS CORPORATION</option>
-                        <option value="PUBLIC COMPANY">PUBLIC COMPANY</option>
-                        <option value="COOPERATIVE">COOPERATIVE</option>
-                        <option value="ASSOCIATION">ASSOCIATION</option>
-                        <option value="PARTNERSHIP">PARTNERSHIP</option>
-                        <option value="JOINT VENTURE">JOINT VENTURE</option>
-                    </select>
+                <div class="card" style="font-family: 'Ubuntu Condensed', sans-serif;">
+                   
+                    <div class="card-body">
+                        <div>
+                            <label style="color:#0C2A46">Select Business Type</label>
+                            <select class="form-control" name="Search_For" value="@ViewBag.Search_For" id="Search_For">
+                                <option value="PRIVATE LIMITED COMPANY">PRIVATE LIMITED COMPANY</option>
+                                <option value="PRIVATE BUSINESS CORPORATION">PRIVATE BUSINESS CORPORATION</option>
+                                <option value="PUBLIC COMPANY">PUBLIC COMPANY</option>
+                                <option value="COOPERATIVE">COOPERATIVE</option>
+                                <option value="ASSOCIATION">ASSOCIATION</option>
+                                <option value="PARTNERSHIP">PARTNERSHIP</option>
+                                <option value="JOINT VENTURE">JOINT VENTURE</option>
+                            </select>
+                        </div>
+
+                        <div>
+                            <label style="color:#0C2A46">Main objective</label>
+                            <input type="text" class="form-control" name="Brief" value="@ViewBag.mainObjective" id="Brief" required>
+                        </div>
+                        <div>
+                            <label style="color:#0C2A46">Designation</label>
+                            <select class="form-control" value="@ViewBag.Desigination" name="Desigination">
+                                <option value="COMPANY SECRETARY">COMPANY SECRETARY</option>
+                                <option value="DIRECTOR">DIRECTOR</option>
+                                <option value="MEMBER">MEMBER</option>
+                            </select>
+                        </div>
+                        <div>
+                            <label style="color:#0C2A46">Reason for search</label>
+                            <select class="form-control" name="Reason" value="@ViewBag.Reason">
+                                <option value="NEW REGISTRATION">NEW REGISTRATION</option>
+                                <option value="ASSUMING ANOTHER NAME">ASSUMING ANOTHER NAME</option>
+                                <option value="FURTHER RESERVATION">FURTHER RESERVATION</option>
+                                <option value="CHANGE OF NAME">CHANGE OF NAME</option>
+                            </select>
+                        </div>
+                        <div>
+                            <label style="color:#0C2A46">Industry Sector</label>
+                            <select class="form-control" name="Reason" value="@ViewBag.Reason">
+                                <option value="NEW REGISTRATION">NEW REGISTRATION</option>
+                                <option value="ASSUMING ANOTHER NAME">ASSUMING ANOTHER NAME</option>
+                                <option value="FURTHER RESERVATION">FURTHER RESERVATION</option>
+                                <option value="CHANGE OF NAME">CHANGE OF NAME</option>
+                            </select>
+                        </div>
+                        <div>
+                            <label style="color:#0C2A46">Processing office</label>
+                            <select class="form-control" name="sortingOffice" value="@ViewBag.sortingOffice" required>
+                                <option value="Harare" selected>Harare</option>
+                                <option value="Bulawayo">Bulawayo</option>
+
+                            </select>
+                        </div>
+                        <div>
+                            <label style="color:#0C2A46">Justification</label>
+                            <input type="text" class="form-control" value="@ViewBag.Justification" name="Justification" required />
+                        </div>
+                    </div>
+
                 </div>
             </div>
+            <div class="col-md-6 mt-3">
+                <div class="card" style="font-family: 'Ubuntu Condensed', sans-serif;">
+                    <div class="card-header bg-white">
+                        <p class="font-weight-bold" style="color:#0C2A46;font-family: 'Ubuntu Condensed', sans-serif;">Provide names in order of PRIORITY. The first available name will be reserved for the registration process of your entity.</p>
+                    </div>
+                    <div class="card-body">
 
+
+
+                        <div>
+                            <input type="text" class="form-control" name="name1" value="@ViewBag.name1" onblur="checkForAvailability(1)" id="name1">
+                            <label style="color:#0C2A46">Preferred name 1</label>
+                        </div>
+
+                        <div class="col-md-4" id="availability1" style="font-family: 'Ubuntu Condensed', sans-serif;">
+
+                        </div>
+
+
+
+                        <div>
+                            <input type="text" class="form-control" name="name2" value="@ViewBag.name2" onblur="checkForAvailability(2)" id="name2">
+                            <label style="color:#0C2A46">Preferred name 2</label>
+                        </div>
+
+                        <div class="col-md-4" id="availability2" style="font-family: 'Ubuntu Condensed', sans-serif;">
+                        </div>
+
+
+                        <div>
+                            <input type="text" class="form-control" name="name3" value="@ViewBag.name3" onblur="checkForAvailability(3)" id="name3">
+                            <label style="color:#0C2A46">Preferred name 3</label>
+                        </div>
+
+                        <div class="col-md-4" id="availability3" style="font-family: 'Ubuntu Condensed', sans-serif;">
+                        </div>
+
+
+                        <div>
+                            <input type="text" class="form-control" name="name4" value="@ViewBag.name4" onblur="checkForAvailability(4)" id="name4">
+                            <label style="color:#0C2A46">Preferred name 4</label>
+                        </div>
+
+                        <div class="col-md-4" id="availability4" style="font-family: 'Ubuntu Condensed', sans-serif;">
+                        </div>
+
+
+                        <div>
+                            <input type="text" class="form-control" name="name5" value="@ViewBag.name5" onblur="checkForAvailability(5)" id="name5">
+                            <label style="color:#0C2A46">Preferred name 5</label>
+                        </div>
+
+                        <div class="col-md-4" id="availability5" style="font-family: 'Ubuntu Condensed', sans-serif;">
+                        </div>
+
+
+
+                    </div>
+                </div>
+                <div class="fa-pull-right mb-5 mt-2">
+                    <button type="submit" class="btn btn-primary" id="bton">
+                        Continue
+                    </button>
+                </div>
+            </div>
             @if (TempData["entityType"] != null)
             {
-    <script>
-        $('#Search_For').val('TempData["entityType"]');
-    </script>            }
+        <script>
+            $('#Search_For').val('TempData["entityType"]');
+        </script>
+}
 
             <div class="col-md-6 mt-3">
-                <div>
-                    <label style="color:#0C2A46">Main objective</label>
-                    <input type="text" class="form-control" name="Brief" id="Brief" required>
-                </div>
+
             </div>
 
             @if (TempData["objective"] != null)
             {
-    <script>
-        $('#Brief').val('TempData["objective"]');
-    </script>            }
+        <script>
+            $('#Brief').val('TempData["objective"]');
+        </script>
+}
 
             <div class="col-md-6 mt-3">
-                <div>
-                    <label style="color:#0C2A46">Designation</label>
-                    <select class="form-control" name="Desigination">
-                        <option value="COMPANY SECRETARY">COMPANY SECRETARY</option>
-                        <option value="DIRECTOR">DIRECTOR</option>
-                        <option value="MEMBER">MEMBER</option>
-                    </select>
-                </div>
+
             </div>
 
             <div class="col-md-6 mt-3">
-                <div>
-                    <label style="color:#0C2A46">Reason for search</label>
-                    <select class="form-control" name="Reason">
-                        <option value="NEW REGISTRATION">NEW REGISTRATION</option>
-                        <option value="ASSUMING ANOTHER NAME">ASSUMING ANOTHER NAME</option>
-                        <option value="FURTHER RESERVATION">FURTHER RESERVATION</option>
-                        <option value="CHANGE OF NAME">CHANGE OF NAME</option>
-                    </select>
-                </div>
+
             </div>
         </div>
-        <p style=" color:red;">@TempData["error"]</p>
-        <div class="card mb-5 mt-4" style="font-family: 'Ubuntu Condensed', sans-serif;">
-            <div class="card-header bg-white">
-                <p class="font-weight-bold" style="color:#0C2A46;font-family: 'Ubuntu Condensed', sans-serif;">Provide names in order of PRIORITY. The first available name will be reserved for the registration process of your entity.</p>
-            </div>
-            <div class="card-body">
-                <div class="row">
-                    <div class="col-md-6">
-                        <div class="row">
-                            <div class="col-md-8">
-                                <div>
-                                    <input type="text" class="form-control" name="name1" onblur="checkForAvailability(1)" id="name1">
-                                    <label style="color:#0C2A46">Preferred name 1</label>
-                                </div>
-                            </div>
-                            <div class="col-md-4" id="availability1" style="font-family: 'Ubuntu Condensed', sans-serif;">
+                <p style=" color:red;">@TempData["error"]</p>
 
-                            </div>
-                        </div>
 
-                        <div class="row">
-                            <div class="col-md-8">
-                                <div>
-                                    <input type="text" class="form-control" name="name2" onblur="checkForAvailability(2)" id="name2">
-                                    <label style="color:#0C2A46">Preferred name 2</label>
-                                </div>
-                            </div>
-                            <div class="col-md-4" id="availability2" style="font-family: 'Ubuntu Condensed', sans-serif;">
-                            </div>
-                        </div>
-                        <div class="row">
-                            <div class="col-md-8">
-                                <div>
-                                    <input type="text" class="form-control" name="name3" onblur="checkForAvailability(3)" id="name3">
-                                    <label style="color:#0C2A46">Preferred name 3</label>
-                                </div>
-                            </div>
-                            <div class="col-md-4" id="availability3" style="font-family: 'Ubuntu Condensed', sans-serif;">
-                            </div>
-                        </div>
+                <div class="row mt-3 mb-3" s>
+                    <div class="col-md-6 container-fluid ">
+
                     </div>
-                    <div class="col-md-6">
-                        <div class="row">
-                            <div class="col-md-8">
-                                <div>
-                                    <input type="text" class="form-control" name="name4" onblur="checkForAvailability(4)" id="name4">
-                                    <label style="color:#0C2A46">Preferred name 4</label>
-                                </div>
-                            </div>
-                            <div class="col-md-4" id="availability4" style="font-family: 'Ubuntu Condensed', sans-serif;">
-                            </div>
-                        </div>
-                        <div class="row">
-                            <div class="col-md-8">
-                                <div>
-                                    <input type="text" class="form-control" name="name5" onblur="checkForAvailability(5)" id="name5">
-                                    <label style="color:#0C2A46">Preferred name 5</label>
-                                </div>
-                            </div>
-                            <div class="col-md-4" id="availability5" style="font-family: 'Ubuntu Condensed', sans-serif;">
-                            </div>
-                        </div>
-                        <div class="row">
-                            @*<div class="col-md-8">
-                                <div>
-                                    <input type="text" class="form-control" name="name6" required onblur="checkForAvailability(6)" id="name6">
-                                    <label style="color:#0C2A46">Preferred name 6</label>
-                                </div>
-                            </div>
-                            <div class="col-md-4" id="availability6" style="font-family: 'Ubuntu Condensed', sans-serif;">
-                            </div>*@
-                        </div>
+                    <div class="col-md-6 container-fluid ">
+
                     </div>
                 </div>
-            </div>
-        </div>
 
-        <div class="row mt-3 mb-3" s>
-            <div class="col-md-6 container-fluid ">
-                <div>
-                    <label style="color:#0C2A46">Justification</label>
-                    <input type="text" class="form-control" name="Justification" required placeholder="Optional"></input>
-                </div>
-            </div>
-            <div class="col-md-6 container-fluid ">
-                <div>
-                    <label style="color:#0C2A46">Processing office</label>
-                    <select class="form-control" name="sortingOffice" required>
-                        <option value="Harare" selected>Harare</option>
-                        <option value="Bulawayo">Bulawayo</option>
-
-                    </select>
-                </div>
-            </div>
-        </div>
-
-        <div class="fa-pull-right mb-5 mt-2">
-            <button type="submit" class="btn btn-primary" id="bton">
-                Continue
-            </button>
-        </div>
-    </form>
+               
+</form>
 </div>
 
 
@@ -187,9 +198,12 @@
     <div class="modal-dialog" style="width: 800px;" role="document">
         <div class="modal-content" style="width: 800px;" >
             <div class="modal-header">
-                <h5 class="modal-title">Biller Products</h5>
-                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-            </div>
+                <h5 class="modal-title">Name Search Summary</h5>
+                <button type="button" class="close" id="contact_btn" aria-label="Close">
+                    @*data-dismiss="modal"*@
+                    <span aria-hidden="true">&times;</span>
+                </button>
+</div>
             <div class="modal-body" style="width:800px;">
                 <form action="/Products/SubmitSearch/@TempData["id"]" method="post" style="width:800px;">
                    
@@ -293,11 +307,13 @@
                         </div>
                         <div class="col-md-6">
 
-                            <div class="">
+                            <div class="form-group">
                                 <span style="flex: 1 1 auto"></span>
                                 <button type="submit" class="btn btn-primary fa-pull-right">
-                                    SUBMIT
+                                    Submit
                                 </button>
+                               
+                                <button type="button" class="btn btn-secondary fa-pull-right" data-dismiss="modal" id="contact_btn">Cancel</button>
                             </div>
                         </div>
 
@@ -328,6 +344,12 @@
 </script>
 
 <script type="text/javascript">
+
+
+    $('#contact_btn').click(function () {
+        $('#billerproductsForm').modal('hide');
+        //$(document.body).scrollTop($('#anchorId').offset().top);
+    });
     function checkForAvailability(a) {
 
         var name1 = 'name';
@@ -373,7 +395,8 @@
                 }
             });
             document.getElementById('bton').disabled = false;
-        } else {
+        } else
+        {
             var container = document.getElementById('availability' + a);
             while (container.hasChildNodes()) {
                 container.removeChild(container.lastChild);

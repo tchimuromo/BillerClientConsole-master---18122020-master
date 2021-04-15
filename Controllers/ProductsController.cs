@@ -19,7 +19,7 @@ using BillerClientConsole.Data;
 namespace BillerClientConsole.Controllers
 {
     [Route("Products")]
-    [Route("Home")]
+    //[Route("Home")]
     public class ProductsController : Controller
     {
         private dbContext db = new dbContext();
@@ -183,9 +183,12 @@ namespace BillerClientConsole.Controllers
             
             List<mCompanyResponse> companyApplications = JsonConvert.DeserializeObject<List<mCompanyResponse>>(companies.ToString());
             List<mCompanyResponse> assignedApplications = 
-                companyApplications.Where(s => !string.IsNullOrEmpty(s.companyInfo.Payment) && !string.IsNullOrEmpty(s.companyInfo.Search_Ref) && !string.IsNullOrEmpty(s.companyInfo.ExaminerTaskId) && s.companyInfo.ExaminerTaskId.Equals(TaskId)).ToList(); //
+                companyApplications.Where(s => !string.IsNullOrEmpty(s.companyInfo.Payment) 
+                && !string.IsNullOrEmpty(s.companyInfo.Search_Ref) 
+                && !string.IsNullOrEmpty(s.companyInfo.ExaminerTaskId) 
+                && s.companyInfo.ExaminerTaskId.Equals(TaskId) && s.companyInfo.Status== "Assigned").ToList(); //
             ViewBag.CompanyApplications = assignedApplications;
-
+            ViewBag.TaskId = TaskId;
             return View();
         }
 
@@ -236,7 +239,7 @@ namespace BillerClientConsole.Controllers
             catch (Exception ex)
             {
                 
-            }
+            };
 
             mCompanyResponse companyApplication = JsonConvert.DeserializeObject<mCompanyResponse>(dataa.ToString());
             companyApplication.companyInfo.Examiner = Examiner;
@@ -266,7 +269,7 @@ namespace BillerClientConsole.Controllers
         [HttpGet("GetNameSearchesByUserByTaskID")]
         public async Task<IActionResult> DrillIntoDetails(string taskId)
         {
-            var user = db.AspNetUsers.Where(i => i.Email == User.Identity.Name).First();
+            var user = db.AspNetUsers.Where(i => i.Email == User.Identity.Name).FirstOrDefault();
            
             ViewBag.title = "Name search detail";
             var client = new HttpClient();
@@ -276,11 +279,13 @@ namespace BillerClientConsole.Controllers
             dynamic json_data = JsonConvert.DeserializeObject(res);
             var searchNamess = data_j.data.value;
             List<mSearch> names = JsonConvert.DeserializeObject<List<mSearch>>(searchNamess.ToString());
-            var namess = names.Where(z => z.searchInfo.Satus == "Assigned"||z.searchInfo.Satus == "Approved"||z.searchInfo.Satus == "Rejected").Take(1).FirstOrDefault();
-            
+            var namess = names.Where(z => z.searchInfo.Satus == "Assigned" || z.searchInfo.Satus == "Approved" || z.searchInfo.Satus == "Rejected").Take(1).FirstOrDefault();
+            var pendingnames = names.Where(z => z.searchInfo.Satus == "Assigned").ToList();
+
             var searchInfo = namess.searchInfo;
             var searchNames = namess.SearchNames;
-            TempData["Searchnames"] = namess.SearchNames;
+            // TempData["Searchnames"] = namess.SearchNames;
+            ViewBag.mSearch = pendingnames;
             ViewBag.TaskID = taskId;
             ViewBag.dateSubmitted = searchInfo.SearchDate;
             ViewBag.purpose = searchInfo.Purpose;
@@ -296,11 +301,69 @@ namespace BillerClientConsole.Controllers
             
 
             ViewBag.names = searchNames;
-            TempData["names"] = searchNames;
+           // TempData["names"] = searchNames;
             return View();
         }
+        [HttpGet("NameSearchReviewed")]
+        public async Task<IActionResult> NameSearchReviewed(string taskid, string searchid)
+        {
+            //Code to check if there is no Reserved name or name pending review....
+            var user = db.AspNetUsers.Where(i => i.Email == User.Identity.Name).FirstOrDefault();
 
-        
+            ViewBag.title = "Name search detail";
+            var client = new HttpClient();
+            var res = await client.GetAsync($"{Globals.Globals.end_point_get_name_search_by_user_by_task_id}?UserID={user.Email}&TaskID={taskid}").Result.Content.ReadAsStringAsync();
+
+            dynamic data_j = JsonConvert.DeserializeObject(res);
+            dynamic json_data = JsonConvert.DeserializeObject(res);
+            var searchNamess = data_j.data.value;
+            List<mSearch> names = JsonConvert.DeserializeObject<List<mSearch>>(searchNamess.ToString());
+            var namess = names.Where(z => z.searchInfo.Satus == "Assigned" || z.searchInfo.Satus == "Approved" || z.searchInfo.Satus == "Rejected").Take(1).FirstOrDefault();
+            var listsearchnames = namess.SearchNames.Where(e => e.Search_ID == searchid && e.Status == "Pending" || e.Status == "Reserved").ToList();
+            //List<mSearchNames> reservedname = listsearchnames.Where(i => );
+            //if(reservedname.Count<1)
+            //if (listsearchnames < 1)
+            //{
+            //   // var res = await client.GetAsync($"{Globals.Globals.end_point_update_searchname}/{searchid}/{taskid}").Result;
+
+            //}
+            return RedirectToAction("DrillIntoDetails", "Products", new { taskId = taskid });
+
+        }
+
+        [HttpGet("ReviewNameSearch")]
+        public async Task<IActionResult> ReviewNameSearch(string taskid, string searchid)
+        {
+            var user = db.AspNetUsers.Where(i => i.Email == User.Identity.Name).First();
+
+            ViewBag.title = "Name search detail";
+            var client = new HttpClient(); 
+            var res = await client.GetAsync($"{Globals.Globals.end_point_get_name_search_by_user_by_task_id}?UserID={user.Email}&TaskID={taskid}").Result.Content.ReadAsStringAsync();
+
+            dynamic data_j = JsonConvert.DeserializeObject(res);
+            dynamic json_data = JsonConvert.DeserializeObject(res);
+            var searchNamess = data_j.data.value;
+            List<mSearch> names = JsonConvert.DeserializeObject<List<mSearch>>(searchNamess.ToString());
+            var namess = names.Where(z => z.searchInfo.Satus == "Assigned" || z.searchInfo.Satus == "Approved" || z.searchInfo.Satus == "Rejected").ToList();
+            var mysearchnames= names.Select(e => e.SearchNames).ToList();
+            var names1 = mysearchnames.Where(i => i.FirstOrDefault().Search_ID == searchid).ToList();
+            var searchinfo = names.FirstOrDefault().searchInfo;// Jackpot!!
+            ViewBag.dateSubmitted = searchinfo.SearchDate;
+            ViewBag.purpose = searchinfo.Purpose;
+            ViewBag.natureOfBusiness = searchinfo.Search_For;
+            ViewBag.Justification = searchinfo.Justification;
+            ViewBag.searchDate = searchinfo.SearchDate;
+            ViewBag.searchId = searchinfo.search_ID;
+            ViewBag.designation = searchinfo.Desigination;
+            ViewBag.applicant = searchinfo.Searcher_ID;
+            ViewBag.reference = searchinfo.search_ID;
+            //List<mSearchNames> namesp = JsonConvert.DeserializeObject<List<mSearchNames>>(searchNames.ToString());
+            ViewBag.TaskId = taskid;
+            ViewBag.searchId = searchid;
+            ViewBag.names = names1;
+            // TempData["names"] = searchNames;
+            return View();
+        }
 
         [HttpGet("Services")]
         public IActionResult Services()
@@ -529,7 +592,7 @@ namespace BillerClientConsole.Controllers
         /// 
 
         [HttpGet("Detail")]
-        public async Task<IActionResult> CompanyExamination(string reference)
+        public async Task<IActionResult> CompanyExamination(string reference, string taskid)
         {
             ViewBag.Title = "Customer";
 
@@ -555,17 +618,23 @@ namespace BillerClientConsole.Controllers
             var nameOfficeResponse = await client.GetAsync($"{Globals.Globals.service_end_point}/{companyApplication.companyInfo.Search_Ref}/Namesearch/{companyApplication.companyInfo.Office}/Office").Result.Content.ReadAsStringAsync();
             dynamic nameOfficeJson = JsonConvert.DeserializeObject(nameOfficeResponse);
             NameOfficeResponse nameOffice = JsonConvert.DeserializeObject<NameOfficeResponse>(nameOfficeJson.ToString());
+
+            ViewBag.objects = companyApplication.memo.objects;
+            ViewBag.shareclause = companyApplication.memo.SharesClause.description;
+            ViewBag.liability = companyApplication.memo.LiabilityClause.description;
+
+            ViewBag.Subscribers = companyApplication.shareholders;
             ViewBag.NameOffice = nameOffice;
 
-            foreach(var clause in companyApplication.memo.LiabilityClause)
-            {
-                ViewBag.Liability_liab = clause.description;
-            }
+            //foreach(var clause in companyApplication.memo.LiabilityClause)
+            //{
+            //    ViewBag.Liability_liab = clause.description;
+            //}
 
-            foreach(var clause in companyApplication.memo.SharesClause)
-            {
-                ViewBag.Share_share = clause.description;
-            }
+            //foreach(var clause in companyApplication.memo.SharesClause)
+            //{
+            //    ViewBag.Share_share = clause.description;
+            //}
 
             ViewBag.article_type = companyApplication.articles.articles_type;
 
@@ -579,35 +648,35 @@ namespace BillerClientConsole.Controllers
                 var liability = companyApplication.memo.LiabilityClause;
                 var ShareClause = companyApplication.memo.SharesClause;
                 
-                foreach(liabilityClause lc in liability)
-                {
-                    if (lc.Status == 0)
-                    {
-                        if (!string.IsNullOrEmpty(lc.description))
-                        {
-                            LiabilityClauseExaminerDto liablity = new LiabilityClauseExaminerDto();
-                            liablity.LiabilityClause = lc.description;
-                            liablity.Application_Ref = companyApplication.companyInfo.Application_Ref;
-                            liabilityClause.Add(liablity);
-                        }
+                //foreach(liabilityClause lc in liability)
+                //{
+                //    if (lc.Status == 0)
+                //    {
+                //        if (!string.IsNullOrEmpty(lc.description))
+                //        {
+                //            LiabilityClauseExaminerDto liablity = new LiabilityClauseExaminerDto();
+                //            liablity.LiabilityClause = lc.description;
+                //            liablity.Application_Ref = companyApplication.companyInfo.Application_Ref;
+                //            liabilityClause.Add(liablity);
+                //        }
 
-                    }
-                }
+                //    }
+                //}
                
-                foreach(sharesClause sc in ShareClause)
-                {
-                    if (sc.Status == 0)
-                    {
-                        if (!string.IsNullOrEmpty(sc.description))
-                        {
-                            ShareClauseExaminerDto share = new ShareClauseExaminerDto();
-                            share.ShareClause = sc.description;
-                            share.Application_Ref = companyApplication.companyInfo.Application_Ref;
-                            shareClause.Add(share);
-                        }
-                    }
+                //foreach(sharesClause sc in ShareClause)
+                //{
+                //    if (sc.Status == 0)
+                //    {
+                //        if (!string.IsNullOrEmpty(sc.description))
+                //        {
+                //            ShareClauseExaminerDto share = new ShareClauseExaminerDto();
+                //            share.ShareClause = sc.description;
+                //            share.Application_Ref = companyApplication.companyInfo.Application_Ref;
+                //            shareClause.Add(share);
+                //        }
+                //    }
 
-                }
+                //}
                    
               
 
@@ -694,37 +763,37 @@ namespace BillerClientConsole.Controllers
                 if (cor == null)
                 {
                     companyResponses.Add(companyApplication);
-                    foreach(liabilityClause lc in companyApplication.memo.LiabilityClause)
-                    {
-                        if (lc.Status == 0)
-                        {
-                            if (!string.IsNullOrEmpty(lc.description))
-                            {
-                                LiabilityClauseExaminerDto liablity = new LiabilityClauseExaminerDto();
-                                liablity.LiabilityClause = lc.description;
-                                liablity.Application_Ref = companyApplication.companyInfo.Application_Ref;
-                                liabilityClause.Add(liablity);
-                                ViewBag.LiabilityClause = liablity;
-                            }
+                   // foreach(liabilityClause lc in companyApplication.memo.LiabilityClause)
+                   // {
+                   //     if (lc.Status == 0)
+                   //     {
+                   //         if (!string.IsNullOrEmpty(lc.description))
+                   //         {
+                   //             LiabilityClauseExaminerDto liablity = new LiabilityClauseExaminerDto();
+                   //             liablity.LiabilityClause = lc.description;
+                   //             liablity.Application_Ref = companyApplication.companyInfo.Application_Ref;
+                   //             liabilityClause.Add(liablity);
+                   //             ViewBag.LiabilityClause = liablity;
+                   //         }
 
-                        }
-                    }
+                   //     }
+                   // }
 
-                   foreach(sharesClause sc in companyApplication.memo.SharesClause)
-                    {
-                        if (sc.Status == 0)
-                        {
-                            if (!string.IsNullOrEmpty(sc.description))
-                            {
-                                ShareClauseExaminerDto share = new ShareClauseExaminerDto();
-                                share.ShareClause = sc.description;
-                                share.Application_Ref = companyApplication.companyInfo.Application_Ref;
-                                shareClause.Add(share);
-                                ViewBag.ShareClause = share;
-                            }
+                   //foreach(sharesClause sc in companyApplication.memo.SharesClause)
+                   // {
+                   //     if (sc.Status == 0)
+                   //     {
+                   //         if (!string.IsNullOrEmpty(sc.description))
+                   //         {
+                   //             ShareClauseExaminerDto share = new ShareClauseExaminerDto();
+                   //             share.ShareClause = sc.description;
+                   //             share.Application_Ref = companyApplication.companyInfo.Application_Ref;
+                   //             shareClause.Add(share);
+                   //             ViewBag.ShareClause = share;
+                   //         }
 
-                        }
-                    }
+                   //     }
+                   // }
                     
 
                     foreach (mmainClause obj in companyApplication.memo.objects)
@@ -751,6 +820,345 @@ namespace BillerClientConsole.Controllers
                             articles.ArticleId = companyApplication.articles._id;
                         }
                             
+                        selectedModel.Add(articles);
+                        ViewBag.Articles = articles;
+                    }
+
+                    foreach (mMembersInfo membr in companyApplication.members)
+                    {
+                        mMembersPotifolio follio = null;
+                        foreach (mMembersPotifolio potfo in companyApplication.membersPotifolios)
+                        {
+                            if (membr.member_id.Equals(potfo.member_id))
+                            {
+                                follio = potfo;
+                                continue;
+                            }
+                        }
+
+                        MemberExaminerDto memberrs = new MemberExaminerDto();
+                        EntityExaminerDto entities = new EntityExaminerDto();
+
+                      
+                            memberrs.FirstName = membr.Names;
+                            memberrs.Surname = membr.Surname;
+                            memberrs.Nationality = membr.Nationality;
+                            memberrs.NationalId = membr.ID_No;
+                            memberrs.PhysicalAddress = membr.City;
+                            memberrs.ApplicationId = companyApplication.companyInfo.Application_Ref;
+                            memberrs.OrdinaryShares = follio.OrdinaryShares.ToString();
+                            memberrs.PreferenceShares = follio.PreferenceShares.ToString();
+
+                            memberrs.TotalShares = follio.number_of_shares;
+                            string roles = "";
+                            if (follio.IsCoSec == 1)
+                                roles = roles + "Secretary,";
+                            if (follio.IsDirector == 1)
+                                roles = roles + "Director,";
+                            if (follio.IsMember == 1)
+                                roles = roles + "Member,";
+
+                            memberrs.Roles = roles;
+
+                            members.Add(memberrs);
+
+                       
+                            entities.EntityName = membr.Names;
+                            entities.EntityCountryOfOrigin = membr.Nationality;
+                            entities.EntityNumber = membr.member_id;
+                            entities.EntityPreferenceShares = follio.PreferenceShares.ToString();
+                            entities.EntityOrdinaryShares = follio.OrdinaryShares.ToString();
+                            entities.EntityTotalShares = follio.number_of_shares;
+
+                            memberEntities.Add(entities);
+                        
+                        Subscriber subscriber = new Subscriber();
+                        subscriber.Id = membr.ID_No;
+                        subscriber.FullName = membr.Names + " " + membr.Surname;
+                        subscriber.Address = membr.Street + " " + membr.City;
+                        if (follio.IsCoSec == 1)
+                        {
+                            subscriber.Occupation = "Company secretary";
+                        }
+                        if (follio.IsDirector == 1)
+                        {
+                            subscriber.Occupation = "Director";
+                        }
+                        if (follio.IsMember == 1)
+                        {
+                            subscriber.Occupation = "Member";
+                        }
+                        subscriber.Date = companyApplication.companyInfo.Date_Of_Application;
+                        subscriber.TotalShares = follio.number_of_shares;
+                        subscribers.Add(subscriber);
+                    }
+
+                    ViewBag.Subcribers = subscribers;
+                    if (!string.IsNullOrEmpty(companyApplication.articles.articles))
+                    {
+                        AmmendedArticlesExaminerDto ammended = new AmmendedArticlesExaminerDto();
+                        ammended.AmmendedArticle = companyApplication.articles.articles;
+                        ammended.ArticlesId = companyApplication.articles._id;
+                        ammended.Application_Ref = companyApplication.companyInfo.Application_Ref;
+                        ammendedArticles.Add(ammended);
+                    }
+                }
+            }
+            
+
+
+
+
+
+            List<object> DataRange = new List<object>();
+            //List<object> DataRange = new List<object>();
+            DataRange.Add(new { Text = "1,000 Rows 11 Columns", Value = "1000" });
+            DataRange.Add(new { Text = "10,000 Rows 11 Columns", Value = "10000" });
+            DataRange.Add(new { Text = "1,00,000 Rows 11 Columns", Value = "100000" });
+            ViewBag.Data = DataRange;
+
+            //Code to populate My Card
+            var ApplicationQueries = context.Queries.Where(q => q.applicationRef == companyApplication.companyInfo.Application_Ref && q.status == "Pending").ToList();
+            ViewBag.ApplicationQueries = ApplicationQueries;
+            ViewBag.email = companyApplication.companyInfo.Email;
+            ViewBag.TaskId = taskid;
+            //var order = OrdersDetails.GetAllRecords();
+            //ViewBag.datasource = order;
+            return View();
+        }
+
+        /// <summary>
+        /// viewing details for the registrar
+        /// </summary>
+        /// <param name="product"></param>
+        /// <returns></returns>
+        /// 
+
+
+        [HttpGet("RegistrarDetail")]
+        public async Task<IActionResult> RegistrarExamination(string reference, string taskid)
+        {
+            ViewBag.Title = "Customer";
+
+            var client = new HttpClient();
+
+            var rhisponzi = await client.GetAsync($"{Globals.Globals.end_point_get_company_application_by_search_ref}?SearchRef={reference}").Result.Content.ReadAsStringAsync();
+
+            dynamic json_dataa = JsonConvert.DeserializeObject(rhisponzi);
+            dynamic dataa = json_dataa;
+            try
+            {
+                dataa = json_dataa.data.value;
+            }
+            catch (Exception ex)
+            {
+                return BadRequest();
+            }
+
+            mCompanyResponse companyApplication = JsonConvert.DeserializeObject<mCompanyResponse>(dataa.ToString());
+            ViewBag.companyApplication = companyApplication;
+            List<Subscriber> subscribers = new List<Subscriber>();
+            ViewBag.Application = companyApplication.companyInfo.Application_Ref;
+            ViewBag.ApplicationID = companyApplication.companyInfo.Search_Ref;//Search Ref or ApplicationID
+            var nameOfficeResponse = await client.GetAsync($"{Globals.Globals.service_end_point}/{companyApplication.companyInfo.Search_Ref}/Namesearch/{companyApplication.companyInfo.Office}/Office").Result.Content.ReadAsStringAsync();
+            dynamic nameOfficeJson = JsonConvert.DeserializeObject(nameOfficeResponse);
+            NameOfficeResponse nameOffice = JsonConvert.DeserializeObject<NameOfficeResponse>(nameOfficeJson.ToString());
+            ViewBag.NameOffice = nameOffice;
+
+            //foreach (var clause in companyApplication.memo.LiabilityClause)
+            //{
+            //    ViewBag.Liability_liab = clause.description;
+            //}
+
+            //foreach (var clause in companyApplication.memo.SharesClause)
+            //{
+            //    ViewBag.Share_share = clause.description;
+            //}
+
+            ViewBag.article_type = companyApplication.articles.articles_type;
+
+            // var k = 0;
+            if (companyResponses == null)
+            {
+
+                companyResponses = new List<mCompanyResponse>();
+
+                companyResponses.Add(companyApplication);
+                var liability = companyApplication.memo.LiabilityClause;
+                var ShareClause = companyApplication.memo.SharesClause;
+
+                //foreach (liabilityClause lc in liability)
+                //{
+                //    if (lc.Status == 0)
+                //    {
+                //        if (!string.IsNullOrEmpty(lc.description))
+                //        {
+                //            LiabilityClauseExaminerDto liablity = new LiabilityClauseExaminerDto();
+                //            liablity.LiabilityClause = lc.description;
+                //            liablity.Application_Ref = companyApplication.companyInfo.Application_Ref;
+                //            liabilityClause.Add(liablity);
+                //        }
+
+                //    }
+                //}
+
+                //foreach (sharesClause sc in ShareClause)
+                //{
+                //    if (sc.Status == 0)
+                //    {
+                //        if (!string.IsNullOrEmpty(sc.description))
+                //        {
+                //            ShareClauseExaminerDto share = new ShareClauseExaminerDto();
+                //            share.ShareClause = sc.description;
+                //            share.Application_Ref = companyApplication.companyInfo.Application_Ref;
+                //            shareClause.Add(share);
+                //        }
+                //    }
+
+                //}
+
+
+
+                foreach (mmainClause obj in companyApplication.memo.objects)
+                {
+                    MemorandumExaminerDto memo = new MemorandumExaminerDto();
+                    memo.TheObject = obj.objective;
+                    memo.Application_Ref = companyApplication.companyInfo.Application_Ref;
+                    memoObjects.Add(memo);
+                }
+
+                if (!string.IsNullOrEmpty(companyApplication.articles.articles_type))
+                {
+                    ArticlesExaminerDto articles = new ArticlesExaminerDto();
+                    if (companyApplication.articles.articles_type == "table b")
+                        articles.Article = "Table B";
+                    else
+                        articles.Article = "Table C";
+                    articles.Application_Ref = companyApplication.companyInfo.Application_Ref;
+                    articles.ArticleId = companyApplication.articles._id;
+                    selectedModel.Add(articles);
+                }
+
+
+                if (!string.IsNullOrEmpty(companyApplication.articles.articles))
+                {
+                    AmmendedArticlesExaminerDto ammended = new AmmendedArticlesExaminerDto();
+                    ammended.AmmendedArticle = companyApplication.articles.articles;
+                    ammendedArticles.Add(ammended);
+                }
+
+
+                foreach (mMembersInfo membr in companyApplication.members)
+                {
+                    mMembersPotifolio follio = null;
+                    foreach (mMembersPotifolio potfo in companyApplication.membersPotifolios)
+                    {
+                        if (membr.member_id.Equals(potfo.member_id))
+                        {
+                            follio = potfo;
+                            continue;
+                        }
+                    }
+
+                    MemberExaminerDto memberrs = new MemberExaminerDto();
+                    EntityExaminerDto entities = new EntityExaminerDto();
+
+                    if (membr.memberType.Equals("Person"))
+                    {
+                        memberrs.FirstName = membr.Names;
+                        memberrs.Surname = membr.Surname;
+                        memberrs.Nationality = membr.Nationality;
+                        memberrs.NationalId = membr.ID_No;
+                        memberrs.PhysicalAddress = membr.Street + membr.City;
+                        memberrs.ApplicationId = companyApplication.companyInfo.Application_Ref;
+
+                        memberrs.TotalShares = follio.number_of_shares;
+                        string roles = "";
+                        if (follio.IsCoSec == 1)
+                            roles = roles + "Secretary,";
+                        if (follio.IsDirector == 1)
+                            roles = roles + "Director,";
+                        if (follio.IsMember == 1)
+                            roles = roles + "Member,";
+
+                        memberrs.Roles = roles;
+
+                        members.Add(memberrs);
+
+                    }
+                    else
+                    {
+                        entities.EntityName = membr.Names;
+                        entities.EntityCountryOfOrigin = membr.Nationality;
+                        entities.EntityTotalShares = follio.number_of_shares;
+
+                        memberEntities.Add(entities);
+                    }
+                }
+            }
+            else
+            {
+                var cor = companyResponses.Where(s => s.companyInfo.Search_Ref == reference).FirstOrDefault();
+                if (cor == null)
+                {
+                    companyResponses.Add(companyApplication);
+                    //foreach (liabilityClause lc in companyApplication.memo.LiabilityClause)
+                    //{
+                    //    if (lc.Status == 0)
+                    //    {
+                    //        if (!string.IsNullOrEmpty(lc.description))
+                    //        {
+                    //            LiabilityClauseExaminerDto liablity = new LiabilityClauseExaminerDto();
+                    //            liablity.LiabilityClause = lc.description;
+                    //            liablity.Application_Ref = companyApplication.companyInfo.Application_Ref;
+                    //            liabilityClause.Add(liablity);
+                    //            ViewBag.LiabilityClause = liablity;
+                    //        }
+
+                    //    }
+                    //}
+
+                    //foreach (sharesClause sc in companyApplication.memo.SharesClause)
+                    //{
+                    //    if (sc.Status == 0)
+                    //    {
+                    //        if (!string.IsNullOrEmpty(sc.description))
+                    //        {
+                    //            ShareClauseExaminerDto share = new ShareClauseExaminerDto();
+                    //            share.ShareClause = sc.description;
+                    //            share.Application_Ref = companyApplication.companyInfo.Application_Ref;
+                    //            shareClause.Add(share);
+                    //            ViewBag.ShareClause = share;
+                    //        }
+
+                    //    }
+                    //}
+
+
+                    foreach (mmainClause obj in companyApplication.memo.objects)
+                    {
+                        MemorandumExaminerDto memo = new MemorandumExaminerDto();
+                        memo.TheObject = obj.objective;
+                        memo.Application_Ref = companyApplication.companyInfo.Application_Ref;
+                        memoObjects.Add(memo);
+                    }
+
+                    if (!string.IsNullOrEmpty(companyApplication.articles.articles_type))
+                    {
+                        ArticlesExaminerDto articles = new ArticlesExaminerDto();
+                        if (companyApplication.articles.articles_type == "table b")
+                        {
+                            articles.Article = "Table B";
+                            articles.Application_Ref = companyApplication.companyInfo.Application_Ref;
+                            articles.ArticleId = companyApplication.articles._id;
+                        }
+                        else
+                        {
+                            articles.Article = "Table C";
+                            articles.Application_Ref = companyApplication.companyInfo.Application_Ref;
+                            articles.ArticleId = companyApplication.articles._id;
+                        }
+
                         selectedModel.Add(articles);
                         ViewBag.Articles = articles;
                     }
@@ -839,7 +1247,7 @@ namespace BillerClientConsole.Controllers
                     }
                 }
             }
-            
+
 
 
 
@@ -856,10 +1264,24 @@ namespace BillerClientConsole.Controllers
             var ApplicationQueries = context.Queries.Where(q => q.applicationRef == companyApplication.companyInfo.Application_Ref && q.status == "Pending").ToList();
             ViewBag.ApplicationQueries = ApplicationQueries;
             ViewBag.email = companyApplication.companyInfo.Email;
+            ViewBag.TaskId = taskid;
             //var order = OrdersDetails.GetAllRecords();
             //ViewBag.datasource = order;
             return View();
         }
+
+
+
+
+
+
+
+
+
+
+
+
+
 
         [HttpPost("AddNewProduct")]
         public async Task<IActionResult> AddNewProduct1(postSearch product)
@@ -881,18 +1303,22 @@ namespace BillerClientConsole.Controllers
             TempData["Purpose"] = product.Brief.ToUpper();
             TempData["SortingOffice"] = product.sortingOffice.ToUpper();
             TempData["Desigination"] = product.Desigination.ToUpper();
-            TempData["Reason_For_Search"] = product.Desigination.ToUpper();
+            TempData["Reason_For_Search"] = product.Reason.ToUpper();
 
-
-            if (ms.searchInfo.search_ID == "")
+            if (product.search_id == null)
             {
-                TempData["id"] = Guid.NewGuid().ToString();
-              //  Globals.Globals.tempSearchId1 = product.search_id;
+                ms1.search_ID = Guid.NewGuid().ToString();
+                //  Globals.Globals.tempSearchId1 = product.search_id;
+            }
+            else
+            {
+                ms1.search_ID = product.search_id;
             }
             if (product.tempSearchNameId2 == null)
             {
                 product.tempSearchNameId2 = Guid.NewGuid().ToString();
             }
+           
             if (product.tempSearchNameId1 == null)
             {
                 product.tempSearchNameId1 = Guid.NewGuid().ToString();
@@ -919,15 +1345,14 @@ namespace BillerClientConsole.Controllers
                 product.tempSearchNameId6 = Guid.NewGuid().ToString();
             }
 
-
-            ms1.search_ID = TempData["id"];
-            //if (string.IsNullOrEmpty(product.name1) && string.IsNullOrEmpty(product.name2) && string.IsNullOrEmpty(product.name3) && string.IsNullOrEmpty(product.name4) && string.IsNullOrEmpty(product.name5) {
-
-            //    TempData["error"] = "The name search is null";
-            //    ViewBag.title = "New Search";
-            //    return View()
-            //    // return RedirectToAction("Products/AddNewProduct");
-            //}
+          TempData["id"]=ms1.search_ID;
+            ViewBag.searchId = ms1.search_ID;
+            ViewBag.tempSearchNameId1 = product.tempSearchNameId1;
+            ViewBag.tempSearchNameId2 = product.tempSearchNameId2;
+            ViewBag.tempSearchNameId3 = product.tempSearchNameId3;
+            ViewBag.tempSearchNameId4 = product.tempSearchNameId4;
+            ViewBag.tempSearchNameId5 = product.tempSearchNameId5;
+            ViewBag.tempSearchNameId6 = product.tempSearchNameId6;
 
             List<mSearchNames> snames = new List<mSearchNames>();
             if (!string.IsNullOrEmpty(product.name1) && product.name1.Length > 3)
@@ -977,6 +1402,7 @@ namespace BillerClientConsole.Controllers
             TempData["name3"] = product.name3?.ToUpper();
             TempData["name4"] = product.name4?.ToUpper();
             TempData["name5"] = product.name5?.ToUpper();
+            TempData["name6"] = product.name6?.ToUpper();
             ms.searchInfo = ms1;
             ms.SearchNames = snames;
 
@@ -984,6 +1410,18 @@ namespace BillerClientConsole.Controllers
             if (snames.Count > 0)
             {
                 ViewBag.msg = "Test";
+                ViewBag.mainObjective = product.Brief;
+                ViewBag.Desigination=product.Desigination;
+                ViewBag.Justification=product.Justification;
+                ViewBag.Reason= product.Reason;
+                ViewBag.sortingOffice= product.sortingOffice;
+                ViewBag.Search_For = product.Search_For;
+                ViewBag.name1 = product.name1;
+                ViewBag.name2 = product.name2;
+                ViewBag.name3 = product.name3;
+                ViewBag.name4 = product.name4;
+                ViewBag.name5 = product.name5;
+                ViewBag.name6 = product.name6;
 
                 ms.searchInfo.search_ID = ms1.search_ID;
                 var client = new HttpClient();

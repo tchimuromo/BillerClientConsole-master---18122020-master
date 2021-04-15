@@ -32,6 +32,7 @@
         <input type="hidden" name="Status" value="status" />
 
         <input type="hidden" name="Date" />
+        <input type="hidden" id="NumOfDoc" value="@ViewBag.Count" />
 
         <div class="row mb-2">
             <div class="col-md-3">
@@ -41,7 +42,7 @@
                     =
                     @foreach (var examiners in ViewBag.people)
                     {
-                    <option value="@examiners.email">@examiners.email</option>
+                    <option value="@examiners.email">@examiners.firstname @examiners.lastname</option>
 
                     }
 
@@ -49,7 +50,7 @@
             </div>           
             <div class="col-md-2">
                 <label>No. of records</label>
-                <input type="text" class="form-control" name="NoOfRecords" />
+                <input type="text" class="form-control" name="NoOfRecords" id="NoOfRecords" onblur="CheckDocNo()" />
             </div>
             <div class="col-md-2">
                 <label>Date of completion</label>
@@ -62,11 +63,9 @@
             <div class="col-md-3">
                 @*<label>Comment</label>
                 <input type="text" class="form-control" />*@
-                <label>
-
-                </label>
+                
                 <a href="/Product/PostTask">
-                    <button class="btn btn-success btn-block mt-2">
+                    <button class="btn btn-success btn-block form-control mt-4">
                         Assign
                     </button>
                 </a>
@@ -88,12 +87,15 @@
                                 <th style="color:#0C2A46">Number of records</th>
                                 <th style="color:#0C2A46">Deadline</th>
                                 <th style="color:#0C2A46">Action</th>
+                                <th></th>
                             </tr>
                         </thead>
 
                         <tbody>
                             @if (ViewBag.id != null || ViewBag.id != "")
                             {
+                               // var db = new dbContext();
+                               
                                 <tr>
                                     <td> @ViewBag.id</td>
                                     <td> @ViewBag.assignTo </td>
@@ -102,8 +104,11 @@
                                     <td>
                                         <div class="btn-group">
                                             <a href="#" style="color:#0C2A46;text-decoration:underline">View More</a>
+
                                         </div>
+                                        
                                     </td>
+                                   
                                 </tr>
                             }
 
@@ -121,3 +126,25 @@
         </div>
     </div>
        
+<script type="text/javascript">
+    function CheckDocNo() {
+
+       
+        var y = document.getElementById('NoOfRecords').value;
+        var x = document.getElementById('NumOfDoc').value;
+        
+
+        if (y > x) {
+            alert('Invalid number of Documents, the number of unassingned documents is ' + x);
+
+            return false;
+            //var msg = document.createElement('p');
+            //msg.style.fontFamily = '\'Ubuntu Condensed\', sans-serif';
+            //msg.classList.add('text-warning');
+            //msg.textContent = 'Invalid number of Documents, the number of unassingned documents is '+ num;
+            //document.getElementById('bton').disabled = true;
+            //container.appendChild(msg);
+        }
+        
+    }
+</script>
